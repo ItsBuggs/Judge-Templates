@@ -96,7 +96,7 @@
     font-weight: bold;
   }
 
-  /* Dynamic charge rows (case log / verdict) Jordan is a Butthole */
+  /* Dynamic charge rows (case log / verdict) */
   .case-charge-row, .verdict-charge-row {
     border: 1px solid #ddd;
     padding: 8px;
@@ -262,7 +262,10 @@ const charges = {
   "VC04": {
     code: "VC04",
     title: "Illegal Parking",
-    description: "Parking or leaving a vehicle where parking is prohibited, including signed no-parking zones, red curbs, crosswalks, blocking driveways, hydrants, intersections, or obstructing traffic, except for listed exemptions.",
+    description: `A person commits the offense of Illegal Parking if the person parks or leaves standing a vehicle in a place where parking is prohibited, including:[list] In a space where parking meters are enforced, without paying for parking.[*]At any place a 'No Parking' sign is posted.[*]Wherever the curb is painted red or on a safety zone, where the roadway is painted with stripes.[*]In any intersection or on a crosswalk or sidewalk, except on the curb itself.
+[*]In front of/blocking a public or private road, driveway, or alley.[*]On a freeway, except in an emergency.[*]In a tunnel or on a bridge, except where permitted by signs.[*]Within 10 feet of a fire hydrant, fire station driveway, or railroad track.[*]Facing the wrong direction, against the flow of traffic.
+[*]At any other place where parking will obstruct the free flow of traffic.[/list]Exemptions to this violation include:
+[list]Vehicles standing or parked when an on-duty law enforcement officer lawfully orders a stop.[*]Vehicles standing or parked momentarily for the purpose of and while actually engaged in loading or unloading of property or passengers.[*]Vehicles owned or operated by the state or city when standing or parking is necessary to: perform maintenance or repair work on the roadway; or collect solid waste, recyclable material, or yard debris.[*]Commercial or government-owned vehicles with an 'SA EXEMPT' license plate, indicating an exemption to minor parking infractions.[*]Vehicles, owned by state and city employees, standing or parked at properties owned by the State of San Andreas.[/list]Law enforcement officers may move, require to be moved, or impound a vehicle that is standing or parked in violation of this section.`,
     jailMonths: 0,
     fine: 500,
     driver: "Intact",
@@ -273,7 +276,9 @@ const charges = {
   "VC05": {
     code: "VC05",
     title: "Improper Traffic Maneuvers",
-    description: "Illegal U-turns, failing to maintain lane, tailgating, or failing to yield to traffic control devices as defined by statute.",
+    description: `Improper traffic and road usage can include any of the following.
+[list]Illegal U-turn by performing a U-turn that crosses lanes of traffic in a reckless manner, without yielding prior to performing the turn, or in an area where U-turns are prohibited.[list]On a divided highway by crossing a dividing section, curb, strip of land, or two sets of double yellow lines.[*]Where a “No U-turn” sign is posted.[*]When other vehicles may hit you.[*]On a one-way street.[*]Where you cannot see clearly 60 meters in each direction because of a curve, hill, rain, fog, or other reason.[/list][*]Failing to maintain a lane while commencing with the normal flow of traffic.[*]Tailing or closely following another vehicle in which could result in an accident or injury.[*]Failure to Yield for appropriate Traffic Control Devices defined as any sign, marking or device intended to direct road usage, such as but not limited to: stop signs, yield signs, speed limit signs, signs directing traffic flow, no passing signs, one-way signs, no parking signs, traffic lights, etc.[/list]
+San Andreas defines yielding as slowing down before a traffic control device and making sure that the intersection is clear. The first vehicle at an intersection has right of way.`,
     jailMonths: 0,
     fine: 500,
     driver: "3rd Demerit6 Hours",
@@ -284,7 +289,7 @@ const charges = {
   "VC06": {
     code: "VC06",
     title: "Following or Impeding Emergency Response",
-    description: "Failure to yield and pull off to make way for emergency vehicles, or following / impeding them without valid legal justification.",
+    description: `Failure to yield and pull off to the side in order to make way for emergency vehicles with flashing lights and or sirens, following or impeding them without valid and legal justification.`,
     jailMonths: 0,
     fine: 1000,
     driver: "3rd Demerit6 Hours",
@@ -306,7 +311,7 @@ const charges = {
   "VC08": {
     code: "VC08",
     title: "Negligent Operation of a Road or Marine Vehicle",
-    description: "Failing to use reasonable care while operating a vehicle or marine vessel, risking injury or property damage.",
+    description: " Failing to use reasonable care while operating a vehicle, which could lead to personal injuries and damages to one or more vehicles.",
     jailMonths: 0,
     fine: 1500,
     driver: "3rd Demerit6 Hours",
@@ -328,7 +333,11 @@ const charges = {
   "VC10": {
     code: "VC10",
     title: "Unroadworthy Vehicle",
-    description: "Operating a vehicle that fails minimum safety requirements or causes roadway damage, including unsafe utility vehicle operation.",
+    description: `Vehicles are defined as unroadworthy when they fail to meet Minimum Safety Requirements. At the discretion of the handling officer, if your vehicle is deemed unsafe it might be towed to an impound.
+
+A vehicle operating on public roads must meet following criteria:[list]Must have WHITE or YELLOW color on lamps and reflectors, to be visible for those in front of the vehicle. *[*]Indicators, lamps, side & rear view mirrors, and seatbelts must be present and undamaged.[*]The vehicle must be registered with the State of San Andreas.[*]The vehicle must not cause damage to road surface or structures.[/list]* The colors that emit from your lamps and reflectors may be in a different color if the vehicle is due to attend a vehicle-related event. The vehicle may then only travel from its home destination to the event, and back. Proof of attendance should be presented to officers upon request.
+
+Utility vehicle operators are expected to be conscious about road accessibility and to operate with as little harm to traffic flow by keeping to the right most lane possible, driving within safe speeds, and waving traffic around them in the event they are causing a disturbance. Utility vehicles causing traffic issues may face fines for misuse. Utility Vehicles are defined as Money Transporters, Delivery Services, Waste Transports, Tractors, etc.`,
     jailMonths: 0,
     fine: 500,
     driver: "3rd Demerit6 Hours",
@@ -339,7 +348,7 @@ const charges = {
   "VC11": {
     code: "VC11",
     title: "Failure to Pay a Toll",
-    description: "Passing through a toll crossing or highway without paying the required toll unless exempt by special permit.",
+    description: `It is unlawful for a vehicle to go through a toll without paying the toll or other charges on any vehicular crossing or toll highway. Drivers may not drive through a toll on another driver's cost. Its is the responsibility of the occupants of the vehicle (I.E. the driver or passengers) to pay the toll on each crossing. Vehicles with a special permit from the San Andreas State Government may cross a toll without paying, but must present the permit to the toll booth operator.`,
     jailMonths: 0,
     fine: 3000,
     driver: "3rd Demerit6 Hours",
@@ -350,7 +359,7 @@ const charges = {
   "VC12": {
     code: "VC12",
     title: "Operating an Unregistered Vehicle",
-    description: "Driving, moving, or leaving a vehicle on public roads or parking facilities without valid registration.",
+    description: ` No person shall drive, move, or leave standing upon a city road, county road, highway, or in an off-street publicly or privately owned parking facility unless the vehicle is registered. An unregistered vehicle is defined as a vehicle that has not been legally purchased from a dealership vendor or third person party, and which is not registered with the State of San Andreas.`,
     jailMonths: 0,
     fine: 1000,
     driver: "3rd Demerit6 Hours",
@@ -361,7 +370,7 @@ const charges = {
   "VC13": {
     code: "VC13",
     title: "Disruptive Impeding or Blocking Travel",
-    description: "Driving at such a slow speed as to unreasonably impede or block normal traffic flow except when required for safety or by law.",
+    description: `No person shall drive a motor vehicle at such a slow speed as to impede or block the normal and reasonable movement of traffic except when reduced speed is necessary for safe operation or in compliance with law or except when the vehicle is temporarily unable to maintain a greater speed due to a combination of the weight of the vehicle and the grade of the highway.`,
     jailMonths: 0,
     fine: 2000,
     driver: "If Used6 Hours",
@@ -372,7 +381,7 @@ const charges = {
   "VC14": {
     code: "VC14",
     title: "Operation of a Vehicle without a License Plate",
-    description: "Operating a vehicle without a valid state-issued license plate when not tied to another criminal act (otherwise see VM09).",
+    description: `[list=1]Operating a vehicle without a valid state-issued license plate.[*]If the offense is committed in parallel with the commission of another criminal act, the individual will be charged with VM09 instead of VC14. [/list]`,
     jailMonths: 0,
     fine: 1000,
     driver: "Intact",
@@ -385,7 +394,7 @@ const charges = {
   "GC01": {
     code: "GC01",
     title: "Loitering",
-    description: "Standing or hanging around an area or building after being asked to leave by management or a government employee.",
+    description: "Standing or hanging around an area or building after being asked to leave by building or area management or by a Government Employee.",
     jailMonths: 0,
     fine: 750,
     driver: "Intact",
@@ -396,7 +405,7 @@ const charges = {
   "GC02": {
     code: "GC02",
     title: "Traffic Endangerment",
-    description: "Creating hazardous travel or endangering drivers, self, or pedestrians on roadways, including leaving hazards or failing to secure a load.",
+    description: `Creating hazardous travel or endangering drivers, self, or pedestrians on roadways. This can include, but is not limited to, creating or leaving hazards and/or obstructions in the roadway, not properly securing a load, or crossing the street as a pedestrian at a place that is not designated as a crosswalk or intersection.`,
     jailMonths: 0,
     fine: 500,
     driver: "Intact",
@@ -407,7 +416,7 @@ const charges = {
   "GC03": {
     code: "GC03",
     title: "Disorderly Conduct",
-    description: "Engaging in disruptive behavior in public such as excessive noise, climbing on vehicles, tackling others, misusing vehicle horns, or crowding individuals; repeat offenders may face NM10.",
+    description: `[list=1]A person is engaging in disorderly conduct if within public property, they are found to have performed at least one of the following:[list]shouted, screeched or otherwise made noise beyond normal conversation;[*]ran, jumped, climbed or otherwise sat on top of motor vehicles, stationary or otherwise;[*]while running around or near other individuals tripped, or intentionally tackled another person;[*]without a clear danger of traffic collision, or while stationary make use of the horn of their motor vehicle;[*]together with other individuals placed themselves in close proximity around a single individual so as to restrict their movement.[/list][*]Individuals who have been cited for Disorderly Conduct in the past 3 days are liable for prosecution under "NM10 - Disturbing the Peace" at the discretion of the handling law enforcement officer.[/list]`,
     jailMonths: 0,
     fine: 5000,
     driver: "Intact",
@@ -418,7 +427,11 @@ const charges = {
   "GC04": {
     code: "GC04",
     title: "Face Concealment",
-    description: "Wearing facial concealment in public or on state property without valid exemption, and failing to comply with lawful removal or identification; repeat or criminal use escalates to GM19/GM10.",
+    description: `An individual may not be present on foot and wear facial concealment in public or on the property of San Andreas. Exemptions apply when facial concealment is worn during masquerades and other entertainment events that are deemed appropriate by the city (such as Halloween), or where there's reasonable cause e.g. motorcycle protection or medical reasons (with documentation from a registered medical practitioner).
+[list]Private Property owners have the right to refuse and/or allow attendants who wear facial concealment within the boundaries of their property.
+[*]Individuals who defy a lawful request to remove and/or keep their facial concealment off or fail to identify themselves after removing the face covering are liable for GM-10 and a subsequent upgrade of GC-04 to GM-19.
+[*]GM-19 will apply instead of GC-04 for individuals who wear facial concealment in relation to other criminal acts.
+[*]Individuals who have been cited and/or arrested for facial concealment in the past 7 days are liable for prosecution under GM-10 at the discretion of the handling law enforcement officer.[/list]`,
     jailMonths: 0,
     fine: 500,
     driver: "Intact",
@@ -429,7 +442,7 @@ const charges = {
   "GC05": {
     code: "GC05",
     title: "Misuse of Government / Public Safety Radio or Hotlines",
-    description: "Improperly using public safety radio frequencies or emergency hotlines for non-emergency purposes.",
+    description: ` Any person who disrupts, impedes, or otherwise interferes with transmission over a public safety radio frequency, or improperly uses a government hotline that is intended for emergency assistance, for non-emergency-related situations.`,
     jailMonths: 0,
     fine: 1000,
     driver: "Intact",
@@ -440,7 +453,13 @@ const charges = {
   "GC06": {
     code: "GC06",
     title: "Possession of Cannabis",
-    description: "Possessing cannabis without a valid medical prescription or license, up to the listed limits; exceeding limits becomes DM03.",
+    description: `Possessing, without a valid medical prescription or medical license, any amount of cannabis up to and including, of each:
+[list]0.25 oz (7 g) Processed Marijuana
+[*]10 Marijuana Plants
+[*]Any amount of Marijuana Seeds[/list]
+Individuals who exceed any of the limits listed above are liable for prosecution under DM03 - Possession of a Schedule III Controlled Substance.
+
+* [b][color=#FF0000]FOOTNOTE:[/color][/b] Despite state law, currently no programs exist to support the existence of a valid medical prescription. Individuals with a medical license obtained from a BLS class are not given an implicit medical license to be in possession of Cannabis. LSEMS is unable to supply individuals with a medical Cannabis prescription. This footnote is printed for convenience by the Law Review Committee Statue Office, and in it of itself does should not be confused to be part of the original law itself. *`,
     jailMonths: 0,
     fine: 1000,
     driver: "Intact",
@@ -453,7 +472,7 @@ const charges = {
   "GM01": {
     code: "GM01",
     title: "Assault",
-    description: "Threat of bodily harm with intent, including spitting, slapping, or unlawful groping.",
+    description: "The threat of bodily harm with the intention of attainment including the acts of spitting, slapping, or unlawful groping.",
     jailMonths: 10,
     fine: 1500,
     driver: "Intact",
@@ -464,7 +483,7 @@ const charges = {
   "GM02": {
     code: "GM02",
     title: "Battery",
-    description: "Willful and unlawful use of force or violence upon another person.",
+    description: "Willful and unlawful use of force or violence upon the person of another.",
     jailMonths: 20,
     fine: 2000,
     driver: "Intact",
@@ -475,7 +494,7 @@ const charges = {
   "GM03": {
     code: "GM03",
     title: "Possession of a Blade",
-    description: "Carrying or possessing a fixed or assisted opening blade over 3 inches capable of inflicting serious bodily injury.",
+    description: "Carrying or possessing a fixed blade or assisted opening blade that is over 3 inches and has the ability to inflict serious bodily injury.",
     jailMonths: 10,
     fine: 1000,
     driver: "Intact",
@@ -486,7 +505,7 @@ const charges = {
   "GM04": {
     code: "GM04",
     title: "Resisting Arrest",
-    description: "Resisting arrest physically or by fleeing on foot.",
+    description: "Resisting arrest in any physical manner or by running on foot.",
     jailMonths: 25,
     fine: 2000,
     driver: "Intact",
@@ -508,7 +527,7 @@ const charges = {
   "GM06": {
     code: "GM06",
     title: "Petty Theft",
-    description: "Taking property without consent valued at less than $5,000.",
+    description: "Taking another person's property without consent of a value less than $5,000.",
     jailMonths: 15,
     fine: 2000,
     driver: "Intact",
@@ -519,7 +538,7 @@ const charges = {
   "GM07": {
     code: "GM07",
     title: "Criminal Fraud",
-    description: "Intentional deception causing at least $5,000 in damages for personal or financial gain.",
+    description: `The intentional deception of a victim by means including but not limited to a false display of information, identity, or documents with the intent of personal or financial gain causing greater than or equal to $5,000 in damages.`,
     jailMonths: 20,
     fine: 1500,
     driver: "If Used6 Hours",
@@ -530,7 +549,8 @@ const charges = {
   "GM08": {
     code: "GM08",
     title: "Vandalism",
-    description: "Maliciously defacing, damaging, or destroying property not one’s own.",
+    description: `Every person who maliciously commits any of the following acts with respect to any real or personal property not his or her own is guilty of vandalism:
+[list]Defaces with graffiti or other inscribed material.[*]Damages.[*]Destroys.[*]Damages/Destroys with intent to commit further crime.[/list]`,
     jailMonths: 15,
     fine: 1000,
     driver: "If Used6 Hours",
@@ -541,7 +561,7 @@ const charges = {
   "GM09": {
     code: "GM09",
     title: "Vigilantism",
-    description: "Attempting to fulfill law enforcement duties as a non-law-enforcement official.",
+    description: "A non law enforcement official attempting of fulfilling the enforcement of laws.",
     jailMonths: 15,
     fine: 1000,
     driver: "If Used6 Hours",
@@ -552,7 +572,7 @@ const charges = {
   "GM10": {
     code: "GM10",
     title: "Failure to Comply / Identify",
-    description: "Failure to comply with lawful commands or to identify oneself during an investigation.",
+    description: "Failure to comply with a lawful command by a law enforcement officer, including when he requests you to identify who you are during the course of an investigation.",
     jailMonths: 20,
     fine: 1000,
     driver: "If Used6 Hours",
@@ -563,7 +583,7 @@ const charges = {
   "GM11": {
     code: "GM11",
     title: "Predatory Lending",
-    description: "Loaning money under unfair or fraudulent pretenses, often with implied violence if not repaid.",
+    description: "To loan money under unfair or fraudulent pretenses, often with the the outcome of violence should the contract not be fulfilled.",
     jailMonths: 15,
     fine: 2000,
     driver: "Intact",
@@ -574,7 +594,7 @@ const charges = {
   "GM12": {
     code: "GM12",
     title: "Giving False Information to a Police Officer",
-    description: "Providing fake information or documents to a police officer.",
+    description: "Giving fake information, answers, driver's licenses, car registration or other documents to a police officer.",
     jailMonths: 20,
     fine: 1000,
     driver: "If Used6 Hours",
@@ -585,7 +605,7 @@ const charges = {
   "GM13": {
     code: "GM13",
     title: "Criminal Threats",
-    description: "Knowingly and willingly threatening another’s life or bodily harm, including family or loved ones.",
+    description: "Knowingly and willingly threatening the life of or bodily harm onto another person, their family, relatives or loved ones.",
     jailMonths: 20,
     fine: 1000,
     driver: "If Used6 Hours",
@@ -596,7 +616,7 @@ const charges = {
   "GM14": {
     code: "GM14",
     title: "Obstruction of Justice",
-    description: "Interfering with or obstructing lawful investigations through lies, concealment, or other acts.",
+    description: `If any person interferes, delays, obstructs, lies or deliberately conceals information from law enforcement officers or any other government official that is conducting a lawful investigation and/or questioning then they are to be regarded as obstructing justice.`,
     jailMonths: 25,
     fine: 1000,
     driver: "If Used6 Hours",
@@ -607,7 +627,7 @@ const charges = {
   "GM15": {
     code: "GM15",
     title: "Animal Cruelty",
-    description: "Causing severe harm or neglect to an animal, excluding lawful hunting.",
+    description: "Causing severe harm or neglect of any animal. It does not include the legal hunting of wild game animals.",
     jailMonths: 25,
     fine: 1000,
     driver: "If Used6 Hours",
@@ -618,7 +638,7 @@ const charges = {
   "GM16": {
     code: "GM16",
     title: "Failure to Pay a Fine",
-    description: "Failure to pay a fine within 7 days.",
+    description: "Failure to Pay a Fine for longer than the allowed time of 7 Days.",
     jailMonths: 15,
     fine: 1000,
     driver: "Intact",
@@ -629,7 +649,7 @@ const charges = {
   "GM17": {
     code: "GM17",
     title: "Bribery",
-    description: "Offering, giving, soliciting, or receiving anything of value to influence required actions.",
+    description: "The offering, giving, soliciting, or receiving of any value as a means of influencing actions of any obligations required of them.",
     jailMonths: 30,
     fine: 1000,
     driver: "Intact",
@@ -640,7 +660,9 @@ const charges = {
   "GM18": {
     code: "GM18",
     title: "Looting of a Dead Human Body",
-    description: "Intentionally removing or adding items to a dead human body or its vicinity; more severe mutilation becomes GF19.",
+    description: `[list=1]A person is guilty of looting a dead human body if the person intentionally and unlawfully:
+[list=a]Removes any item, object or otherwise belonging from the Dead Human Body or its vicinity (including clothing on the body)[*]Adds any item, object or otherwise belonging to the Dead Human Body or its vicinity (including clothing on the body)[/list][*]If the human body has itself or any part of it removed, concealed, or destroyed, as well as moved from one location to another, this charge is replaced by "GF-19 Abuse or Desecration of a Dead Human Body"[/list]
+[b]"Dead human body"[/b] includes any part of a human body in any stage of decomposition.`,
     jailMonths: 20,
     fine: 1750,
     driver: "Intact",
@@ -651,7 +673,11 @@ const charges = {
   "GM19": {
     code: "GM19",
     title: "Face Concealment (b)",
-    description: "Wearing facial concealment while intimidating, threatening, harassing, causing fear, or committing a crime.",
+    description: `[list=a]No person or persons, while wearing any mask, hood, or device whereby any portion of the face is hidden, concealed, or covered as to conceal the identity of the wearer, shall:
+[list=1]With the intent to intimidate, threaten, abuse, or harass any other person;
+[*]With the intent to cause another person to fear for his or her personal safety, or, where it is probable that reasonable persons will be put in fear for their personal safety by the defendant’s actions, with reckless disregard for that probability; or
+[*]While engaged in conduct prohibited by law, with the intent of avoiding identification.[/list]
+Any person or persons violating GC - 04 - Face Concealment while committing a crime will be held to the misdemeanor criminal charge of Face Concealment.[/list]`,
     jailMonths: 10,
     fine: 500,
     driver: "Intact",
@@ -662,7 +688,7 @@ const charges = {
   "GM20": {
     code: "GM20",
     title: "Minor Sales Tax Evasion",
-    description: "Failing to remit sales tax to the government where tax value is under $50,000; higher values become GF23.",
+    description: `Any person who, with or without intent to evade taxes, fails to report and pay sales tax at the time of sale, and instead of remitting it to the government, pockets it. The current sales tax in San Andreas is 5%. If the total value of the tax exceeds $49,999 this escalates to Grand Sales Tax Evasion. (( Selling a car at one of the car markets or house by the script will automatically deduct 5% of the sale. ))`,
     jailMonths: 20,
     fine: 5000, // plus unpaid tax +10%
     driver: "Intact",
@@ -673,7 +699,11 @@ const charges = {
   "GM21": {
     code: "GM21",
     title: "False Imprisonment",
-    description: "Unlawfully restraining, detaining, or confining another without consent; cannot be charged with Kidnapping in same instance; use SF09 if to avoid arrest.",
+    description: `The unlawful violation of the personal liberty of another. No person may restrain, detain, or confined another person without his/her consent unless such action is in relation to legal detainment done by a civilian (citizen's arrest), police, or certified medical personnel. The crime can be committed with or without force or violence.
+
+If a person is restrained, detained, or confined with or without force to avoid an impending arrest, this will be upgraded to SF-09.
+
+Cannot be charged alongside Kidnapping and vice verse in the same instance - Kidnapping and False Imprisonment are exclusive charges to one another.`,
     jailMonths: 30,
     fine: 2000,
     driver: "Intact",
@@ -684,7 +714,7 @@ const charges = {
   "GM22": {
     code: "GM22",
     title: "Contempt of Court",
-    description: "Minor willful disobedience of a court order or misconduct in court.",
+    description: `Minor willful disobedience to, or disregard of, a court order or any misconduct in the presence of a court, including but not limited to:[list=a]Any act of disrespect, disobedience, defiance, or interference by any person during a legal proceeding.[*]Willfully failing to preform a specific act in accordance with a valid court order.[/list]`,
     jailMonths: 30,
     fine: 2500,
     driver: "Intact",
@@ -695,7 +725,7 @@ const charges = {
   "GM23": {
     code: "GM23",
     title: "Parole Violation",
-    description: "Violation of parole conditions including new offenses, tampering with monitoring, or noncompliance.",
+    description: `Any violation of parole conditions agreed upon prior to release which includes, but are not limited to, committing of misdemeanors, felonies, failure to adhere to parole protocols, damage or removal of tracking equipment, failure to attend meetings, giving false information.`,
     jailMonths: 30,
     fine: 10000,
     driver: "If Used6 Hours",
@@ -706,7 +736,15 @@ const charges = {
   "GM24": {
     code: "GM24",
     title: "Contempt of Congress",
-    description: "Disrespect, defiance, interference, or noncompliance with Congress or a congressional committee as defined by statute.",
+    description: `[list=1]Persons may be charged with the offense of "Contempt of Congress" if they meet any of the following conditions:
+[list=A]Displaying disrespect, disobedience, defiance, or interference with Congress or a congressional committee while the House is in order or if a congressional committee is actively in session.
+[*]Intentionally interferes with a Congressional Action.
+[*]Fails to comply with a valid congressional writ, including but not limited to a warrant or subpoena signed by the Speaker of the House or Speaker Pro Tempore.
+[*]Disturbs an active sitting of Congress or a congressional disturbance.
+[*]Failure to respond to questions, provide relevant documents, or give testimony with the intent to obstruct a congressional inquiry or investigation will be considered a violation. Non-compliance in these matters within the bounds set forth by the Constitution may result in legal consequences.
+[*]Intentionally misleading Congress in any official matter, including but not limited to candidacy applications.
+[*]Further points as set out in a passed House Resolution.[/list]
+[*]This charge may only be placed when authorization is given by the Speaker of the House, Chairperson of Congress, Sergeant-at-Arms, or the Prosecutor's Office.[/list]`,
     jailMonths: 30,
     fine: 10000,
     driver: "Intact",
@@ -717,7 +755,7 @@ const charges = {
   "GM25": {
     code: "GM25",
     title: "Possession/Unlawful use of Government Equipment",
-    description: "Possession or unlawful use of government equipment such as stingers, tasers, jammers, or encrypted radios.",
+    description: `Possessing, being within immediate control of, or using unlawfully obtained Government Equipment, including but not limited to: Stingers, Tazers, Radio Jammers, GPS Jammers, Radios tuned to a Government Encrypted Frequency, and Police Megaphones.`,
     jailMonths: 25,
     fine: 1500,
     driver: "Intact",
@@ -728,7 +766,7 @@ const charges = {
   "GM26": {
     code: "GM26",
     title: "Possession of Illegal Information Gathering Devices",
-    description: "Possession of equipment used to infiltrate government radio frequencies or GPS systems.",
+    description: "Possessing or being within immediate control of Equipment that can be used to infiltrate Government radio frequencies and/or GPS systems.",
     jailMonths: 15,
     fine: 1000,
     driver: "Intact",
@@ -739,7 +777,9 @@ const charges = {
   "GM27": {
     code: "GM27",
     title: "Incitement of Violence against a Peace Officer",
-    description: "Advocating the unlawful killing or injuring of a peace officer, where advocacy is likely to cause imminent harm.",
+    description: `Any person who advocates the willful and unlawful killing or injuring of a peace officer, with the specific intent to cause the willful and unlawful killing or injuring of a peace officer, and such advocacy is done at a time, place, and under circumstances in which the advocacy is likely to cause the imminent willful and unlawful killing or injuring of a peace officer.[list]If such advocacy causes the unlawful and willful killing or injuring of a peace officer then the crime is upgraded to "GF27 - Incitement of Violence against a Peace Officer"[/list]
+[b]"advocacy"[/b] means the direct incitement of others to cause the imminent willful and unlawful killing or injuring of a peace officer, and not the mere abstract teaching of a doctrine.
+[b]"peace officer"[/b] means any government employee tasked by their employer with the duty of carrying out law enforcement, correctional, or government-sanctioned security duties in the state.`,
     jailMonths: 25,
     fine: 2000,
     driver: "Intact",
@@ -752,7 +792,7 @@ const charges = {
   "NM01": {
     code: "NM01",
     title: "Inciting a Riot",
-    description: "Attempting or fulfilling the act of causing a riot.",
+    description: "The attempt or fulfillment of causing a riot.",
     jailMonths: 45,
     fine: 2500,
     driver: "If Used6 Hours",
@@ -763,7 +803,7 @@ const charges = {
   "NM02": {
     code: "NM02",
     title: "Participating in a Riot",
-    description: "Taking part with two or more people in violent or threatening conduct disturbing the public peace.",
+    description: `The crime of “rioting” or “participating in a riot” occurs when two (2) or more people acting together do any of the following without authority of law: use force of violence, disturb the public peace, and threaten to use force or violence with immediate power to execute such actions.`,
     jailMonths: 30,
     fine: 2000,
     driver: "If Used6 Hours",
@@ -774,7 +814,7 @@ const charges = {
   "NM03": {
     code: "NM03",
     title: "Unlawful Assembly",
-    description: "Two or more people gathering to do something illegal or disobey law enforcement instructions.",
+    description: "Two or more people, gathering together to do something illegal or who are disobedient to law enforcement instruction.",
     jailMonths: 15,
     fine: 1000,
     driver: "Intact",
@@ -1939,7 +1979,7 @@ function buildModifiedTitle(base, activeModifiers) {
 
 /* ---------- GLOBAL STATE ---------- */
 
-let selectedCategory = "Hope Kant";
+let selectedCategory = "General Formats";
 let selectedTemplateId;
 
 const categorySelect = document.getElementById("category");
@@ -1975,7 +2015,10 @@ function makeBBToolbar(textarea) {
     { label: "*", open: "[*] ", close: "" },
     { label: "URL", open: "[url=]", close: "[/url]" },
     { label: "IMG", open: "[img]", close: "[/img]" },
-    { label: "Quote", open: "[quote]", close: "[/quote]" }
+    { label: "Quote", open: "[quote]", close: "[/quote]" },
+    { label: "Center", open: "[center]", close: "[/center]" },
+    { label: "Right", open: "[right]", close: "[/right]" },
+    { label: "Spoiler", open: "[spoiler=]", close: "[/spoiler]" }
   ];
 
   buttons.forEach(cfg => {
@@ -2196,7 +2239,7 @@ function addVerdictChargeRow() {
 /* ---------- TEMPLATES ---------- */
 
 const templatesByCategory = {
-  "Hope Kant": [
+  "General Formats": [
     {
       id: "hope_personal_email",
       label: "Personal Email",
@@ -2221,229 +2264,7 @@ San Andreas Judicial Branch
 505-9925 — hope.kant@sajb.sagov
 [/list][/divbox]
 [img]https://i.imgur.com/T0UjUjH.png[/img]`
-    },
-
-    {
-      id: "docket_notice",
-      label: "Superior Court Docket Notice",
-      fields: ["Message"],
-      template: ({ Message = "" }) => `[img]https://i.imgur.com/T0UjUjH.png[/img]
-[divbox=antiquewhite][fimg=180,180]https://i.imgur.com/t3lfFCp.png[/fimg][aligntable=right,0,0,0,0,0,0][right][font=Arial][b]
-[size=150]San Andreas Judicial Branch[/size][/b]
-[size=115]Docket Notice[/size]
-[size=95][i]"HERE FOR YOU | SAFE FOR YOU"[/i][/size][/font][/right][/aligntable]
-[hr][/hr]
-[list=none]
-[b]Prosecution and defense counsel,[/b]
-
-${Message}
-
-[b]Respectfully,[/b]
-[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
-[i]Branch Administrator[/i]
-San Andreas Judicial Branch
-505-9925 — hope.kant@sajb.sagov
-[/list][/divbox]
-[img]https://i.imgur.com/T0UjUjH.png[/img]`
-    },
-
-    {
-      id: "court_decision",
-      label: "Superior Court Decision",
-      fields: ["Defendant", "CaseType", "CaseNumber", "Decision"],
-      template: ({ Defendant = "", CaseType = "", CaseNumber = "#", Decision = "" }) => `[img]https://i.imgur.com/LdlyeRK.png[/img][divbox=antiquewhite]
-[fimg=180,180]https://i.imgur.com/t3lfFCp.png[/fimg]
-[float=right][right][font=Arial][b]
-
-[size=150][font=Arial]San Andreas Judicial Branch[/font][/size]
-[size=120][font=Arial]Superior Court of San Andreas[/font][/size]
-[size=95][font=Cambria][i]"EQUAL JUSTICE UNDER LAW"[/i][/font][/size][/font][/right][/float]
-
-[hr][/hr]
-[center][b][size=125]COURT DECISION[/size][/b][/center]
-[hr][/hr]
-
-
-[center][font=Arial]IN THE SUPERIOR COURT OF SAN ANDREAS
-
-The State of San Andreas v. ${Defendant}
-#25-${CaseType}-${CaseNumber}
-
-[b]A decision was reached in the above case on the ${getFormalDate()}.[/b][/center]
-
-${Decision}
-
-
-[b]So Ordered,[/b]
-
-[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
-[i]Branch Administrator[/i]
-San Andreas Judicial Branch
-505-9925 — hope.kant@sajb.sagov
-[/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
-    },
-
-    /* ---------- NEW: SUPERIOR COURT CRIMINAL CASE LOG ---------- */
-    {
-      id: "case_log_criminal",
-      label: "Superior Court Criminal Case Log",
-      fields: ["CaseNumberTitle", "IncidentDate", "ChargesBBCode", "EvidenceLinks", "Witnesses"],
-      template: ({
-        CaseNumberTitle = "",
-        IncidentDate = "",
-        ChargesBBCode = "",
-        EvidenceLinks = "",
-        Witnesses = ""
-      }) => `[img]https://i.imgur.com/2mAC82V.png[/img]
-[img]https://i.imgur.com/jRCHmgg.png[/img]
-[divbox=antiquewhite]
-[b]Case Number:[/b]
-[i]${CaseNumberTitle || "[url=LINK]24-CM-0000, State of San Andreas vs. Defendant[/url]"}[/i]
-[b]Date of Incident:[/b]
-[i]${IncidentDate || "(Enter date of the incident here)"}[/i]
-[/divbox]
-[img]https://i.imgur.com/9YCsVl1.png[/img]
-[divbox=antiquewhite]
-[list=1]
-[*][b]Accused Offense(s):[/b]
-${ChargesBBCode || "(No charges listed)"}[/list]
-[/divbox]
-[img]https://i.imgur.com/a5hochF.png[/img]
-[divbox=antiquewhite]
-[list=1]
-[*][b]Evidence Submitted:[/b]
-[list]
-${EvidenceLinks || "[*][url=LINK]Prosecution Exhibits #1-00[/url]\n[*][url=LINK]Defense Exhibits #1-00[/url]\n[*][url=LINK]Exhibits Under Seal[/url]"}
-[/list]
-[*][b]Key Witnesses:[/b]
-${Witnesses || "(List names of key witnesses and their testimony summary. Please also link to the relevant witness request on the docket.)"}
-[/list]
-[/divbox]
-[img]https://i.imgur.com/LdlyeRK.png[/img]`
-    },
-
-    /* ---------- UPDATED: SUPERIOR COURT CRIMINAL TRIALS VERDICT ---------- */
-    {
-      id: "issuance_of_verdict",
-      label: "Superior Court Criminal Trials Verdict",
-      fields: ["Defendant", "CaseType", "CaseNumber", "Decision", "VerdictChargesBBCode", "VerdictMode", "PaymentReturnedToDefendant", "CourtFees"],
-      template: ({
-        Defendant = "",
-        CaseType = "",
-        CaseNumber = "#",
-        Decision = "",
-        VerdictChargesBBCode = "",
-        VerdictMode = "",
-        PaymentReturnedToDefendant = "",
-        CourtFees = ""
-      }) => {
-        let paragraph = "";
-        if (VerdictMode === "refund") {
-          paragraph = `The defendant should make their way to City Hall at their earliest convenience to have the change to their record noted as well as the payment of $${PaymentReturnedToDefendant} returned to them for fines, time, and other expenses/inconveniences incurred from the contested charges.`;
-        } else if (VerdictMode === "fees") {
-          paragraph = `The defendant should make their way to City Hall to pay their court fines of $${CourtFees}.`;
-        }
-
-        return `[img]https://i.imgur.com/LdlyeRK.png[/img][divbox=antiquewhite]
-[fimg=180,180]https://i.imgur.com/t3lfFCp.png[/fimg]
-[float=right][right][font=Arial][b]
-
-[size=150][font=Arial]San Andreas Judicial Branch[/font][/size]
-[size=120][font=Arial]Superior Court of San Andreas[/font][/size]
-[size=95][font=Cambria][i]"EQUAL JUSTICE UNDER LAW"[/i][/font][/size][/font][/right][/float]
-
-[hr][/hr]
-[center][b][size=125]ISSUANCE OF VERDICT[/size][/b][/center]
-[hr][/hr]
-
-
-[center][font=Arial]IN THE SUPERIOR COURT OF SAN ANDREAS
-
-The State of San Andreas v. ${Defendant}
-#25-${CaseType}-${CaseNumber}
-
-[b]A decision was reached in the above case on the ${getFormalDate()}.[/b][/center]
-
-${Decision}
-
-It is with the above considerations that I issue the following verdict:
-[list]
-${VerdictChargesBBCode || "[*] On the count of XX01 - Charge, I find the defendant, Firstname Lastname, not guilty."}
-[/list]
-
-${paragraph ? paragraph + "\n\n" : ""}[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
-[i]Branch Administrator[/i]
-San Andreas Judicial Branch
-505-9925 — hope.kant@sajb.sagov
-[/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`;
-      }
-    },
-
-    {
-      id: "notice_to_schedule_bt",
-      label: "Notice to Schedule BT",
-      fields: ["notice_level", "Message"],
-      template: ({ notice_level = "FIRST", Message = "" }) => `[img]https://i.imgur.com/LdlyeRK.png[/img]
-[divbox=antiquewhite][fimg=150,150]https://i.imgur.com/t3lfFCp.png[/fimg]
-[float=right][right]
-
-[font=Arial][size=150][b]San Andreas Judicial Branch[/b][/size]
-[size=120]Docket Notice[/size][/font]
-[font=Cambria][size=95][i]"EQUAL JUSTICE UNDER LAW"[/i][/size][/font][/right][/float]
-[hr][/hr]
-[list=none]
-[b]Parties,[/b],
-
-
-This is to serve as a [b]${notice_level}[/b] notice to the defendant that bench trials are currently scheduled on multiple days throughout the week. Please notify the court if these times do not work for you. The expectation of the court is that each defendant file a notice for availability in the next 7 days. Date, times, and formatting shown [b][url=https://gov.eclipse-rp.net/viewforum.php?f=3806]here[/url][/b]. [u]The courts will only provide the defendant three notices prior to involuntarily dismissing the case in favor of prosecution due to lack of response from the defendant.[/u]
- 
-Please note there is the possibility of a trial happening if defendants show up to City Hall and both a judge and defense attorney are available. 
-
-${Message}
-
-[b]Respectfully,[/b]
-
-[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
-[i]Branch Administrator[/i]
-San Andreas Judicial Branch
-505-9925 — hope.kant@sajb.sagov
-[/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
-    },
-
-    {
-      id: "dismissing_bt",
-      label: "Dismissing BT",
-      fields: ["Defendant", "CaseType", "CaseNumber", "Reason"],
-      template: ({ Defendant = "", CaseType = "BT", CaseNumber = "0000", Reason = "lack of response from the defendant" }) => `[img]https://i.imgur.com/LdlyeRK.png[/img][divbox=antiquewhite]
-[fimg=180,180]https://i.imgur.com/t3lfFCp.png[/fimg]
-[float=right][right][font=Arial][b]
-
-[size=150][font=Arial]San Andreas Judicial Branch[/font][/size]
-[size=120][font=Arial]Superior Court of San Andreas[/font][/size]
-[size=95][font=Cambria][i]"EQUAL JUSTICE UNDER LAW"[/i][/font][/size][/font][/right][/float]
-
-[hr][/hr]
-[center][b][size=125]COURT DECISION[/size][/b][/center]
-[hr][/hr]
-
-
-[center][font=Arial]IN THE SUPERIOR COURT OF SAN ANDREAS
-
-The State of San Andreas v. ${Defendant}
-#25-${CaseType}-${CaseNumber}
-
-[b]A decision was reached in the above case on the ${getFormalDate()}.[/b][/center]
-
-Due to a ${Reason}, the case will now be accepting the plea of guilty from the defendant. The defendant was given ample time to interact with the courts and file availability. If any of the dates and times did not align with the schedule of the defendant, they were able to contact the courts stating the like. As little to no contact has been made with the courts in the past 3-4 weeks, this case will now be archived and the charges will remain on the record of the defendant.
-
-[b]Respectfully,[/b]
-
-[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
-[i]Branch Administrator[/i]
-San Andreas Judicial Branch
-505-9925 — hope.kant@sajb.sagov
-[/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
-    },
+      },
 
     {
       id: "search_warrant",
@@ -2506,257 +2327,6 @@ San Andreas Judicial Branch
 
 [/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
     },
-
-    /* --- (existing appeal / notice / order templates unchanged) --- */
-
-    {
-      id: "appeal_activation_notice",
-      label: "Appeal - Activation Notice",
-      fields: ["Appellant", "OpposingParty", "CaseNumber"],
-      template: ({
-        Appellant = "Appellant",
-        OpposingParty = "Opposing Party",
-        CaseNumber = "0000"
-      }) => `[img]https://i.imgur.com/LdlyeRK.png[/img][divbox=antiquewhite]
-
-[fimg=180,180]https://i.imgur.com/B4pHsgG.png[/fimg]
-[float=right][right][font=Arial][b]
-
-[size=150][font=Arial]San Andreas Judicial Branch[/font][/size][/b]
-[size=120][font=Arial]San Andreas Court of Appeals[/font][/size]
-[size=95][font=Cambria][i]"EQUAL JUSTICE UNDER LAW"[/i][/font][/size][/font][/right][/float]
-
-
-[hr][/hr]
-[center][b][size=125]NOTICE OF ACTIVATION[/size][/b][/center]
-[hr][/hr]
-
-
-
-[center][font=Arial]IN THE SAN ANDREAS COURT OF APPEALS
-
-${Appellant} v. ${OpposingParty}
-#25-AP-${CaseNumber}
-
-A Notice of Activation was entered in the above appeal on the ${getFormalDate()}.
-[/center]
-
-The case of ${Appellant} v. ${OpposingParty} is hereby activated by this Court under [b]#25-AP-${CaseNumber}[/b].
-
-The appealing party is hereby ordered to submit an initial written brief within the next seven (7) days outlining their position of this appeal and giving any legal arguments as to why the court should rule to overturn a previous verdict. Once the initial brief has been recorded by the courts, the opposing counsel will be given an additional seven (7) days to respond. The initiating party will be given one final response, which the courts will allow seven (7) days to produce. The court may allow either party an additional response at the justices discretion. Once the briefs have been submitted the court will determine a verdict.
-
-So ordered,
-[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
-[i]Branch Administrator[/i]
-San Andreas Judicial Branch
-505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url][/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
-    },
-
-    {
-      id: "appeal_docket_notice",
-      label: "Appeal - Docket Notice",
-      fields: ["Message"],
-      template: ({ Message = "" }) => `[img]https://imgur.com/T0UjUjH.png[/img]
-[divbox=antiquewhite][fimg=180,180]https://i.imgur.com/B4pHsgG.png[/fimg][aligntable=right,0,0,0,0,0,0][right][font=Arial][b]
-[size=150]San Andreas Judicial Branch[/size][/b]
-[size=115]Docket Notice[/size]
-[size=95][i]"HERE FOR YOU | SAFE FOR YOU"[/i][/size][/font][/right][/aligntable]
-[hr][/hr]
-[list=none]
-[b]Prosecution and defense counsel,[/b]
-
-${Message}
-
-[b]Respectfully,[/b]
-
-[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
-[i]Branch Administrator[/i]
-San Andreas Judicial Branch
-505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url][/list][/divbox]
-[img]https://imgur.com/T0UjUjH.png[/img]`
-    },
-
-    {
-      id: "appeal_summary_dismissal",
-      label: "Appeal - Summary Dismissal",
-      fields: ["Appellant", "OpposingParty", "Reason"],
-      template: ({
-        Appellant = "Appellant",
-        OpposingParty = "Opposing Party",
-        Reason = ""
-      }) => `[img]https://i.imgur.com/LdlyeRK.png[/img][divbox=antiquewhite]
-
-[fimg=180,180]https://i.imgur.com/B4pHsgG.png[/fimg]
-[float=right][right][font=Arial][b]
-
-[size=150][font=Arial]San Andreas Judicial Branch[/font][/size][/b]
-[size=120][font=Arial]San Andreas Court of Appeals[/font][/size]
-[size=95][font=Cambria][i]"EQUAL JUSTICE UNDER LAW"[/i][/font][/size][/font][/right][/float]
-
-
-[hr][/hr]
-[center][b][size=125]SUMMARY DISMISSAL[/size][/b][/center]
-[hr][/hr]
-
-
-
-[center][font=Arial]IN THE SAN ANDREAS COURT OF APPEALS
-
-${Appellant} v. ${OpposingParty}
-
-A Summary Dismissal was entered in the above appeal on the ${getFormalDate()}.
-[/center]
-
-${Reason}
-
-So ordered,
-[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
-[i]Branch Administrator[/i]
-San Andreas Judicial Branch
-505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url][/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
-    },
-
-    {
-      id: "appeal_issuance_of_verdict",
-      label: "Appeal - Issuance of Verdict",
-      fields: ["Appellant", "Defendant", "CaseNumber", "Decision"],
-      template: ({
-        Appellant = "Appellant",
-        Defendant = "Defendant",
-        CaseNumber = "00XX",
-        Decision = ""
-      }) => `[img]https://i.imgur.com/LdlyeRK.png[/img][divbox=antiquewhite]
-[fimg=180,180]https://i.imgur.com/B4pHsgG.png[/fimg]
-[float=right][right][font=Arial][b]
-
-[size=150][font=Arial]San Andreas Judicial Branch[/font][/size][/b]
-[size=120][font=Arial]Court of Appeals[/font][/size]
-[size=95][font=Cambria][i]"EQUAL JUSTICE UNDER LAW"[/i][/font][/size][/font][/right][/float]
-
-[hr][/hr]
-[center][b][size=125]ISSUANCE OF VERDICT[/size][/b][/center]
-[hr][/hr]
-
-
-
-[center][font=Arial]IN THE COURT OF APPEALS OF SAN ANDREAS
-
-${Appellant} v. ${Defendant}
-#25-AP-${CaseNumber}
-
-[b]A decision was reached in the above case on the ${getFormalDate()}.[/b][/center]
-
-${Decision}
-
-So ordered,
-[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
-[i]Branch Administrator[/i]
-San Andreas Judicial Branch
-505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url][/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
-    },
-
-    {
-      id: "notice_of_trial_in_person",
-      label: "Notice of Trial (In-Person)",
-      fields: ["Defendant", "CaseType", "CaseNumber", "TrialTime", "TrialDate", "LocationType", "LocationOther"],
-      template: ({
-        Defendant = "Defendant",
-        CaseType = "CM",
-        CaseNumber = "0000",
-        TrialTime = "00:00 AM/PM",
-        TrialDate = "Day of Month",
-        LocationType = "City Hall",
-        LocationOther = ""
-      }) => {
-        const currentYear = new Date().getFullYear();
-        const baseLocation = "Rockford Hills City Hall, Carcer Way, Metro Los Santos, SA";
-        const location = LocationType === "Other" && LocationOther
-          ? LocationOther
-          : baseLocation;
-
-        return `[img]https://i.imgur.com/LdlyeRK.png[/img][divbox=antiquewhite]
-
-[fimg=180,180]https://i.imgur.com/t3lfFCp.png[/fimg]
-[float=right][right][font=Arial][b]
-
-[size=150][font=Arial]San Andreas Judicial Branch[/font][/size][/b]
-[size=120][font=Arial]Superior Court of San Andreas[/font][/size]
-[size=95][font=Cambria][i]"EQUAL JUSTICE UNDER LAW"[/i][/font][/size][/font][/right][/float]
-
-
-[hr][/hr]
-[center][b][size=125]NOTICE OF TRIAL[/size][/b][/center]
-[hr][/hr]
-
-
-
-[center][font=Arial]IN THE SUPERIOR COURT OF SAN ANDREAS
-
-State of San Andreas v. ${Defendant}
-#25-${CaseType}-${CaseNumber}
-
-A trial date was set on the above case on the ${getFormalDate()}.
-[/center]
-
-In accordance with the availability reported by parties in response to the Notice of Scheduling/time-slot application, this trial shall take place at ${TrialTime} on ${TrialDate}, ${currentYear} at ${location}.
-
-Both parties are ordered to be present in the Judges Chambers no later than 15 minutes prior to the above listed date for pretrial arrangements. If complications occur that must result in a delay or cancellation of the trial, you are ordered to inform the court no later than 12 hours prior to the above listed date.
-
-
-[b]So ordered,[/b]
-
-[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
-[i]Branch Administrator[/i]
-San Andreas Judicial Branch
-505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url]
-[/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`;
-      }
-    },
-
-    {
-      id: "notice_of_rejection",
-      label: "Notice of Rejection",
-      fields: ["Defendant", "CaseNumber", "Reason"],
-      template: ({
-        Defendant = "DEFENDANT",
-        CaseNumber = "",
-        Reason = "REASON"
-      }) => `[img]https://i.imgur.com/LdlyeRK.png[/img][divbox=antiquewhite][fimg=180,180]https://i.imgur.com/t3lfFCp.png[/fimg]
-[float=right][right]
-
-
-[font=Arial][size=150][b]San Andreas Judicial Branch[/b][/size]
-[size=120]Superior Court of San Andreas[/size][/font]
-[font=Cambria][size=95][i]"EQUAL JUSTICE UNDER LAW"[/i][/size][/font][/right][/float]
-
-[hr][/hr]
-[center][b][size=125]NOTICE OF REJECTION[/size][/b][/center]
-[hr][/hr]
-
-
-
-[center][font=Arial]IN THE SUPERIOR COURT OF SAN ANDREAS
-
-State of San Andreas v. ${Defendant}${CaseNumber ? `
-#25-CM-${CaseNumber}` : ""}
-
-The court has hereby rejected the above case on the ${getFormalDate()}.[/center]
-
-The Superior Court of San Andreas has reviewed your filing and the case has been rejected by the court for the reason specified below.
-
-${Reason}
-
-The court thanks you for the time spent on this filing, however, this situation will not be reviewed as it does not adhere to the guidelines set forth by the San Andreas Judicial Branch.
-
-[b]Respectfully,[/b]
-
-[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
-[i]Branch Administrator[/i]
-San Andreas Judicial Branch
-505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url]
-[/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
-    },
-
     {
       id: "protective_order",
       label: "Protective Order",
@@ -2891,11 +2461,113 @@ It is hereby certified that the decree of divorce is made final and absolute.
 San Andreas Judicial Branch
 505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url]
 [/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
+    }
+    ],
+
+  "Criminal Court": [
+    /* ---------- NEW: SUPERIOR COURT CRIMINAL CASE LOG ---------- */
+{
+  id: "case_log_criminal",
+  label: "Criminal Case Log",
+  fields: ["CaseLink", "CaseTitle", "IncidentDate", "ChargesBBCode", "EvidenceLinks", "Witnesses"],
+  template: ({
+    CaseLink = "",
+    CaseTitle = "",
+    IncidentDate = "",
+    ChargesBBCode = "",
+    EvidenceLinks = "",
+    Witnesses = ""
+  }) => `[img]https://i.imgur.com/2mAC82V.png[/img]
+[img]https://i.imgur.com/jRCHmgg.png[/img]
+[divbox=antiquewhite]
+[b]Case Number:[/b]
+[i][url=${CaseLink || "LINK"}]${CaseTitle || "24-CM-0000, State of San Andreas vs. Defendant"}[/url][/i]
+[b]Date of Incident:[/b]
+[i]${IncidentDate || "(Enter date of the incident here)"}[/i]
+[/divbox]
+[img]https://i.imgur.com/9YCsVl1.png[/img]
+[divbox=antiquewhite]
+[list=1]
+[*][b]Accused Offense(s):[/b]
+${ChargesBBCode || "(No charges listed)"}[/list]
+[/divbox]
+[img]https://i.imgur.com/a5hochF.png[/img]
+[divbox=antiquewhite]
+[list=1]
+[*][b]Evidence Submitted:[/b]
+[list]
+${EvidenceLinks || "[*][url=LINK]Prosecution Exhibits #1-00[/url]\n[*][url=LINK]Defense Exhibits #1-00[/url]\n[*][url=LINK]Exhibits Under Seal[/url]"}
+[/list]
+[*][b]Key Witnesses:[/b]
+${Witnesses || "(List names of key witnesses and their testimony summary. Please also link to the relevant witness request on the docket.)"}
+[/list]
+[/divbox]
+[img]https://i.imgur.com/LdlyeRK.png[/img]`
+},
+
+    {
+      id: "docket_notice",
+      label: "Superior Court Docket Notice",
+      fields: ["Message"],
+      template: ({ Message = "" }) => `[img]https://i.imgur.com/T0UjUjH.png[/img]
+[divbox=antiquewhite][fimg=180,180]https://i.imgur.com/t3lfFCp.png[/fimg][aligntable=right,0,0,0,0,0,0][right][font=Arial][b]
+[size=150]San Andreas Judicial Branch[/size][/b]
+[size=115]Docket Notice[/size]
+[size=95][i]"HERE FOR YOU | SAFE FOR YOU"[/i][/size][/font][/right][/aligntable]
+[hr][/hr]
+[list=none]
+[b]Prosecution and defense counsel,[/b]
+
+${Message}
+
+[b]Respectfully,[/b]
+[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — hope.kant@sajb.sagov
+[/list][/divbox]
+[img]https://i.imgur.com/T0UjUjH.png[/img]`
+    },
+
+    {
+      id: "court_decision",
+      label: "Court Decision",
+      fields: ["Defendant", "CaseType", "CaseNumber", "Decision"],
+      template: ({ Defendant = "", CaseType = "", CaseNumber = "#", Decision = "" }) => `[img]https://i.imgur.com/LdlyeRK.png[/img][divbox=antiquewhite]
+[fimg=180,180]https://i.imgur.com/t3lfFCp.png[/fimg]
+[float=right][right][font=Arial][b]
+
+[size=150][font=Arial]San Andreas Judicial Branch[/font][/size]
+[size=120][font=Arial]Superior Court of San Andreas[/font][/size]
+[size=95][font=Cambria][i]"EQUAL JUSTICE UNDER LAW"[/i][/font][/size][/font][/right][/float]
+
+[hr][/hr]
+[center][b][size=125]COURT DECISION[/size][/b][/center]
+[hr][/hr]
+
+
+[center][font=Arial]IN THE SUPERIOR COURT OF SAN ANDREAS
+
+The State of San Andreas v. ${Defendant}
+#25-${CaseType}-${CaseNumber}
+
+[b]A decision was reached in the above case on the ${getFormalDate()}.[/b][/center]
+
+${Decision}
+
+
+[b]So Ordered,[/b]
+
+[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — hope.kant@sajb.sagov
+[/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
     },
 
     {
       id: "transition_to_formal_criminal_trial",
-      label: "Transition to Formal Criminal Trial",
+      label: "Transition to Formal Trial",
       fields: ["Defendant"],
       template: ({
         Defendant = "DEFENDANT"
@@ -2930,8 +2602,387 @@ At this time the court feels it imperative to give notice to the defendant on th
 San Andreas Judicial Branch
 505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url]
 [/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
+    },
+
+    /* ---------- UPDATED: SUPERIOR COURT CRIMINAL TRIALS VERDICT ---------- */
+    {
+      id: "issuance_of_verdict",
+      label: "Criminal Trials Verdict",
+      fields: ["Defendant", "CaseType", "CaseNumber", "Decision", "VerdictChargesBBCode", "VerdictMode", "PaymentReturnedToDefendant", "CourtFees"],
+      template: ({
+        Defendant = "",
+        CaseType = "",
+        CaseNumber = "#",
+        Decision = "",
+        VerdictChargesBBCode = "",
+        VerdictMode = "",
+        PaymentReturnedToDefendant = "",
+        CourtFees = ""
+      }) => {
+        let paragraph = "";
+        if (VerdictMode === "refund") {
+          paragraph = `The defendant should make their way to City Hall at their earliest convenience to have the change to their record noted as well as the payment of $${PaymentReturnedToDefendant} returned to them for fines, time, and other expenses/inconveniences incurred from the contested charges.`;
+        } else if (VerdictMode === "fees") {
+          paragraph = `The defendant should make their way to City Hall to pay their court fines of $${CourtFees}.`;
+        }
+
+        return `[img]https://i.imgur.com/LdlyeRK.png[/img][divbox=antiquewhite]
+[fimg=180,180]https://i.imgur.com/t3lfFCp.png[/fimg]
+[float=right][right][font=Arial][b]
+
+[size=150][font=Arial]San Andreas Judicial Branch[/font][/size]
+[size=120][font=Arial]Superior Court of San Andreas[/font][/size]
+[size=95][font=Cambria][i]"EQUAL JUSTICE UNDER LAW"[/i][/font][/size][/font][/right][/float]
+
+[hr][/hr]
+[center][b][size=125]ISSUANCE OF VERDICT[/size][/b][/center]
+[hr][/hr]
+
+
+[center][font=Arial]IN THE SUPERIOR COURT OF SAN ANDREAS
+
+The State of San Andreas v. ${Defendant}
+#25-${CaseType}-${CaseNumber}
+
+[b]A decision was reached in the above case on the ${getFormalDate()}.[/b][/center]
+
+${Decision}
+
+It is with the above considerations that I issue the following verdict:
+[list]
+${VerdictChargesBBCode || "[*] On the count of XX01 - Charge, I find the defendant, Firstname Lastname, not guilty."}
+[/list]
+
+${paragraph ? paragraph + "\n\n" : ""}[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — hope.kant@sajb.sagov
+[/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`;
+      }
+    },
+
+    {
+      id: "notice_to_schedule_bt",
+      label: "Notice to Schedule BT",
+      fields: ["notice_level", "Message"],
+      template: ({ notice_level = "FIRST", Message = "" }) => `[img]https://i.imgur.com/LdlyeRK.png[/img]
+[divbox=antiquewhite][fimg=150,150]https://i.imgur.com/t3lfFCp.png[/fimg]
+[float=right][right]
+
+[font=Arial][size=150][b]San Andreas Judicial Branch[/b][/size]
+[size=120]Docket Notice[/size][/font]
+[font=Cambria][size=95][i]"EQUAL JUSTICE UNDER LAW"[/i][/size][/font][/right][/float]
+[hr][/hr]
+[list=none]
+[b]Parties,[/b],
+
+
+This is to serve as a [b]${notice_level}[/b] notice to the defendant that bench trials are currently scheduled on multiple days throughout the week. Please notify the court if these times do not work for you. The expectation of the court is that each defendant file a notice for availability in the next 7 days. Date, times, and formatting shown [b][url=https://gov.eclipse-rp.net/viewforum.php?f=3806]here[/url][/b]. [u]The courts will only provide the defendant three notices prior to involuntarily dismissing the case in favor of prosecution due to lack of response from the defendant.[/u]
+ 
+Please note there is the possibility of a trial happening if defendants show up to City Hall and both a judge and defense attorney are available. 
+
+${Message}
+
+[b]Respectfully,[/b]
+
+[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — hope.kant@sajb.sagov
+[/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
+    },
+
+    {
+      id: "dismissing_bt",
+      label: "Dismissing BT",
+      fields: ["Defendant", "CaseType", "CaseNumber", "Reason"],
+      template: ({ Defendant = "", CaseType = "BT", CaseNumber = "0000", Reason = "lack of response from the defendant" }) => `[img]https://i.imgur.com/LdlyeRK.png[/img][divbox=antiquewhite]
+[fimg=180,180]https://i.imgur.com/t3lfFCp.png[/fimg]
+[float=right][right][font=Arial][b]
+
+[size=150][font=Arial]San Andreas Judicial Branch[/font][/size]
+[size=120][font=Arial]Superior Court of San Andreas[/font][/size]
+[size=95][font=Cambria][i]"EQUAL JUSTICE UNDER LAW"[/i][/font][/size][/font][/right][/float]
+
+[hr][/hr]
+[center][b][size=125]COURT DECISION[/size][/b][/center]
+[hr][/hr]
+
+
+[center][font=Arial]IN THE SUPERIOR COURT OF SAN ANDREAS
+
+The State of San Andreas v. ${Defendant}
+#25-${CaseType}-${CaseNumber}
+
+[b]A decision was reached in the above case on the ${getFormalDate()}.[/b][/center]
+
+Due to a ${Reason}, the case will now be accepting the plea of guilty from the defendant. The defendant was given ample time to interact with the courts and file availability. If any of the dates and times did not align with the schedule of the defendant, they were able to contact the courts stating the like. As little to no contact has been made with the courts in the past 3-4 weeks, this case will now be archived and the charges will remain on the record of the defendant.
+
+[b]Respectfully,[/b]
+
+[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — hope.kant@sajb.sagov
+[/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
+    },
+
+    {
+      id: "notice_of_trial_in_person",
+      label: "Notice of Trial (In-Person)",
+      fields: ["Defendant", "CaseType", "CaseNumber", "TrialTime", "TrialDate", "LocationType", "LocationOther"],
+      template: ({
+        Defendant = "Defendant",
+        CaseType = "CM",
+        CaseNumber = "0000",
+        TrialTime = "00:00 AM/PM",
+        TrialDate = "Day of Month",
+        LocationType = "City Hall",
+        LocationOther = ""
+      }) => {
+        const currentYear = new Date().getFullYear();
+        const baseLocation = "Rockford Hills City Hall, Carcer Way, Metro Los Santos, SA";
+        const location = LocationType === "Other" && LocationOther
+          ? LocationOther
+          : baseLocation;
+
+        return `[img]https://i.imgur.com/LdlyeRK.png[/img][divbox=antiquewhite]
+
+[fimg=180,180]https://i.imgur.com/t3lfFCp.png[/fimg]
+[float=right][right][font=Arial][b]
+
+[size=150][font=Arial]San Andreas Judicial Branch[/font][/size][/b]
+[size=120][font=Arial]Superior Court of San Andreas[/font][/size]
+[size=95][font=Cambria][i]"EQUAL JUSTICE UNDER LAW"[/i][/font][/size][/font][/right][/float]
+
+
+[hr][/hr]
+[center][b][size=125]NOTICE OF TRIAL[/size][/b][/center]
+[hr][/hr]
+
+
+
+[center][font=Arial]IN THE SUPERIOR COURT OF SAN ANDREAS
+
+State of San Andreas v. ${Defendant}
+#25-${CaseType}-${CaseNumber}
+
+A trial date was set on the above case on the ${getFormalDate()}.
+[/center]
+
+In accordance with the availability reported by parties in response to the Notice of Scheduling/time-slot application, this trial shall take place at ${TrialTime} on ${TrialDate}, ${currentYear} at ${location}.
+
+Both parties are ordered to be present in the Judges Chambers no later than 15 minutes prior to the above listed date for pretrial arrangements. If complications occur that must result in a delay or cancellation of the trial, you are ordered to inform the court no later than 12 hours prior to the above listed date.
+
+
+[b]So ordered,[/b]
+
+[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url]
+[/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`;
+      }
+    },
+
+    {
+      id: "notice_of_rejection",
+      label: "Notice of Rejection",
+      fields: ["Defendant", "CaseNumber", "Reason"],
+      template: ({
+        Defendant = "DEFENDANT",
+        CaseNumber = "",
+        Reason = "REASON"
+      }) => `[img]https://i.imgur.com/LdlyeRK.png[/img][divbox=antiquewhite][fimg=180,180]https://i.imgur.com/t3lfFCp.png[/fimg]
+[float=right][right]
+
+
+[font=Arial][size=150][b]San Andreas Judicial Branch[/b][/size]
+[size=120]Superior Court of San Andreas[/size][/font]
+[font=Cambria][size=95][i]"EQUAL JUSTICE UNDER LAW"[/i][/size][/font][/right][/float]
+
+[hr][/hr]
+[center][b][size=125]NOTICE OF REJECTION[/size][/b][/center]
+[hr][/hr]
+
+
+
+[center][font=Arial]IN THE SUPERIOR COURT OF SAN ANDREAS
+
+State of San Andreas v. ${Defendant}${CaseNumber ? `
+#25-CM-${CaseNumber}` : ""}
+
+The court has hereby rejected the above case on the ${getFormalDate()}.[/center]
+
+The Superior Court of San Andreas has reviewed your filing and the case has been rejected by the court for the reason specified below.
+
+${Reason}
+
+The court thanks you for the time spent on this filing, however, this situation will not be reviewed as it does not adhere to the guidelines set forth by the San Andreas Judicial Branch.
+
+[b]Respectfully,[/b]
+
+[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url]
+[/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
     }
-  ]
+    ],
+
+  "Civil Court": [
+    ],
+
+  "Court of Appeals": [
+    {
+      id: "appeal_activation_notice",
+      label: "Activation Notice",
+      fields: ["Appellant", "OpposingParty", "CaseNumber"],
+      template: ({
+        Appellant = "Appellant",
+        OpposingParty = "Opposing Party",
+        CaseNumber = "0000"
+      }) => `[img]https://i.imgur.com/LdlyeRK.png[/img][divbox=antiquewhite]
+
+[fimg=180,180]https://i.imgur.com/B4pHsgG.png[/fimg]
+[float=right][right][font=Arial][b]
+
+[size=150][font=Arial]San Andreas Judicial Branch[/font][/size][/b]
+[size=120][font=Arial]San Andreas Court of Appeals[/font][/size]
+[size=95][font=Cambria][i]"EQUAL JUSTICE UNDER LAW"[/i][/font][/size][/font][/right][/float]
+
+
+[hr][/hr]
+[center][b][size=125]NOTICE OF ACTIVATION[/size][/b][/center]
+[hr][/hr]
+
+
+
+[center][font=Arial]IN THE SAN ANDREAS COURT OF APPEALS
+
+${Appellant} v. ${OpposingParty}
+#25-AP-${CaseNumber}
+
+A Notice of Activation was entered in the above appeal on the ${getFormalDate()}.
+[/center]
+
+The case of ${Appellant} v. ${OpposingParty} is hereby activated by this Court under [b]#25-AP-${CaseNumber}[/b].
+
+The appealing party is hereby ordered to submit an initial written brief within the next seven (7) days outlining their position of this appeal and giving any legal arguments as to why the court should rule to overturn a previous verdict. Once the initial brief has been recorded by the courts, the opposing counsel will be given an additional seven (7) days to respond. The initiating party will be given one final response, which the courts will allow seven (7) days to produce. The court may allow either party an additional response at the justices discretion. Once the briefs have been submitted the court will determine a verdict.
+
+So ordered,
+[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url][/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
+    },
+
+    {
+      id: "appeal_docket_notice",
+      label: "Docket Notice",
+      fields: ["Message"],
+      template: ({ Message = "" }) => `[img]https://imgur.com/T0UjUjH.png[/img]
+[divbox=antiquewhite][fimg=180,180]https://i.imgur.com/B4pHsgG.png[/fimg][aligntable=right,0,0,0,0,0,0][right][font=Arial][b]
+[size=150]San Andreas Judicial Branch[/size][/b]
+[size=115]Docket Notice[/size]
+[size=95][i]"HERE FOR YOU | SAFE FOR YOU"[/i][/size][/font][/right][/aligntable]
+[hr][/hr]
+[list=none]
+[b]Prosecution and defense counsel,[/b]
+
+${Message}
+
+[b]Respectfully,[/b]
+
+[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url][/list][/divbox]
+[img]https://imgur.com/T0UjUjH.png[/img]`
+    },
+
+    {
+      id: "appeal_summary_dismissal",
+      label: "Summary Dismissal",
+      fields: ["Appellant", "OpposingParty", "Reason"],
+      template: ({
+        Appellant = "Appellant",
+        OpposingParty = "Opposing Party",
+        Reason = ""
+      }) => `[img]https://i.imgur.com/LdlyeRK.png[/img][divbox=antiquewhite]
+
+[fimg=180,180]https://i.imgur.com/B4pHsgG.png[/fimg]
+[float=right][right][font=Arial][b]
+
+[size=150][font=Arial]San Andreas Judicial Branch[/font][/size][/b]
+[size=120][font=Arial]San Andreas Court of Appeals[/font][/size]
+[size=95][font=Cambria][i]"EQUAL JUSTICE UNDER LAW"[/i][/font][/size][/font][/right][/float]
+
+
+[hr][/hr]
+[center][b][size=125]SUMMARY DISMISSAL[/size][/b][/center]
+[hr][/hr]
+
+
+
+[center][font=Arial]IN THE SAN ANDREAS COURT OF APPEALS
+
+${Appellant} v. ${OpposingParty}
+
+A Summary Dismissal was entered in the above appeal on the ${getFormalDate()}.
+[/center]
+
+${Reason}
+
+So ordered,
+[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url][/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
+    },
+
+    {
+      id: "appeal_issuance_of_verdict",
+      label: "Issuance of Verdict",
+      fields: ["Appellant", "Defendant", "CaseNumber", "Decision"],
+      template: ({
+        Appellant = "Appellant",
+        Defendant = "Defendant",
+        CaseNumber = "00XX",
+        Decision = ""
+      }) => `[img]https://i.imgur.com/LdlyeRK.png[/img][divbox=antiquewhite]
+[fimg=180,180]https://i.imgur.com/B4pHsgG.png[/fimg]
+[float=right][right][font=Arial][b]
+
+[size=150][font=Arial]San Andreas Judicial Branch[/font][/size][/b]
+[size=120][font=Arial]Court of Appeals[/font][/size]
+[size=95][font=Cambria][i]"EQUAL JUSTICE UNDER LAW"[/i][/font][/size][/font][/right][/float]
+
+[hr][/hr]
+[center][b][size=125]ISSUANCE OF VERDICT[/size][/b][/center]
+[hr][/hr]
+
+
+
+[center][font=Arial]IN THE COURT OF APPEALS OF SAN ANDREAS
+
+${Appellant} v. ${Defendant}
+#25-AP-${CaseNumber}
+
+[b]A decision was reached in the above case on the ${getFormalDate()}.[/b][/center]
+
+${Decision}
+
+So ordered,
+[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url][/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
+    }
+  ],
+
+  "Supreme Court": [
+    ],
 };
 
 /* ---------- RENDERING / UI ---------- */
