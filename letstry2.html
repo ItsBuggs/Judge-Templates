@@ -52,6 +52,33 @@
     font-weight: bold;
   }
 
+/* Modifier toggle buttons (for charge calculator + verdict) */
+.modifier-btn {
+  display: inline-block;
+  margin-right: 6px;
+  margin-top: 4px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.modifier-btn input {
+  display: none; /* hide the actual checkbox */
+}
+
+.modifier-btn span {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 3px;
+  border: 1px solid #bbb;
+  background: #f3f3f3;
+}
+
+.modifier-btn input:checked + span {
+  background: #d6e4ff;
+  border-color: #6b8cff;
+  font-weight: bold;
+}
+
   /* BBCode toolbar styling */
   .bb-toolbar {
     display: flex;
@@ -118,6 +145,11 @@
 <body>
 
 <h1>SAJB Template Generator</h1>
+
+<label>
+  Global signature block (BBCode, used in all templates)
+  <textarea id="signatureBlock" rows="4" placeholder="[img]...your signature here...[/img]"></textarea>
+</label>
 
 <div class="layout">
   <div class="sidebar">
@@ -1987,6 +2019,25 @@ const templateList = document.getElementById("templateList");
 const fieldsDiv = document.getElementById("fields");
 const outputArea = document.getElementById("output");
 
+// Global signature block (used by templates that reference ${SignatureBlock})
+const signatureInput = document.getElementById("signatureBlock");
+
+// Default is your current Hope Kant signature block
+let signatureBlock = `[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url][/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`;
+
+if (signatureInput) {
+  // Pre-fill the textarea so people see and can edit the default
+  signatureInput.value = signatureBlock;
+
+  signatureInput.addEventListener("input", () => {
+    signatureBlock = signatureInput.value || "";
+    generateOutput();
+  });
+}
+
 /* ---------- BBCode TOOLBAR ---------- */
 
 function insertBBCode(textarea, openTag, closeTag) {
@@ -2081,14 +2132,15 @@ function addCaseLogChargeRow() {
     <label>Statute title / description (auto if code is known)
       <textarea class="cl-desc" rows="2"></textarea>
     </label>
-    <div class="cl-modifiers">
-      <span style="font-size:12px;">Modifiers (for calculations only):</span><br/>
-      ${Object.values(modifierDefinitions).map(m => `
-        <label style="margin-right:8px;font-size:12px;">
-          <input type="checkbox" class="cl-mod" value="${m.key}" /> ${m.shortLabel}
-        </label>
-      `).join("")}
-    </div>
+<div class="cl-modifiers">
+  <span style="font-size:12px;">Modifiers (for calculations only):</span><br/>
+  ${Object.values(modifierDefinitions).map(m => `
+    <label class="modifier-btn">
+      <input type="checkbox" class="cl-mod" value="${m.key}" />
+      <span>${m.shortLabel}</span>
+    </label>
+  `).join("")}
+</div>
     <label>Calculated penalties (read-only)
       <textarea class="cl-penalties" rows="2" readonly></textarea>
     </label>
@@ -2209,14 +2261,15 @@ function addVerdictChargeRow() {
         <option value="Guilty">Guilty</option>
       </select>
     </label>
-    <div class="vc-modifiers">
-      <span style="font-size:12px;">Modifiers:</span><br/>
-      ${Object.values(modifierDefinitions).map(m => `
-        <label style="margin-right:8px;font-size:12px;">
-          <input type="checkbox" class="vc-mod" value="${m.key}" /> ${m.shortLabel}
-        </label>
-      `).join("")}
-    </div>
+<div class="vc-modifiers">
+  <span style="font-size:12px;">Modifiers:</span><br/>
+  ${Object.values(modifierDefinitions).map(m => `
+    <label class="modifier-btn">
+      <input type="checkbox" class="vc-mod" value="${m.key}" />
+      <span>${m.shortLabel}</span>
+    </label>
+  `).join("")}
+</div>
   `;
 
   container.appendChild(row);
@@ -2258,10 +2311,7 @@ ${Message}
 
 Respectfully,
 
-[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
-[i]Branch Administrator[/i]
-San Andreas Judicial Branch
-505-9925 — hope.kant@sajb.sagov
+${SignatureBlock}
 [/list][/divbox]
 [img]https://i.imgur.com/T0UjUjH.png[/img]`
       },
@@ -2319,10 +2369,7 @@ A copy of this warrant must be sent to [b]${CopyTo}[/b] once executed. The court
 
 This warrant is issued on [b]${getShortDate()}[/b] and is effective for 7 days. Should an extension be required, please submit a notice no less than 12 hours prior to this warrant's expiration.
 
-[img]https://i.imgur.com/MIAlzRQ.jpg[/img]  
-[i]Branch Administrator[/i]  
-San Andreas Judicial Branch  
-505-9925 — hope.kant@sajb.sagov
+${SignatureBlock}
 [/list]
 
 [/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
@@ -2373,10 +2420,7 @@ Should the restrained party to a court order wish to dispute either the basis or
 
 [b]So ordered,[/b]
 
-[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
-[i]Branch Administrator[/i]
-San Andreas Judicial Branch
-505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url]
+${SignatureBlock}
 [/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`;
       }
     },
@@ -2412,10 +2456,7 @@ The Court finds there to be no community assets or debts to be adjudicated by th
 
 Petitioners are hereby granted a Decree of Annulment, dissolving and declaring null and void the marriage that took place, and each is returned to the status of an unmarried person. Each party shall have set aside to them, as individuals, the debts they incurred and shall hold the other party harmless therefrom. Each party shall have affirmed to them as their sole and separate property, the property they brought to the union as individuals.
 
-[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
-[i]Branch Administrator[/i]
-San Andreas Judicial Branch
-505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url]
+${SignatureBlock}
 [/font][/divbox]
 [img]https://i.imgur.com/LdlyeRK.png[/img]`
     },
@@ -2456,10 +2497,9 @@ Petitioners are hereby granted a Divorce Decree, dissolving the marriage that to
 
 It is hereby certified that the decree of divorce is made final and absolute.
 
-[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
-[i]Branch Administrator[/i]
-San Andreas Judicial Branch
-505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url]
+[b]So Ordered,[/b]
+
+${SignatureBlock}
 [/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
     }
     ],
@@ -2521,10 +2561,7 @@ ${Witnesses || "(List names of key witnesses and their testimony summary. Please
 ${Message}
 
 [b]Respectfully,[/b]
-[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
-[i]Branch Administrator[/i]
-San Andreas Judicial Branch
-505-9925 — hope.kant@sajb.sagov
+${SignatureBlock}
 [/list][/divbox]
 [img]https://i.imgur.com/T0UjUjH.png[/img]`
     },
@@ -2558,10 +2595,7 @@ ${Decision}
 
 [b]So Ordered,[/b]
 
-[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
-[i]Branch Administrator[/i]
-San Andreas Judicial Branch
-505-9925 — hope.kant@sajb.sagov
+${SignatureBlock}
 [/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
     },
 
@@ -2597,10 +2631,7 @@ At this time the court feels it imperative to give notice to the defendant on th
 
 [b]Respectfully,[/b]
 
-[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
-[i]Branch Administrator[/i]
-San Andreas Judicial Branch
-505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url]
+${SignatureBlock}
 [/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
     },
 
@@ -2654,9 +2685,7 @@ ${VerdictChargesBBCode || "[*] On the count of XX01 - Charge, I find the defenda
 [/list]
 
 ${paragraph ? paragraph + "\n\n" : ""}[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
-[i]Branch Administrator[/i]
-San Andreas Judicial Branch
-505-9925 — hope.kant@sajb.sagov
+${SignatureBlock}
 [/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`;
       }
     },
@@ -2685,10 +2714,7 @@ ${Message}
 
 [b]Respectfully,[/b]
 
-[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
-[i]Branch Administrator[/i]
-San Andreas Judicial Branch
-505-9925 — hope.kant@sajb.sagov
+${SignatureBlock}
 [/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
     },
 
@@ -2720,10 +2746,7 @@ Due to a ${Reason}, the case will now be accepting the plea of guilty from the d
 
 [b]Respectfully,[/b]
 
-[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
-[i]Branch Administrator[/i]
-San Andreas Judicial Branch
-505-9925 — hope.kant@sajb.sagov
+${SignatureBlock}
 [/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
     },
 
@@ -2777,10 +2800,7 @@ Both parties are ordered to be present in the Judges Chambers no later than 15 m
 
 [b]So ordered,[/b]
 
-[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
-[i]Branch Administrator[/i]
-San Andreas Judicial Branch
-505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url]
+${SignatureBlock}
 [/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`;
       }
     },
@@ -2822,10 +2842,7 @@ The court thanks you for the time spent on this filing, however, this situation 
 
 [b]Respectfully,[/b]
 
-[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
-[i]Branch Administrator[/i]
-San Andreas Judicial Branch
-505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url]
+${SignatureBlock}
 [/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
     }
     ],
@@ -2870,11 +2887,9 @@ The case of ${Appellant} v. ${OpposingParty} is hereby activated by this Court u
 
 The appealing party is hereby ordered to submit an initial written brief within the next seven (7) days outlining their position of this appeal and giving any legal arguments as to why the court should rule to overturn a previous verdict. Once the initial brief has been recorded by the courts, the opposing counsel will be given an additional seven (7) days to respond. The initiating party will be given one final response, which the courts will allow seven (7) days to produce. The court may allow either party an additional response at the justices discretion. Once the briefs have been submitted the court will determine a verdict.
 
-So ordered,
-[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
-[i]Branch Administrator[/i]
-San Andreas Judicial Branch
-505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url][/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
+[b]So ordered,[/b]
+
+${SignatureBlock}[/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
     },
 
     {
@@ -2894,10 +2909,7 @@ ${Message}
 
 [b]Respectfully,[/b]
 
-[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
-[i]Branch Administrator[/i]
-San Andreas Judicial Branch
-505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url][/list][/divbox]
+${SignatureBlock}[/list][/divbox]
 [img]https://imgur.com/T0UjUjH.png[/img]`
     },
 
@@ -2934,11 +2946,9 @@ A Summary Dismissal was entered in the above appeal on the ${getFormalDate()}.
 
 ${Reason}
 
-So ordered,
-[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
-[i]Branch Administrator[/i]
-San Andreas Judicial Branch
-505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url][/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
+[b]So ordered,[/b]
+
+${SignatureBlock}[/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
     },
 
     {
@@ -2974,10 +2984,7 @@ ${Appellant} v. ${Defendant}
 ${Decision}
 
 So ordered,
-[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
-[i]Branch Administrator[/i]
-San Andreas Judicial Branch
-505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url][/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
+${SignatureBlock}[/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
     }
   ],
 
@@ -3390,13 +3397,31 @@ function updateFields() {
 }
 
 function generateOutput() {
-  const tmpl = (templatesByCategory[selectedCategory] || []).find(t => t.id === selectedTemplateId);
+  const tmpl = (templatesByCategory[selectedCategory] || []).find(
+    t => t.id === selectedTemplateId
+  );
   if (!tmpl) return;
+
   const values = {};
   tmpl.fields.forEach(f => {
     const el = document.getElementById("field_" + f);
     values[f] = el ? el.value : "";
   });
+
+  // Get the global signature block from the simple field
+  const sigEl = document.getElementById("signatureBlock");
+  const defaultSignature = `[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url]`;
+
+  // Use whatever the user typed, or fall back to the default
+  const signatureBlockValue =
+    sigEl && sigEl.value.trim() ? sigEl.value.trim() : defaultSignature;
+
+  // Make it visible to all templates that use ${SignatureBlock}
+  window.SignatureBlock = signatureBlockValue;
+
   try {
     outputArea.value = tmpl.template(values);
   } catch (e) {
