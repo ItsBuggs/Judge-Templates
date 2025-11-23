@@ -1,0 +1,3693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>SAJB Template Generator</title>
+<style>
+  body { font-family: Arial, sans-serif; padding: 20px; background: #f9f9f9; }
+  h1 { margin-bottom: 16px; }
+  label { display: block; margin-top: 10px; }
+  select, input, textarea, button {
+    width: 100%;
+    margin-top: 4px;
+    padding: 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+  }
+  textarea { resize: vertical; }
+  .button-row { display: flex; gap: 10px; margin-top: 10px; }
+  .layout {
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+  }
+  .sidebar {
+    width: 260px;
+    max-width: 100%;
+  }
+  .main {
+    flex: 1;
+    min-width: 0;
+  }
+  .template-list {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .template-btn {
+    width: 100%;
+    text-align: left;
+    padding: 6px 8px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    background: #fff;
+    cursor: pointer;
+    font-size: 14px;
+  }
+  .template-btn.active {
+    background: #e0ecff;
+    border-color: #6b8cff;
+    font-weight: bold;
+  }
+
+  /* BBCode toolbar styling */
+  .bb-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+  }
+  .bb-toolbar button {
+    width: auto;
+    padding: 4px 6px;
+    font-size: 12px;
+    border-radius: 3px;
+    border: 1px solid #bbb;
+    background: #f3f3f3;
+    cursor: pointer;
+  }
+  .bb-toolbar button:hover {
+    background: #e0e0e0;
+  }
+
+  /* Toggle button groups (Case Type, Notice level, Requesting dept, etc.) */
+  .btcm-group {
+    display: flex;
+    gap: 6px;
+    margin-top: 4px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+  .btcm-btn {
+    width: auto;
+    padding: 4px 10px;
+    font-size: 12px;
+    border-radius: 3px;
+    border: 1px solid #bbb;
+    background: #f3f3f3;
+    cursor: pointer;
+  }
+  .btcm-btn.active {
+    background: #d6e4ff;
+    border-color: #6b8cff;
+    font-weight: bold;
+  }
+
+  /* Dynamic charge rows (case log / verdict) */
+  .case-charge-row, .verdict-charge-row {
+    border: 1px solid #ddd;
+    padding: 8px;
+    margin-top: 8px;
+    border-radius: 4px;
+    background: #fff;
+  }
+  .case-charge-row label,
+  .verdict-charge-row label {
+    margin-top: 4px;
+  }
+  .inline-select {
+    width: auto;
+    display: inline-block;
+    margin-left: 8px;
+  }
+</style>
+</head>
+<body>
+
+<h1>SAJB Template Generator</h1>
+
+<div class="layout">
+  <div class="sidebar">
+    <label>
+      Category
+      <select id="category"></select>
+    </label>
+
+    <div class="template-list" id="templateList"></div>
+  </div>
+
+  <div class="main">
+    <div id="fields"></div>
+
+    <div class="button-row">
+      <button id="copyBtn">Copy to clipboard</button>
+      <button id="clearBtn">Clear fields</button>
+    </div>
+
+    <h2>Generated Template</h2>
+    <textarea id="output" rows="15" readonly></textarea>
+  </div>
+</div>
+
+<script>
+/* ---------- DATE HELPERS ---------- */
+
+function getFormalDate() {
+  const d = new Date();
+  const day = d.getDate();
+  const suffix =
+    day % 10 === 1 && day !== 11 ? "st" :
+    day % 10 === 2 && day !== 12 ? "nd" :
+    day % 10 === 3 && day !== 13 ? "rd" : "th";
+  const month = d.toLocaleString("default", { month: "long" });
+  const year = d.getFullYear();
+  return `${day}${suffix} day of ${month}, ${year}`;
+}
+
+function getShortDate() {
+  const d = new Date();
+  const day = String(d.getDate()).padStart(2, "0");
+  const month = d.toLocaleString("default", { month: "short" }).toUpperCase();
+  const year = d.getFullYear();
+  return `${day}/${month}/${year}`;
+}
+
+function parseISODate(value) {
+  if (!value) return null;
+  const d = new Date(value + "T00:00:00");
+  return isNaN(d.getTime()) ? null : d;
+}
+
+function formatDateDDMMMYYYY(isoStr) {
+  const d = parseISODate(isoStr);
+  if (!d) return "";
+  const day = String(d.getDate()).padStart(2, "0");
+  const month = d.toLocaleString("default", { month: "short" }).toUpperCase();
+  const year = d.getFullYear();
+  return `${day}/${month}/${year}`;
+}
+
+function getDurationPhrase(startIso, endIso) {
+  const start = parseISODate(startIso);
+  const end = parseISODate(endIso);
+  if (!start || !end || end < start) return "x (x) days";
+
+  const msPerDay = 1000 * 60 * 60 * 24;
+  const diffDays = Math.round((end - start) / msPerDay) + 1;
+
+  const words = {
+    1: "one", 2: "two", 3: "three", 4: "four", 5: "five",
+    6: "six", 7: "seven", 8: "eight", 9: "nine", 10: "ten",
+    11: "eleven", 12: "twelve", 13: "thirteen", 14: "fourteen",
+    15: "fifteen", 16: "sixteen", 17: "seventeen", 18: "eighteen",
+    19: "nineteen", 20: "twenty", 21: "twenty-one", 22: "twenty-two",
+    23: "twenty-three", 24: "twenty-four", 25: "twenty-five",
+    26: "twenty-six", 27: "twenty-seven", 28: "twenty-eight",
+    29: "twenty-nine", 30: "thirty", 31: "thirty-one"
+  };
+
+  const word = words[diffDays];
+  if (word) {
+    return `${diffDays} (${word}) days`;
+  }
+  return `${diffDays} days`;
+}
+
+/* ---------- BBCode HELPERS ---------- */
+
+function boldBulletLines(text = "") {
+  return text
+    .split("\n")
+    .map(line => {
+      const match = line.match(/^(\s*)\[\*\](.*)$/);
+      if (!match) return line;
+      const indent = match[1] || "";
+      const content = match[2].trim();
+      if (!content) return `${indent}[*]`;
+      return `${indent}[*] [b]${content}[/b]`;
+    })
+    .join("\n");
+}
+
+/* ---------- PENAL CODE LOOKUP + MODIFIERS ---------- */
+
+const charges = {
+  // VEHICULAR CITATIONS (VC)
+  "VC01": {
+    code: "VC01",
+    title: "Speeding 1st Degree",
+    description: "Operating a vehicle at speeds exceeding speed limits by 1 - 20 km/h on public roads.",
+    jailMonths: 0,
+    fine: 1000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "VC02": {
+    code: "VC02",
+    title: "Speeding 2nd Degree",
+    description: "Operating a vehicle at speeds exceeding speed limits by 21 - 40 km/h on public roads.",
+    jailMonths: 0,
+    fine: 2000,
+    driver: "3rd Demerit6 Hours",
+    trucker: "3rd Demerit6 Hours",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "VC03": {
+    code: "VC03",
+    title: "Speeding 3rd Degree",
+    description: "Operating a vehicle at speeds exceeding speed limits by 41 - 80 km/h on public roads.",
+    jailMonths: 0,
+    fine: 3500,
+    driver: "3rd Demerit6 Hours",
+    trucker: "3rd Demerit6 Hours",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "VC04": {
+    code: "VC04",
+    title: "Illegal Parking",
+    description: "Parking or leaving a vehicle where parking is prohibited, including signed no-parking zones, red curbs, crosswalks, blocking driveways, hydrants, intersections, or obstructing traffic, except for listed exemptions.",
+    jailMonths: 0,
+    fine: 500,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "VC05": {
+    code: "VC05",
+    title: "Improper Traffic Maneuvers",
+    description: "Illegal U-turns, failing to maintain lane, tailgating, or failing to yield to traffic control devices as defined by statute.",
+    jailMonths: 0,
+    fine: 500,
+    driver: "3rd Demerit6 Hours",
+    trucker: "3rd Demerit6 Hours",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "VC06": {
+    code: "VC06",
+    title: "Following or Impeding Emergency Response",
+    description: "Failure to yield and pull off to make way for emergency vehicles, or following / impeding them without valid legal justification.",
+    jailMonths: 0,
+    fine: 1000,
+    driver: "3rd Demerit6 Hours",
+    trucker: "3rd Demerit6 Hours",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "VC07": {
+    code: "VC07",
+    title: "Operating a Vehicle Without A License On Your Person",
+    description: "Driving a motor vehicle without the proper licensing physically on your person.",
+    jailMonths: 0,
+    fine: 500,
+    driver: "3rd Demerit6 Hours",
+    trucker: "3rd Demerit6 Hours",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "VC08": {
+    code: "VC08",
+    title: "Negligent Operation of a Road or Marine Vehicle",
+    description: "Failing to use reasonable care while operating a vehicle or marine vessel, risking injury or property damage.",
+    jailMonths: 0,
+    fine: 1500,
+    driver: "3rd Demerit6 Hours",
+    trucker: "3rd Demerit6 Hours",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "VC09": {
+    code: "VC09",
+    title: "Blocking Intersection",
+    description: "Blocking an intersection by stopping, parking, or otherwise obstructing the area.",
+    jailMonths: 0,
+    fine: 500,
+    driver: "3rd Demerit6 Hours",
+    trucker: "3rd Demerit6 Hours",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "VC10": {
+    code: "VC10",
+    title: "Unroadworthy Vehicle",
+    description: "Operating a vehicle that fails minimum safety requirements or causes roadway damage, including unsafe utility vehicle operation.",
+    jailMonths: 0,
+    fine: 500,
+    driver: "3rd Demerit6 Hours",
+    trucker: "3rd Demerit6 Hours",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "VC11": {
+    code: "VC11",
+    title: "Failure to Pay a Toll",
+    description: "Passing through a toll crossing or highway without paying the required toll unless exempt by special permit.",
+    jailMonths: 0,
+    fine: 3000,
+    driver: "3rd Demerit6 Hours",
+    trucker: "3rd Demerit6 Hours",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "VC12": {
+    code: "VC12",
+    title: "Operating an Unregistered Vehicle",
+    description: "Driving, moving, or leaving a vehicle on public roads or parking facilities without valid registration.",
+    jailMonths: 0,
+    fine: 1000,
+    driver: "3rd Demerit6 Hours",
+    trucker: "3rd Demerit6 Hours",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "VC13": {
+    code: "VC13",
+    title: "Disruptive Impeding or Blocking Travel",
+    description: "Driving at such a slow speed as to unreasonably impede or block normal traffic flow except when required for safety or by law.",
+    jailMonths: 0,
+    fine: 2000,
+    driver: "If Used6 Hours",
+    trucker: "If Used6 Hours",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "VC14": {
+    code: "VC14",
+    title: "Operation of a Vehicle without a License Plate",
+    description: "Operating a vehicle without a valid state-issued license plate when not tied to another criminal act (otherwise see VM09).",
+    jailMonths: 0,
+    fine: 1000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+
+  // GENERAL CITATIONS (GC)
+  "GC01": {
+    code: "GC01",
+    title: "Loitering",
+    description: "Standing or hanging around an area or building after being asked to leave by management or a government employee.",
+    jailMonths: 0,
+    fine: 750,
+    driver: "Intact",
+    trucker: "N/A",
+    weapon: "Intact",
+    pilot: "N/A"
+  },
+  "GC02": {
+    code: "GC02",
+    title: "Traffic Endangerment",
+    description: "Creating hazardous travel or endangering drivers, self, or pedestrians on roadways, including leaving hazards or failing to secure a load.",
+    jailMonths: 0,
+    fine: 500,
+    driver: "Intact",
+    trucker: "N/A",
+    weapon: "Intact",
+    pilot: "N/A"
+  },
+  "GC03": {
+    code: "GC03",
+    title: "Disorderly Conduct",
+    description: "Engaging in disruptive behavior in public such as excessive noise, climbing on vehicles, tackling others, misusing vehicle horns, or crowding individuals; repeat offenders may face NM10.",
+    jailMonths: 0,
+    fine: 5000,
+    driver: "Intact",
+    trucker: "N/A",
+    weapon: "Intact",
+    pilot: "N/A"
+  },
+  "GC04": {
+    code: "GC04",
+    title: "Face Concealment",
+    description: "Wearing facial concealment in public or on state property without valid exemption, and failing to comply with lawful removal or identification; repeat or criminal use escalates to GM19/GM10.",
+    jailMonths: 0,
+    fine: 500,
+    driver: "Intact",
+    trucker: "N/A",
+    weapon: "Intact",
+    pilot: "N/A"
+  },
+  "GC05": {
+    code: "GC05",
+    title: "Misuse of Government / Public Safety Radio or Hotlines",
+    description: "Improperly using public safety radio frequencies or emergency hotlines for non-emergency purposes.",
+    jailMonths: 0,
+    fine: 1000,
+    driver: "Intact",
+    trucker: "N/A",
+    weapon: "Intact",
+    pilot: "N/A"
+  },
+  "GC06": {
+    code: "GC06",
+    title: "Possession of Cannabis",
+    description: "Possessing cannabis without a valid medical prescription or license, up to the listed limits; exceeding limits becomes DM03.",
+    jailMonths: 0,
+    fine: 1000,
+    driver: "Intact",
+    trucker: "N/A",
+    weapon: "Intact",
+    pilot: "N/A"
+  },
+
+  // GENERAL MISDEMEANORS (GM)
+  "GM01": {
+    code: "GM01",
+    title: "Assault",
+    description: "Threat of bodily harm with intent, including spitting, slapping, or unlawful groping.",
+    jailMonths: 10,
+    fine: 1500,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Intact"
+  },
+  "GM02": {
+    code: "GM02",
+    title: "Battery",
+    description: "Willful and unlawful use of force or violence upon another person.",
+    jailMonths: 20,
+    fine: 2000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Intact"
+  },
+  "GM03": {
+    code: "GM03",
+    title: "Possession of a Blade",
+    description: "Carrying or possessing a fixed or assisted opening blade over 3 inches capable of inflicting serious bodily injury.",
+    jailMonths: 10,
+    fine: 1000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Intact"
+  },
+  "GM04": {
+    code: "GM04",
+    title: "Resisting Arrest",
+    description: "Resisting arrest physically or by fleeing on foot.",
+    jailMonths: 25,
+    fine: 2000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "GM05": {
+    code: "GM05",
+    title: "Receiving Stolen Property",
+    description: "Buying, receiving, concealing, or selling stolen property.",
+    jailMonths: 10,
+    fine: 1000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "GM06": {
+    code: "GM06",
+    title: "Petty Theft",
+    description: "Taking property without consent valued at less than $5,000.",
+    jailMonths: 15,
+    fine: 2000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "GM07": {
+    code: "GM07",
+    title: "Criminal Fraud",
+    description: "Intentional deception causing at least $5,000 in damages for personal or financial gain.",
+    jailMonths: 20,
+    fine: 1500,
+    driver: "If Used6 Hours",
+    trucker: "If Used6 Hours",
+    weapon: "Revoked",
+    pilot: "Intact"
+  },
+  "GM08": {
+    code: "GM08",
+    title: "Vandalism",
+    description: "Maliciously defacing, damaging, or destroying property not one’s own.",
+    jailMonths: 15,
+    fine: 1000,
+    driver: "If Used6 Hours",
+    trucker: "If Used6 Hours",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "GM09": {
+    code: "GM09",
+    title: "Vigilantism",
+    description: "Attempting to fulfill law enforcement duties as a non-law-enforcement official.",
+    jailMonths: 15,
+    fine: 1000,
+    driver: "If Used6 Hours",
+    trucker: "If Used6 Hours",
+    weapon: "Revoked",
+    pilot: "Intact"
+  },
+  "GM10": {
+    code: "GM10",
+    title: "Failure to Comply / Identify",
+    description: "Failure to comply with lawful commands or to identify oneself during an investigation.",
+    jailMonths: 20,
+    fine: 1000,
+    driver: "If Used6 Hours",
+    trucker: "If Used6 Hours",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "GM11": {
+    code: "GM11",
+    title: "Predatory Lending",
+    description: "Loaning money under unfair or fraudulent pretenses, often with implied violence if not repaid.",
+    jailMonths: 15,
+    fine: 2000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "GM12": {
+    code: "GM12",
+    title: "Giving False Information to a Police Officer",
+    description: "Providing fake information or documents to a police officer.",
+    jailMonths: 20,
+    fine: 1000,
+    driver: "If Used6 Hours",
+    trucker: "If Used6 Hours",
+    weapon: "Revoked",
+    pilot: "If UsedRevoked"
+  },
+  "GM13": {
+    code: "GM13",
+    title: "Criminal Threats",
+    description: "Knowingly and willingly threatening another’s life or bodily harm, including family or loved ones.",
+    jailMonths: 20,
+    fine: 1000,
+    driver: "If Used6 Hours",
+    trucker: "If Used6 Hours",
+    weapon: "Revoked",
+    pilot: "Intact"
+  },
+  "GM14": {
+    code: "GM14",
+    title: "Obstruction of Justice",
+    description: "Interfering with or obstructing lawful investigations through lies, concealment, or other acts.",
+    jailMonths: 25,
+    fine: 1000,
+    driver: "If Used6 Hours",
+    trucker: "If Used6 Hours",
+    weapon: "Intact",
+    pilot: "If UsedRevoked"
+  },
+  "GM15": {
+    code: "GM15",
+    title: "Animal Cruelty",
+    description: "Causing severe harm or neglect to an animal, excluding lawful hunting.",
+    jailMonths: 25,
+    fine: 1000,
+    driver: "If Used6 Hours",
+    trucker: "If Used6 Hours",
+    weapon: "Revoked",
+    pilot: "Intact"
+  },
+  "GM16": {
+    code: "GM16",
+    title: "Failure to Pay a Fine",
+    description: "Failure to pay a fine within 7 days.",
+    jailMonths: 15,
+    fine: 1000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "GM17": {
+    code: "GM17",
+    title: "Bribery",
+    description: "Offering, giving, soliciting, or receiving anything of value to influence required actions.",
+    jailMonths: 30,
+    fine: 1000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "GM18": {
+    code: "GM18",
+    title: "Looting of a Dead Human Body",
+    description: "Intentionally removing or adding items to a dead human body or its vicinity; more severe mutilation becomes GF19.",
+    jailMonths: 20,
+    fine: 1750,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Intact"
+  },
+  "GM19": {
+    code: "GM19",
+    title: "Face Concealment (b)",
+    description: "Wearing facial concealment while intimidating, threatening, harassing, causing fear, or committing a crime.",
+    jailMonths: 10,
+    fine: 500,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "GM20": {
+    code: "GM20",
+    title: "Minor Sales Tax Evasion",
+    description: "Failing to remit sales tax to the government where tax value is under $50,000; higher values become GF23.",
+    jailMonths: 20,
+    fine: 5000, // plus unpaid tax +10%
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "GM21": {
+    code: "GM21",
+    title: "False Imprisonment",
+    description: "Unlawfully restraining, detaining, or confining another without consent; cannot be charged with Kidnapping in same instance; use SF09 if to avoid arrest.",
+    jailMonths: 30,
+    fine: 2000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Intact"
+  },
+  "GM22": {
+    code: "GM22",
+    title: "Contempt of Court",
+    description: "Minor willful disobedience of a court order or misconduct in court.",
+    jailMonths: 30,
+    fine: 2500,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "GM23": {
+    code: "GM23",
+    title: "Parole Violation",
+    description: "Violation of parole conditions including new offenses, tampering with monitoring, or noncompliance.",
+    jailMonths: 30,
+    fine: 10000,
+    driver: "If Used6 Hours",
+    trucker: "If Used6 Hours",
+    weapon: "Revoked",
+    pilot: "Intact"
+  },
+  "GM24": {
+    code: "GM24",
+    title: "Contempt of Congress",
+    description: "Disrespect, defiance, interference, or noncompliance with Congress or a congressional committee as defined by statute.",
+    jailMonths: 30,
+    fine: 10000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "GM25": {
+    code: "GM25",
+    title: "Possession/Unlawful use of Government Equipment",
+    description: "Possession or unlawful use of government equipment such as stingers, tasers, jammers, or encrypted radios.",
+    jailMonths: 25,
+    fine: 1500,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "GM26": {
+    code: "GM26",
+    title: "Possession of Illegal Information Gathering Devices",
+    description: "Possession of equipment used to infiltrate government radio frequencies or GPS systems.",
+    jailMonths: 15,
+    fine: 1000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "GM27": {
+    code: "GM27",
+    title: "Incitement of Violence against a Peace Officer",
+    description: "Advocating the unlawful killing or injuring of a peace officer, where advocacy is likely to cause imminent harm.",
+    jailMonths: 25,
+    fine: 2000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "If Used Revoked",
+    pilot: "Intact"
+  },
+
+  // NUISANCE MISDEMEANORS (NM)
+  "NM01": {
+    code: "NM01",
+    title: "Inciting a Riot",
+    description: "Attempting or fulfilling the act of causing a riot.",
+    jailMonths: 45,
+    fine: 2500,
+    driver: "If Used6 Hours",
+    trucker: "If Used6 Hours",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "NM02": {
+    code: "NM02",
+    title: "Participating in a Riot",
+    description: "Taking part with two or more people in violent or threatening conduct disturbing the public peace.",
+    jailMonths: 30,
+    fine: 2000,
+    driver: "If Used6 Hours",
+    trucker: "If Used6 Hours",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "NM03": {
+    code: "NM03",
+    title: "Unlawful Assembly",
+    description: "Two or more people gathering to do something illegal or disobey law enforcement instructions.",
+    jailMonths: 15,
+    fine: 1000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "NM04": {
+    code: "NM04",
+    title: "Stalking",
+    description: "Repeated unwanted contact or communications causing a person to fear for their safety, except for lawful investigations.",
+    jailMonths: 30,
+    fine: 2500,
+    driver: "If Used6 Hours",
+    trucker: "If Used6 Hours",
+    weapon: "Revoked",
+    pilot: "Revoked"
+  },
+  "NM05": {
+    code: "NM05",
+    title: "Public Intoxication",
+    description: "Being intoxicated in public to the point of being unable to care for one’s own safety or being a nuisance.",
+    jailMonths: 15,
+    fine: 0,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "NM06": {
+    code: "NM06",
+    title: "Trespassing",
+    description: "Entering or remaining on private property or designated government public service property without permission, after notice of trespass, or without lawful purpose.",
+    jailMonths: 15,
+    fine: 1500,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "NM07": {
+    code: "NM07",
+    title: "Prostitution, Pimping or Pandering",
+    description: "Engaging in sex for payment or associated pimping/pandering conduct.",
+    jailMonths: 25,
+    fine: 1000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "NM08": {
+    code: "NM08",
+    title: "Abuse of Government Public Safety Radio Frequencies or Hotlines",
+    description: "Knowingly misusing public safety radio or emergency hotlines for non-legitimate purposes.",
+    jailMonths: 10,
+    fine: 1500,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "If Used3 Days"
+  },
+  "NM09": {
+    code: "NM09",
+    title: "Harassment",
+    description: "Repeated unwelcome actions intended to scare, annoy, or cause substantial emotional distress, including through SMS or social media.",
+    jailMonths: 20,
+    fine: 2000,
+    driver: "If Used6 Hours",
+    trucker: "If Used6 Hours",
+    weapon: "If UsedRevoked",
+    pilot: "If UsedRevoked"
+  },
+  "NM10": {
+    code: "NM10",
+    title: "Disturbing the Peace",
+    description: "Engaging in disruptive public behavior such as loud noise, climbing on vehicles, tackling, horn misuse, or crowding, meeting at least two listed criteria.",
+    jailMonths: 10,
+    fine: 1000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+
+  // VEHICULAR CHARGES (VM / VF)
+  "VM01": {
+    code: "VM01",
+    title: "Operating a Vehicle without a Valid License",
+    description: "Operating a vehicle without the appropriate driver’s or trucker’s license; CityBee rentals are exempt from license requirement.",
+    jailMonths: 10,
+    fine: 2000,
+    driver: "Suspend6 Hours",
+    trucker: "Suspend6 Hours",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "VM02": {
+    code: "VM02",
+    title: "Operating a Vehicle with a Suspended License",
+    description: "Operating a vehicle while driving privileges are revoked or suspended.",
+    jailMonths: 25,
+    fine: 1500,
+    driver: "Suspend6 Hours",
+    trucker: "If Used6 Hours",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "VM03": {
+    code: "VM03",
+    title: "Reckless Operation of a Road or Marine Vehicle",
+    description: "Intentional disregard for life or property through operation of a road or marine vehicle.",
+    jailMonths: 20,
+    fine: 3000,
+    driver: "Suspend6 Hours",
+    trucker: "Suspend6 Hours",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "VM05": {
+    code: "VM05",
+    title: "Drunk, Impaired, or Distracted Driving",
+    description: "Operating a vehicle while intoxicated over 0.08 BAC, under impairing substances, or distracted so as to be unsafe.",
+    jailMonths: 30,
+    fine: 2000,
+    driver: "Suspend6 Hours",
+    trucker: "Suspend6 Hours",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "VM06": {
+    code: "VM06",
+    title: "Street Competition",
+    description: "Planned or organized illegal street contests such as races or drift contests.",
+    jailMonths: 30,
+    fine: 2000,
+    driver: "Suspend6 Hours",
+    trucker: "Suspend6 Hours",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "VM07": {
+    code: "VM07",
+    title: "Hit and Run",
+    description: "Causing an accident with property damage and fleeing without attempting to exchange details.",
+    jailMonths: 15,
+    fine: 2500,
+    driver: "Suspend6 Hours",
+    trucker: "Suspend6 Hours",
+    weapon: "Intact",
+    pilot: "Suspended Pending Investigation"
+  },
+  "VM08": {
+    code: "VM08",
+    title: "Vehicle Registration Fraud",
+    description: "Operating, possessing, or selling a vehicle with counterfeit or wrong license plates.",
+    jailMonths: 15,
+    fine: 2000,
+    driver: "Suspend6 Hours",
+    trucker: "Suspend6 Hours",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "VM09": {
+    code: "VM09",
+    title: "Operation of a Vehicle without a License Plate",
+    description: "Operating a vehicle without a valid license plate while committing another criminal act.",
+    jailMonths: 10,
+    fine: 1750,
+    driver: "Suspend 6 Hours",
+    trucker: "Suspend 6 Hours",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "VF01": {
+    code: "VF01",
+    title: "Evading an Officer",
+    description: "Willfully fleeing or attempting to elude a pursuing law enforcement officer while operating a vehicle or bicycle; all willful occupants may be liable.",
+    jailMonths: 60,
+    fine: 3000,
+    driver: "Suspend12 Hours",
+    trucker: "Suspend12 Hours",
+    weapon: "Revoked",
+    pilot: "If UsedRevoked"
+  },
+  "VF02": {
+    code: "VF02",
+    title: "Felony Hit and Run",
+    description: "Causing an accident with bodily injury or death and failing to stay, render aid, notify services, or remain for questioning as required.",
+    jailMonths: 75,
+    fine: 3000,
+    driver: "Suspend12 Hours",
+    trucker: "Suspend12 Hours",
+    weapon: "Revoked",
+    pilot: "If UsedRevoked"
+  },
+  "VF03": {
+    code: "VF03",
+    title: "Operating a Chop Shop",
+    description: "Owning or operating a chop shop that profits from illegal modification sales.",
+    jailMonths: 60,
+    fine: 4000,
+    driver: "If Used12 Hours",
+    trucker: "If Used12 Hours",
+    weapon: "Revoked",
+    pilot: "Intact"
+  },
+  "VF04": {
+    code: "VF04",
+    title: "Felony Public Endangerment",
+    description: "Placing the public in acute danger or major risk to public safety with a motor vehicle, firearm, or similar.",
+    jailMonths: 60,
+    fine: 3000,
+    driver: "Suspend12 Hours",
+    trucker: "Suspend12 Hours",
+    weapon: "Revoked",
+    pilot: "If Used14 Days"
+  },
+
+  // DRUG CHARGES
+  "DM01": {
+    code: "DM01",
+    title: "Possession of a Schedule I Controlled Substance",
+    description: "Possessing any Schedule I controlled substance with a high potential for abuse and no accepted medical use, including heroin, methamphetamine, cocaine, or crack-cocaine.",
+    jailMonths: 20,
+    fine: 2500,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "If UsedRevoked"
+  },
+  "DM02": {
+    code: "DM02",
+    title: "Possession of a Schedule II Controlled Substance",
+    description: "Possessing any Schedule II controlled substance with a moderate potential for abuse and no accepted medical use, including LSD or MDMA.",
+    jailMonths: 15,
+    fine: 2000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "If UsedRevoked"
+  },
+  "DM03": {
+    code: "DM03",
+    title: "Possession of a Schedule III Controlled Substance",
+    description: "Possessing, without prescription or license, any Schedule III controlled substance such as cannabis, anabolic steroids, psilocybin, or methadone.",
+    jailMonths: 10,
+    fine: 1500,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "If UsedRevoked"
+  },
+  "DM04": {
+    code: "DM04",
+    title: "Possession of a Controlled Substance while Armed",
+    description: "Possessing any controlled substance without prescription or license while armed with any firearm.",
+    jailMonths: 25,
+    fine: 3000,
+    driver: "If Used6 Hours",
+    trucker: "If Used6 Hours",
+    weapon: "Revoked",
+    pilot: "If UsedRevoked"
+  },
+  "DM05": {
+    code: "DM05",
+    title: "Possession of Drug Paraphernalia",
+    description: "Possessing equipment or material primarily intended for use with controlled substances, including certain chemical precursors.",
+    jailMonths: 15,
+    fine: 1500,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "DM06": {
+    code: "DM06",
+    title: "Cultivation of a Controlled Substance",
+    description: "Gathering, growing, producing, or possessing plants or elements intended for creation of controlled substances without licensing.",
+    jailMonths: 30,
+    fine: 3000,
+    driver: "If Used6 Hours",
+    trucker: "If Used6 Hours",
+    weapon: "Intact",
+    pilot: "Suspended Pending Investigation"
+  },
+  "DF01": {
+    code: "DF01",
+    title: "Possession of a Controlled Substance with Intent of Sales",
+    description: "Possessing a controlled substance over 1 oz, or in an amount/packaging indicating intent to sell or deliver without licensing.",
+    jailMonths: 45,
+    fine: 3000,
+    driver: "If Used12 Hours",
+    trucker: "If Used12 Hours",
+    weapon: "Revoked",
+    pilot: "Suspended Pending Investigation"
+  },
+  "DF02": {
+    code: "DF02",
+    title: "Sale of a Controlled Substance",
+    description: "Selling, exchanging, distributing, delivering, or giving away any controlled substance without licensing.",
+    jailMonths: 60,
+    fine: 3000,
+    driver: "If Used12 Hours",
+    trucker: "If Used12 Hours",
+    weapon: "Revoked",
+    pilot: "Suspended Pending Investigation"
+  },
+  "DF03": {
+    code: "DF03",
+    title: "Sale of Drug Paraphernalia",
+    description: "Selling, exchanging, or distributing drug paraphernalia or chemical precursors intended for controlled substances without licensing.",
+    jailMonths: 45,
+    fine: 2500,
+    driver: "If Used12 Hours",
+    trucker: "If Used12 Hours",
+    weapon: "Revoked",
+    pilot: "Intact"
+  },
+  "DF04": {
+    code: "DF04",
+    title: "Trafficking a Controlled Substance",
+    description: "Possessing a controlled substance over 3 oz without licensing.",
+    jailMonths: 60,
+    fine: 3000,
+    driver: "If Used12 Hours",
+    trucker: "If Used12 Hours",
+    weapon: "Revoked",
+    pilot: "Suspended Pending Investigation"
+  },
+  "DF05": {
+    code: "DF05",
+    title: "Manufacturing a Controlled Substance",
+    description: "Producing, preparing, converting, processing, or possessing chemicals for creating controlled substances without licensing.",
+    jailMonths: 60,
+    fine: 5000,
+    driver: "If Used12 Hours",
+    trucker: "If Used12 Hours",
+    weapon: "Revoked",
+    pilot: "Suspended Pending Investigation"
+  },
+  "DF06": {
+    code: "DF06",
+    title: "Unlawful Administering of Drugs",
+    description: "Willfully poisoning food, drink, medicine, or water, or administering controlled substances or intoxicants against another’s wishes.",
+    jailMonths: 45,
+    fine: 3000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+
+  // WEAPON CHARGES (WM / WF)
+  "WM01": {
+    code: "WM01",
+    title: "Unlawful Brandishing of a Firearm or Weapon",
+    description: "Drawing, exhibiting, brandishing, or using a firearm or weapon without lawful reason.",
+    jailMonths: 15,
+    fine: 2000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "1 Day Suspension",
+    pilot: "Intact"
+  },
+  "WM02": {
+    code: "WM02",
+    title: "Possession of a Class 1 Firearm",
+    description: "Unlicensed or illegal possession of a Class 1 firearm, its parts, or ammunition (semi-automatic handgun).",
+    jailMonths: 30,
+    fine: 2000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Intact"
+  },
+  "WM03": {
+    code: "WM03",
+    title: "Criminal Use of Weapon Modifications",
+    description: "Possessing or using illegal or crime-related weapon modifications such as extended magazines, scopes, or suppressors.",
+    jailMonths: 25,
+    fine: 1500,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Intact"
+  },
+  "WM04": {
+    code: "WM04",
+    title: "Possession of Illegal Body Armor",
+    description: "Possessing body armor not obtained from legal traders, except for listed employment or authorized exemptions.",
+    jailMonths: 20,
+    fine: 2000,
+    driver: "If Used6 Hours",
+    trucker: "If Used6 Hours",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "WM05": {
+    code: "WM05",
+    title: "Possession of Body Armor as a Felon",
+    description: "Possessing body armor while being a convicted felon or while committing a felony, with exemptions for authorized on-duty use.",
+    jailMonths: 25,
+    fine: 2000,
+    driver: "If Used6 Hours",
+    trucker: "If Used6 Hours",
+    weapon: "Intact",
+    pilot: "Intact"
+  },
+  "WF01": {
+    code: "WF01",
+    title: "Assault with a Deadly Weapon",
+    description: "Assaulting another person with a deadly weapon including firearms, melee weapons, or vehicles.",
+    jailMonths: 45,
+    fine: 3000,
+    driver: "If Used12 Hours",
+    trucker: "If Used12 Hours",
+    weapon: "Revoked",
+    pilot: "Suspended Pending Investigation"
+  },
+  "WF02": {
+    code: "WF02",
+    title: "Shooting from a Vehicle (Drive-By)",
+    description: "Discharging a firearm or weapon from any vehicle or aircraft.",
+    jailMonths: 80,
+    fine: 3000,
+    driver: "Suspend12 Hours",
+    trucker: "Suspend12 Hours",
+    weapon: "Revoked",
+    pilot: "Suspended Pending Investigation"
+  },
+  "WF03": {
+    code: "WF03",
+    title: "Possession of a Class 2 Firearm",
+    description: "Unlicensed or illegal possession of a Class 2 firearm, its parts, or ammunition (automatic, lever action, or pump action).",
+    jailMonths: 60,
+    fine: 3000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Suspended Pending Investigation"
+  },
+  "WF04": {
+    code: "WF04",
+    title: "Possession of a Class 3 Firearm",
+    description: "Unlicensed or illegal possession of a Class 3 firearm, its parts, or ammunition (sniper rifle, DMR, LMG, or handheld rocket/grenade launcher).",
+    jailMonths: 90,
+    fine: 10000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Suspended Pending Investigation"
+  },
+  "WF05": {
+    code: "WF05",
+    title: "Possession of a Class 4 Firearm",
+    description: "Unlicensed or illegal possession of a Class 4 firearm, its parts, or ammunition (vehicle-mounted weapons, miniguns, rockets, etc.).",
+    jailMonths: 120,
+    fine: 20000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Suspended Pending Investigation"
+  },
+  "WF06": {
+    code: "WF06",
+    title: "Unlicensed transfer of firearms, ammunition and body armor",
+    description: "Sale, transfer, lending, giving, or buying of firearms, ammunition, or body armor without authorization from the FLD.",
+    jailMonths: 60,
+    fine: 5000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Suspended Pending Investigation"
+  },
+  "WF07": {
+    code: "WF07",
+    title: "Firearms Trafficking",
+    description: "Possessing 5 or more illegal or unlicensed firearms at once, exceeding personal use.",
+    jailMonths: 60,
+    fine: 4500,
+    driver: "If Used12 Hours",
+    trucker: "If Used12 Hours",
+    weapon: "Revoked",
+    pilot: "Revoked"
+  },
+
+  // GENERAL FELONIES (GF)
+  "GF01": {
+    code: "GF01",
+    title: "Child Endangerment",
+    description: "An act or omission that renders a child subject to psychological, emotional, or physical abuse.",
+    jailMonths: 60,
+    fine: 4000,
+    driver: "If Used12 Hours",
+    trucker: "If Used12 Hours",
+    weapon: "Revoked",
+    pilot: "Intact"
+  },
+  "GF02": {
+    code: "GF02",
+    title: "Robbery",
+    description: "Taking property from another person without uncoerced consent.",
+    jailMonths: 50,
+    fine: 2000,
+    driver: "If Used12 Hours",
+    trucker: "If Used12 Hours",
+    weapon: "Revoked",
+    pilot: "Revoked"
+  },
+  "GF03": {
+    code: "GF03",
+    title: "Armed Robbery",
+    description: "Taking property from another person without uncoerced consent through use of a firearm or deadly weapon.",
+    jailMonths: 60,
+    fine: 4000,
+    driver: "If Used12 Hours",
+    trucker: "If Used12 Hours",
+    weapon: "Revoked",
+    pilot: "Revoked"
+  },
+  "GF04": {
+    code: "GF04",
+    title: "Sexual Assault",
+    description: "Any touching of a sexual nature without consent of the victim.",
+    jailMonths: 45,
+    fine: 3000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Intact"
+  },
+  "GF05": {
+    code: "GF05",
+    title: "Extortion",
+    description: "Obtaining property from another person through force or intimidation.",
+    jailMonths: 45,
+    fine: 2000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Intact"
+  },
+  "GF06": {
+    code: "GF06",
+    title: "Blackmail",
+    description: "Using force or threats to compel another person to perform an act.",
+    jailMonths: 45,
+    fine: 1000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Intact"
+  },
+  "GF07": {
+    code: "GF07",
+    title: "Felony Fraud",
+    description: "Intentional deception causing more than $5,000 in damages for personal or financial gain.",
+    jailMonths: 60,
+    fine: 1000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "If UsedRevoked"
+  },
+  "GF08": {
+    code: "GF08",
+    title: "Illegal Gambling",
+    description: "Running or participating in prohibited gambling games for value without a legal gambling license.",
+    jailMonths: 45,
+    fine: 3000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Intact"
+  },
+  "GF09": {
+    code: "GF09",
+    title: "Embezzlement",
+    description: "Fraudulent appropriation of funds or property by a person to whom it was entrusted.",
+    jailMonths: 45,
+    fine: 3000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Intact"
+  },
+  "GF10": {
+    code: "GF10",
+    title: "Grand Theft",
+    description: "Taking property without consent where value exceeds $5,000.",
+    jailMonths: 45,
+    fine: 4000,
+    driver: "If Used12 Hours",
+    trucker: "If Used12 Hours",
+    weapon: "Revoked",
+    pilot: "Revoked"
+  },
+  "GF11": {
+    code: "GF11",
+    title: "Grand Theft Auto",
+    description: "Taking another person’s vehicle without consent.",
+    jailMonths: 60,
+    fine: 7500,
+    driver: "Suspend12 Hours",
+    trucker: "Suspend12 Hours",
+    weapon: "Revoked",
+    pilot: "Revoked"
+  },
+  "GF12": {
+    code: "GF12",
+    title: "Forgery or Counterfeiting",
+    description: "Making, altering, or copying seals, documents, or currency with intent to deceive or for personal gain.",
+    jailMonths: 45,
+    fine: 3000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "If UsedRevoked"
+  },
+  "GF13": {
+    code: "GF13",
+    title: "Arson",
+    description: "Deliberately setting fire to property.",
+    jailMonths: 45,
+    fine: 1500,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Revoked"
+  },
+  "GF14": {
+    code: "GF14",
+    title: "False Impersonation",
+    description: "Impersonating another person to harm them or gain a benefit.",
+    jailMonths: 45,
+    fine: 2000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "If UsedRevoked"
+  },
+  "GF15": {
+    code: "GF15",
+    title: "Burglary",
+    description: "Illegally entering a building, vehicle, or other area with intent to commit a crime.",
+    jailMonths: 60,
+    fine: 1000,
+    driver: "If Used12 Hours",
+    trucker: "If Used12 Hours",
+    weapon: "Revoked",
+    pilot: "Revoked"
+  },
+  "GF16": {
+    code: "GF16",
+    title: "Tampering with Evidence",
+    description: "Altering, concealing, falsifying, or destroying evidence with intent to interfere with an investigation.",
+    jailMonths: 45,
+    fine: 3000,
+    driver: "If Used12 Hours",
+    trucker: "If Used12 Hours",
+    weapon: "Revoked",
+    pilot: "Intact"
+  },
+  "GF17": {
+    code: "GF17",
+    title: "Rape",
+    description: "Intercourse by violence, force, fear, threat, or with a person incapable of consent.",
+    jailMonths: 75,
+    fine: 6000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Intact"
+  },
+  "GF18": {
+    code: "GF18",
+    title: "Racketeering",
+    description: "Engaging in a pattern of racketeering activity related to an enterprise within a one-year period.",
+    jailMonths: 60,
+    fine: 3000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Intact"
+  },
+  "GF19": {
+    code: "GF19",
+    title: "Abuse or Desecration of Dead Human Body",
+    description: "Removing, concealing, disinterring, dismembering, or performing unauthorized practices with a dead human body.",
+    jailMonths: 70,
+    fine: 3500,
+    driver: "Suspended12 Hours",
+    trucker: "Suspended12 Hours",
+    weapon: "Revoked",
+    pilot: "If UsedRevoked"
+  },
+  "GF20": {
+    code: "GF20",
+    title: "Possession of Human Body Tissue",
+    description: "Possessing human body tissue without authorization from a licensed government institution.",
+    jailMonths: 60,
+    fine: 2000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Intact"
+  },
+  "GF21": {
+    code: "GF21",
+    title: "Prison Break",
+    description: "Attempting or succeeding in breaking in or out of jails or prisons, or aiding such attempts.",
+    jailMonths: 60,
+    fine: 5000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Revoked"
+  },
+  "GF22": {
+    code: "GF22",
+    title: "Breach of Trust",
+    description: "Misusing confidential information gained through government employment beyond authorized role, outside protected whistleblowing.",
+    jailMonths: 60,
+    fine: 10000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Intact"
+  },
+  "GF23": {
+    code: "GF23",
+    title: "Grand Sales Tax Evasion",
+    description: "Failing to remit sales tax where unpaid tax value is $50,000 or more.",
+    jailMonths: 40,
+    fine: 10000, // plus unpaid tax + 10%
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Intact"
+  },
+  "GF24": {
+    code: "GF24",
+    title: "Perjury",
+    description: "Knowingly providing false statements under oath in court or Congress with intent to mislead, as defined by statute.",
+    jailMonths: 60,
+    fine: 3000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "If UsedRevoked"
+  },
+  "GF25": {
+    code: "GF25",
+    title: "Felony Contempt of Court",
+    description: "Egregious or repeated willful disobedience of a court order or serious misconduct in the presence of a court.",
+    jailMonths: 60,
+    fine: 5000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Intact"
+  },
+  "GF26": {
+    code: "GF26",
+    title: "Organized Assault on Government or Law Enforcement Operations",
+    description: "Willfully gathering in a group to carry out an armed assault targeting government or law enforcement operations, or acting as an accessory or conspirator.",
+    jailMonths: 45,
+    fine: 4000,
+    driver: "If Used12 Hours",
+    trucker: "If Used12 Hours",
+    weapon: "If Used Revoked",
+    pilot: "Suspended Pending Investigation"
+  },
+  "GF27": {
+    code: "GF27",
+    title: "Incitement of Violence against a Peace Officer",
+    description: "Advocating the unlawful killing or injuring of a peace officer under circumstances likely to cause imminent harm.",
+    jailMonths: 45,
+    fine: 4000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "If Used Revoked",
+    pilot: "Intact"
+  },
+
+  // SERIOUS FELONIES (SF)
+  "SF01": {
+    code: "SF01",
+    title: "Domestic Terrorism",
+    description: "Extreme violent activities intended to intimidate civilians or influence government policy or conduct by mass destruction, assassination, or kidnapping.",
+    jailMonths: 120,
+    fine: 15000,
+    driver: "If Used12 Hours",
+    trucker: "If Used12 Hours",
+    weapon: "Revoked",
+    pilot: "Revoked"
+  },
+  "SF02": {
+    code: "SF02",
+    title: "Murder",
+    description: "Premeditated or non-premeditated killing of another person.",
+    jailMonths: 90,
+    fine: 9000,
+    driver: "If Used12 Hours",
+    trucker: "If Used12 Hours",
+    weapon: "Revoked",
+    pilot: "Revoked"
+  },
+  "SF03": {
+    code: "SF03",
+    title: "Involuntary or Vehicular Manslaughter",
+    description: "Killing another person without intent but in a negligent manner while violating law or safety legislation.",
+    jailMonths: 80,
+    fine: 5500,
+    driver: "If Used12 Hours",
+    trucker: "If Used12 Hours",
+    weapon: "Revoked",
+    pilot: "Revoked"
+  },
+  "SF04": {
+    code: "SF04",
+    title: "Kidnapping",
+    description: "Imprisoning or forcibly moving another person against their will within the county, state, or country.",
+    jailMonths: 70,
+    fine: 10000,
+    driver: "If Used12 Hours",
+    trucker: "If Used12 Hours",
+    weapon: "Revoked",
+    pilot: "Revoked"
+  },
+  "SF05": {
+    code: "SF05",
+    title: "Torture",
+    description: "Inflicting cruel and unusual bodily harm upon another person.",
+    jailMonths: 90,
+    fine: 12000,
+    driver: "If Used12 Hours",
+    trucker: "If Used12 Hours",
+    weapon: "Revoked",
+    pilot: "Revoked"
+  },
+  "SF06": {
+    code: "SF06",
+    title: "Possessing Destructive Devices or Explosives",
+    description: "Possessing bombs, incendiary devices, or other explosive devices intended for mass killing within an area.",
+    jailMonths: 75,
+    fine: 7000,
+    driver: "If Used12 Hours",
+    trucker: "If Used12 Hours",
+    weapon: "Revoked",
+    pilot: "Revoked"
+  },
+  "SF07": {
+    code: "SF07",
+    title: "Bank Robbery",
+    description: "Entering or attempting to enter a bank with intent to deprive it of property of value, with or without force.",
+    jailMonths: 70,
+    fine: 10000,
+    driver: "If Used12 Hours",
+    trucker: "If Used12 Hours",
+    weapon: "Revoked",
+    pilot: "Revoked"
+  },
+  "SF08": {
+    code: "SF08",
+    title: "Human Trafficking",
+    description: "Depriving or violating the personal liberty of another to obtain forced labor or services.",
+    jailMonths: 75,
+    fine: 7000,
+    driver: "If Used12 Hours",
+    trucker: "If Used12 Hours",
+    weapon: "Revoked",
+    pilot: "Revoked"
+  },
+  "SF09": {
+    code: "SF09",
+    title: "False Imprisonment of a Hostage",
+    description: "False imprisonment as in GM20 committed to protect from arrest, increase risk of harm, or use as a shield.",
+    jailMonths: 70,
+    fine: 10000,
+    driver: "If Used12 Hours",
+    trucker: "If Used12 Hours",
+    weapon: "Revoked",
+    pilot: "Revoked"
+  },
+
+  // AVIATION CHARGES (AM / AF)
+  "AM01": {
+    code: "AM01",
+    title: "Negligent Operation of an Aircraft",
+    description: "Failing to use reasonable care while operating an aircraft, risking injury or property damage.",
+    jailMonths: 35,
+    fine: 4000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Suspended7 Days"
+  },
+  "AM02": {
+    code: "AM02",
+    title: "Operating an Unregistered Aircraft",
+    description: "Operating an aircraft not registered with the San Andreas Aviation Administration.",
+    jailMonths: 20,
+    fine: 2000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Suspended3 Days"
+  },
+  "AM03": {
+    code: "AM03",
+    title: "Operating an Aircraft without a License on your Person",
+    description: "Operating an aircraft without proper licensing on your person.",
+    jailMonths: 10,
+    fine: 1000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Suspended7 Days"
+  },
+  "AM04": {
+    code: "AM04",
+    title: "Disrupting Airport/Aircraft Operations",
+    description: "Disrupting functional operations of airports or registered aircraft facilities, except for emergency aircraft.",
+    jailMonths: 45,
+    fine: 5000,
+    driver: "If Used6 Hours",
+    trucker: "If Used6 Hours",
+    weapon: "Intact",
+    pilot: "If Used7 Days"
+  },
+  "AM05": {
+    code: "AM05",
+    title: "Operating an Aircraft without Proper Equipment",
+    description: "Operating an unflightworthy aircraft that fails minimum safety requirements or lacks required equipment and inspection.",
+    jailMonths: 10,
+    fine: 1000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Suspended3 Days"
+  },
+  "AM06": {
+    code: "AM06",
+    title: "Failure to Make Way for Emergency, State Government, or Military Aircraft",
+    description: "Failing to yield and give proper distance to emergency or government aircraft, or following/impeding them without justification.",
+    jailMonths: 25,
+    fine: 2500,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Suspended3 Days"
+  },
+  "AM07": {
+    code: "AM07",
+    title: "Operating an Aircraft in Controlled Airspace without Clearance",
+    description: "Operating an aircraft in controlled airspace without clearance from the relevant air traffic controller.",
+    jailMonths: 20,
+    fine: 2500,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Suspended7 Days"
+  },
+  "AM08": {
+    code: "AM08",
+    title: "Violating a Restricted Airspace Order or Temporary Flight Restriction",
+    description: "Intentionally entering or remaining in restricted or temporarily restricted airspace without authorization.",
+    jailMonths: 35,
+    fine: 4000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Intact",
+    pilot: "Suspended7 Days"
+  },
+  "AF01": {
+    code: "AF01",
+    title: "Reckless Operation of an Aircraft",
+    description: "Intentional disregard for life or property through the operation of an aircraft.",
+    jailMonths: 90,
+    fine: 10000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Revoked"
+  },
+  "AF02": {
+    code: "AF02",
+    title: "Committing a Crime Aboard an Aircraft in Flight",
+    description: "Committing any crime enumerated in the Penal Code while aboard an aircraft in flight.",
+    jailMonths: 45,
+    fine: 2500,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Revoked"
+  },
+  "AF03": {
+    code: "AF03",
+    title: "Operating an Aircraft without an Active License",
+    description: "Operating an aircraft without an active pilot’s license.",
+    jailMonths: 60,
+    fine: 7000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Revoked"
+  },
+  "AF04": {
+    code: "AF04",
+    title: "Failure to Obey Intercepting Military or Law Enforcement Aircraft/ATC Orders",
+    description: "Failing to obey instructions or maintain communication when intercepted by military or law enforcement aircraft or ATC.",
+    jailMonths: 70,
+    fine: 4000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Revoked"
+  },
+  "AF05": {
+    code: "AF05",
+    title: "Violating a Prohibited Airspace Order",
+    description: "Intentionally entering or remaining in prohibited airspace without authorization.",
+    jailMonths: 60,
+    fine: 3500,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Revoked"
+  },
+  "AF06": {
+    code: "AF06",
+    title: "Transporting Dangerous Cargo",
+    description: "Carrying dangerous cargo on an aircraft without authorization by the SAAA.",
+    jailMonths: 45,
+    fine: 2000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Revoked"
+  },
+  "AF07": {
+    code: "AF07",
+    title: "Drunk, Impaired, or Distracted Flying",
+    description: "Operating an aircraft while intoxicated over 0.08 BAC, under impairing substances, or while dangerously distracted.",
+    jailMonths: 90,
+    fine: 8000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Revoked"
+  },
+  "AF08": {
+    code: "AF08",
+    title: "Aircraft Piracy",
+    description: "Seizing or exercising control of an aircraft by force, violence, threat, or intimidation with wrongful intent.",
+    jailMonths: 120,
+    fine: 15000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Revoked"
+  },
+  "AF09": {
+    code: "AF09",
+    title: "Destruction of an Aircraft or Aircraft Facilities",
+    description: "Willfully damaging, destroying, or sabotaging aircraft or facilities, tampering with components, or placing destructive devices so as to endanger safety.",
+    jailMonths: 90,
+    fine: 10000, // plus cost of all damages sustained
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Revoked"
+  },
+  "AF10": {
+    code: "AF10",
+    title: "Disobeying a Grounding Order",
+    description: "Piloting any aircraft while under an active grounding order issued by the SAAA.",
+    jailMonths: 90,
+    fine: 15000,
+    driver: "Intact",
+    trucker: "Intact",
+    weapon: "Revoked",
+    pilot: "Revoked"
+  }
+
+};
+const modifierDefinitions = {
+  accessory: {
+    key: "accessory",
+    label: "Accessory to a Crime",
+    shortLabel: "Accessory",
+    factor: 0.5
+  },
+  attempt: {
+    key: "attempt",
+    label: "Attempt of a Crime",
+    shortLabel: "Attempted",
+    factor: 0.5
+  },
+  aggravated: {
+    key: "aggravated",
+    label: "Aggravated Crime",
+    shortLabel: "Aggravated",
+    factor: 1.5
+  },
+  gov: {
+    key: "gov",
+    label: "Crime against a Government Employee",
+    shortLabel: "Gov. Emp.",
+    factor: 1.5
+  }
+};
+
+function computeModifiedPenalties(base, activeModifiers) {
+  let factor = 1;
+  activeModifiers.forEach(key => {
+    const def = modifierDefinitions[key];
+    if (def) factor *= def.factor;
+  });
+
+  const jail = Math.round((base.jailMonths || 0) * factor);
+  const fine = Math.round((base.fine || 0) * factor);
+
+  return {
+    jailMonths: jail,
+    fine: fine,
+    driver: base.driver,
+    trucker: base.trucker,
+    weapon: base.weapon,
+    pilot: base.pilot,
+    factor
+  };
+}
+function buildModifiedTitle(base, activeModifiers) {
+  if (!base) return "";
+
+  const core = `${base.code} - ${base.title}`;
+
+  const prefix = [];
+  const suffix = [];
+
+  if (activeModifiers.includes("accessory")) {
+    prefix.push("Accessory to");
+  }
+  if (activeModifiers.includes("attempt")) {
+    prefix.push("Attempted");
+  }
+  if (activeModifiers.includes("aggravated")) {
+    prefix.push("Aggravated");
+  }
+  if (activeModifiers.includes("gov")) {
+    suffix.push("(Gov. Emp.)");
+  }
+
+  const prefixStr = prefix.join(" ");
+  const suffixStr = suffix.join(" ");
+
+  return `${prefixStr ? prefixStr + " " : ""}${core}${suffixStr ? " " + suffixStr : ""}`;
+}
+
+/* ---------- GLOBAL STATE ---------- */
+
+let selectedCategory = "Hope Kant";
+let selectedTemplateId;
+
+const categorySelect = document.getElementById("category");
+const templateList = document.getElementById("templateList");
+const fieldsDiv = document.getElementById("fields");
+const outputArea = document.getElementById("output");
+
+/* ---------- BBCode TOOLBAR ---------- */
+
+function insertBBCode(textarea, openTag, closeTag) {
+  const start = textarea.selectionStart || 0;
+  const end = textarea.selectionEnd || 0;
+  const text = textarea.value;
+  const before = text.slice(0, start);
+  const selected = text.slice(start, end);
+  const after = text.slice(end);
+  textarea.value = before + openTag + selected + closeTag + after;
+  const newPos = start + openTag.length + selected.length + closeTag.length;
+  textarea.focus();
+  textarea.selectionStart = textarea.selectionEnd = newPos;
+  generateOutput();
+}
+
+function makeBBToolbar(textarea) {
+  const bar = document.createElement("div");
+  bar.className = "bb-toolbar";
+
+  const buttons = [
+    { label: "B", open: "[b]", close: "[/b]" },
+    { label: "I", open: "[i]", close: "[/i]" },
+    { label: "U", open: "[u]", close: "[/u]" },
+    { label: "List", open: "[list]\n[*] ", close: "\n[/list]" },
+    { label: "*", open: "[*] ", close: "" },
+    { label: "URL", open: "[url=]", close: "[/url]" },
+    { label: "IMG", open: "[img]", close: "[/img]" },
+    { label: "Quote", open: "[quote]", close: "[/quote]" }
+  ];
+
+  buttons.forEach(cfg => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.textContent = cfg.label;
+    btn.addEventListener("click", () => insertBBCode(textarea, cfg.open, cfg.close));
+    bar.appendChild(btn);
+  });
+
+  return bar;
+}
+
+/* ---------- DYNAMIC CHARGE ROWS: CASE LOG ---------- */
+
+let caseLogChargeIdCounter = 0;
+
+function updateCaseLogChargesHidden() {
+  const container = document.getElementById("caseLogChargesContainer");
+  const hidden = document.getElementById("field_ChargesBBCode");
+  if (!container || !hidden) return;
+
+  const rows = container.querySelectorAll(".case-charge-row");
+  const lines = [];
+
+  rows.forEach(row => {
+    const code = row.querySelector(".cl-statute").value.trim().toUpperCase();
+    const desc = row.querySelector(".cl-desc").value.trim();
+    const penalties = row.querySelector(".cl-penalties").value.trim();
+    if (!code) return;
+
+    lines.push(
+      `[*][b]Law/Statute Number:[/b] ${code}\n` +
+      `[list][*][b]Description of the Law:[/b] ${desc}\n` +
+      `[*][b]Penalties:[/b] ${penalties}[/list]`
+    );
+  });
+
+  if (lines.length) {
+    hidden.value = `[list=1]\n${lines.join("\n")}\n[/list]`;
+  } else {
+    hidden.value = "";
+  }
+  generateOutput();
+}
+
+function addCaseLogChargeRow() {
+  const container = document.getElementById("caseLogChargesContainer");
+  if (!container) return;
+
+  const rowId = "chargeRow_" + (++caseLogChargeIdCounter);
+  const row = document.createElement("div");
+  row.className = "case-charge-row";
+  row.dataset.rowId = rowId;
+
+  row.innerHTML = `
+    <label>Statute code (e.g. VC01, VM01, GF10)
+      <input type="text" class="cl-statute" placeholder="VC01" />
+    </label>
+    <label>Statute title / description (auto if code is known)
+      <textarea class="cl-desc" rows="2"></textarea>
+    </label>
+    <div class="cl-modifiers">
+      <span style="font-size:12px;">Modifiers (for calculations only):</span><br/>
+      ${Object.values(modifierDefinitions).map(m => `
+        <label style="margin-right:8px;font-size:12px;">
+          <input type="checkbox" class="cl-mod" value="${m.key}" /> ${m.shortLabel}
+        </label>
+      `).join("")}
+    </div>
+    <label>Calculated penalties (read-only)
+      <textarea class="cl-penalties" rows="2" readonly></textarea>
+    </label>
+  `;
+
+  container.appendChild(row);
+
+  const codeInput = row.querySelector(".cl-statute");
+  const descArea = row.querySelector(".cl-desc");
+  const penArea = row.querySelector(".cl-penalties");
+  const modifierBoxes = row.querySelectorAll(".cl-mod");
+
+  function recalc() {
+    const code = (codeInput.value || "").trim().toUpperCase();
+    const base = charges[code];
+    const active = [];
+    modifierBoxes.forEach(cb => { if (cb.checked) active.push(cb.value); });
+
+    if (base) {
+      const titleLine = buildModifiedTitle(base, active);
+      if (!descArea.dataset.manual || descArea.dataset.auto === "1" || descArea.value === "") {
+        // modifier-aware title line
+        descArea.value = `${titleLine}\n${base.description}`;
+        descArea.dataset.auto = "1";
+      }
+      const computed = computeModifiedPenalties(base, active);
+      penArea.value =
+        `Jail: ${computed.jailMonths} months | Fine: $${computed.fine.toLocaleString()} | ` +
+        `DL: ${computed.driver} | TL: ${computed.trucker} | WL: ${computed.weapon} | PL: ${computed.pilot}`;
+    } else {
+      penArea.value = "(Unknown statute code)";
+    }
+    updateCaseLogChargesHidden();
+  }
+
+  codeInput.addEventListener("input", recalc);
+  modifierBoxes.forEach(cb => cb.addEventListener("change", recalc));
+  descArea.addEventListener("input", () => {
+    descArea.dataset.manual = "1";
+    descArea.dataset.auto = "0";
+  });
+
+  recalc();
+}
+
+/* ---------- DYNAMIC CHARGE ROWS: VERDICT ---------- */
+
+let verdictChargeIdCounter = 0;
+
+function updateVerdictChargesHidden() {
+  const container = document.getElementById("verdictChargesContainer");
+  const hiddenList = document.getElementById("field_VerdictChargesBBCode");
+  const hiddenMode = document.getElementById("field_VerdictMode");
+  const defInput = document.getElementById("field_Defendant");
+  if (!container || !hiddenList || !hiddenMode) return;
+
+  const defendant = (defInput && defInput.value.trim()) || "Firstname Lastname";
+
+  const rows = container.querySelectorAll(".verdict-charge-row");
+  const items = [];
+  let anyNotGuilty = false;
+  let anyGuilty = false;
+
+  rows.forEach(row => {
+    const code = row.querySelector(".vc-statute").value.trim().toUpperCase();
+    if (!code) return;
+
+    const base = charges[code];
+
+    const modifierBoxes = row.querySelectorAll(".vc-mod");
+    const active = [];
+    modifierBoxes.forEach(cb => { if (cb.checked) active.push(cb.value); });
+
+    const fullTitle = base ? buildModifiedTitle(base, active) : `${code} - Charge`;
+
+    const select = row.querySelector(".vc-verdict");
+    const verdictVal = select ? select.value : "Not Guilty";
+    if (verdictVal === "Not Guilty") anyNotGuilty = true;
+    if (verdictVal === "Guilty") anyGuilty = true;
+
+    items.push(
+      `[*] On the count of ${fullTitle}, I find the defendant, ${defendant}, ${verdictVal.toLowerCase()}.`
+    );
+  });
+
+  if (items.length) {
+    hiddenList.value = items.join("\n");
+  } else {
+    hiddenList.value = "";
+  }
+
+  if (anyNotGuilty) {
+    hiddenMode.value = "refund";
+  } else if (anyGuilty) {
+    hiddenMode.value = "fees";
+  } else {
+    hiddenMode.value = "";
+  }
+  generateOutput();
+}
+
+function addVerdictChargeRow() {
+  const container = document.getElementById("verdictChargesContainer");
+  if (!container) return;
+
+  const rowId = "verdictRow_" + (++verdictChargeIdCounter);
+  const row = document.createElement("div");
+  row.className = "verdict-charge-row";
+  row.dataset.rowId = rowId;
+
+  row.innerHTML = `
+    <label>Statute code (e.g. VC01, VM01, GF10)
+      <input type="text" class="vc-statute" placeholder="VC01" />
+    </label>
+    <label>Verdict
+      <select class="vc-verdict inline-select">
+        <option value="Not Guilty">Not guilty</option>
+        <option value="Guilty">Guilty</option>
+      </select>
+    </label>
+    <div class="vc-modifiers">
+      <span style="font-size:12px;">Modifiers:</span><br/>
+      ${Object.values(modifierDefinitions).map(m => `
+        <label style="margin-right:8px;font-size:12px;">
+          <input type="checkbox" class="vc-mod" value="${m.key}" /> ${m.shortLabel}
+        </label>
+      `).join("")}
+    </div>
+  `;
+
+  container.appendChild(row);
+
+  const codeInput = row.querySelector(".vc-statute");
+  const modifierBoxes = row.querySelectorAll(".vc-mod");
+  const verdictSelect = row.querySelector(".vc-verdict");
+
+  function recalcVerdict() {
+    updateVerdictChargesHidden();
+  }
+
+  codeInput.addEventListener("input", recalcVerdict);
+  modifierBoxes.forEach(cb => cb.addEventListener("change", recalcVerdict));
+  verdictSelect.addEventListener("change", recalcVerdict);
+
+  recalcVerdict();
+}
+
+/* ---------- TEMPLATES ---------- */
+
+const templatesByCategory = {
+  "Hope Kant": [
+    {
+      id: "hope_personal_email",
+      label: "Personal Email",
+      fields: ["Person", "Message"],
+      template: ({ Person = "", Message = "" }) => `[img]https://i.imgur.com/T0UjUjH.png[/img][divbox=antiquewhite][fimg=150,150]https://i.imgur.com/P8yMubU.png[/fimg]
+[float=right][right]
+
+[font=Arial][size=150][b]San Andreas Judicial Branch[/b][/size]
+[size=120]Personal Email[/size][/font]
+[font=Cambria][size=95][i]"EQUAL JUSTICE UNDER LAW"[/i][/size][/font][/right][/float]
+[hr][/hr]
+[list=none]
+Dear ${Person},
+
+${Message}
+
+Respectfully,
+
+[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — hope.kant@sajb.sagov
+[/list][/divbox]
+[img]https://i.imgur.com/T0UjUjH.png[/img]`
+    },
+
+    {
+      id: "docket_notice",
+      label: "Superior Court Docket Notice",
+      fields: ["Message"],
+      template: ({ Message = "" }) => `[img]https://i.imgur.com/T0UjUjH.png[/img]
+[divbox=antiquewhite][fimg=180,180]https://i.imgur.com/t3lfFCp.png[/fimg][aligntable=right,0,0,0,0,0,0][right][font=Arial][b]
+[size=150]San Andreas Judicial Branch[/size][/b]
+[size=115]Docket Notice[/size]
+[size=95][i]"HERE FOR YOU | SAFE FOR YOU"[/i][/size][/font][/right][/aligntable]
+[hr][/hr]
+[list=none]
+[b]Prosecution and defense counsel,[/b]
+
+${Message}
+
+[b]Respectfully,[/b]
+[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — hope.kant@sajb.sagov
+[/list][/divbox]
+[img]https://i.imgur.com/T0UjUjH.png[/img]`
+    },
+
+    {
+      id: "court_decision",
+      label: "Superior Court Decision",
+      fields: ["Defendant", "CaseType", "CaseNumber", "Decision"],
+      template: ({ Defendant = "", CaseType = "", CaseNumber = "#", Decision = "" }) => `[img]https://i.imgur.com/LdlyeRK.png[/img][divbox=antiquewhite]
+[fimg=180,180]https://i.imgur.com/t3lfFCp.png[/fimg]
+[float=right][right][font=Arial][b]
+
+[size=150][font=Arial]San Andreas Judicial Branch[/font][/size]
+[size=120][font=Arial]Superior Court of San Andreas[/font][/size]
+[size=95][font=Cambria][i]"EQUAL JUSTICE UNDER LAW"[/i][/font][/size][/font][/right][/float]
+
+[hr][/hr]
+[center][b][size=125]COURT DECISION[/size][/b][/center]
+[hr][/hr]
+
+
+[center][font=Arial]IN THE SUPERIOR COURT OF SAN ANDREAS
+
+The State of San Andreas v. ${Defendant}
+#25-${CaseType}-${CaseNumber}
+
+[b]A decision was reached in the above case on the ${getFormalDate()}.[/b][/center]
+
+${Decision}
+
+
+[b]So Ordered,[/b]
+
+[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — hope.kant@sajb.sagov
+[/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
+    },
+
+    /* ---------- NEW: SUPERIOR COURT CRIMINAL CASE LOG ---------- */
+    {
+      id: "case_log_criminal",
+      label: "Superior Court Criminal Case Log",
+      fields: ["CaseNumberTitle", "IncidentDate", "ChargesBBCode", "EvidenceLinks", "Witnesses"],
+      template: ({
+        CaseNumberTitle = "",
+        IncidentDate = "",
+        ChargesBBCode = "",
+        EvidenceLinks = "",
+        Witnesses = ""
+      }) => `[img]https://i.imgur.com/2mAC82V.png[/img]
+[img]https://i.imgur.com/jRCHmgg.png[/img]
+[divbox=antiquewhite]
+[b]Case Number:[/b]
+[i]${CaseNumberTitle || "[url=LINK]24-CM-0000, State of San Andreas vs. Defendant[/url]"}[/i]
+[b]Date of Incident:[/b]
+[i]${IncidentDate || "(Enter date of the incident here)"}[/i]
+[/divbox]
+[img]https://i.imgur.com/9YCsVl1.png[/img]
+[divbox=antiquewhite]
+[list=1]
+[*][b]Accused Offense(s):[/b]
+${ChargesBBCode || "(No charges listed)"}[/list]
+[/divbox]
+[img]https://i.imgur.com/a5hochF.png[/img]
+[divbox=antiquewhite]
+[list=1]
+[*][b]Evidence Submitted:[/b]
+[list]
+${EvidenceLinks || "[*][url=LINK]Prosecution Exhibits #1-00[/url]\n[*][url=LINK]Defense Exhibits #1-00[/url]\n[*][url=LINK]Exhibits Under Seal[/url]"}
+[/list]
+[*][b]Key Witnesses:[/b]
+${Witnesses || "(List names of key witnesses and their testimony summary. Please also link to the relevant witness request on the docket.)"}
+[/list]
+[/divbox]
+[img]https://i.imgur.com/LdlyeRK.png[/img]`
+    },
+
+    /* ---------- UPDATED: SUPERIOR COURT CRIMINAL TRIALS VERDICT ---------- */
+    {
+      id: "issuance_of_verdict",
+      label: "Superior Court Criminal Trials Verdict",
+      fields: ["Defendant", "CaseType", "CaseNumber", "Decision", "VerdictChargesBBCode", "VerdictMode", "PaymentReturnedToDefendant", "CourtFees"],
+      template: ({
+        Defendant = "",
+        CaseType = "",
+        CaseNumber = "#",
+        Decision = "",
+        VerdictChargesBBCode = "",
+        VerdictMode = "",
+        PaymentReturnedToDefendant = "",
+        CourtFees = ""
+      }) => {
+        let paragraph = "";
+        if (VerdictMode === "refund") {
+          paragraph = `The defendant should make their way to City Hall at their earliest convenience to have the change to their record noted as well as the payment of $${PaymentReturnedToDefendant} returned to them for fines, time, and other expenses/inconveniences incurred from the contested charges.`;
+        } else if (VerdictMode === "fees") {
+          paragraph = `The defendant should make their way to City Hall to pay their court fines of $${CourtFees}.`;
+        }
+
+        return `[img]https://i.imgur.com/LdlyeRK.png[/img][divbox=antiquewhite]
+[fimg=180,180]https://i.imgur.com/t3lfFCp.png[/fimg]
+[float=right][right][font=Arial][b]
+
+[size=150][font=Arial]San Andreas Judicial Branch[/font][/size]
+[size=120][font=Arial]Superior Court of San Andreas[/font][/size]
+[size=95][font=Cambria][i]"EQUAL JUSTICE UNDER LAW"[/i][/font][/size][/font][/right][/float]
+
+[hr][/hr]
+[center][b][size=125]ISSUANCE OF VERDICT[/size][/b][/center]
+[hr][/hr]
+
+
+[center][font=Arial]IN THE SUPERIOR COURT OF SAN ANDREAS
+
+The State of San Andreas v. ${Defendant}
+#25-${CaseType}-${CaseNumber}
+
+[b]A decision was reached in the above case on the ${getFormalDate()}.[/b][/center]
+
+${Decision}
+
+It is with the above considerations that I issue the following verdict:
+[list]
+${VerdictChargesBBCode || "[*] On the count of XX01 - Charge, I find the defendant, Firstname Lastname, not guilty."}
+[/list]
+
+${paragraph ? paragraph + "\n\n" : ""}[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — hope.kant@sajb.sagov
+[/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`;
+      }
+    },
+
+    {
+      id: "notice_to_schedule_bt",
+      label: "Notice to Schedule BT",
+      fields: ["notice_level", "Message"],
+      template: ({ notice_level = "FIRST", Message = "" }) => `[img]https://i.imgur.com/LdlyeRK.png[/img]
+[divbox=antiquewhite][fimg=150,150]https://i.imgur.com/t3lfFCp.png[/fimg]
+[float=right][right]
+
+[font=Arial][size=150][b]San Andreas Judicial Branch[/b][/size]
+[size=120]Docket Notice[/size][/font]
+[font=Cambria][size=95][i]"EQUAL JUSTICE UNDER LAW"[/i][/size][/font][/right][/float]
+[hr][/hr]
+[list=none]
+[b]Parties,[/b],
+
+
+This is to serve as a [b]${notice_level}[/b] notice to the defendant that bench trials are currently scheduled on multiple days throughout the week. Please notify the court if these times do not work for you. The expectation of the court is that each defendant file a notice for availability in the next 7 days. Date, times, and formatting shown [b][url=https://gov.eclipse-rp.net/viewforum.php?f=3806]here[/url][/b]. [u]The courts will only provide the defendant three notices prior to involuntarily dismissing the case in favor of prosecution due to lack of response from the defendant.[/u]
+ 
+Please note there is the possibility of a trial happening if defendants show up to City Hall and both a judge and defense attorney are available. 
+
+${Message}
+
+[b]Respectfully,[/b]
+
+[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — hope.kant@sajb.sagov
+[/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
+    },
+
+    {
+      id: "dismissing_bt",
+      label: "Dismissing BT",
+      fields: ["Defendant", "CaseType", "CaseNumber", "Reason"],
+      template: ({ Defendant = "", CaseType = "BT", CaseNumber = "0000", Reason = "lack of response from the defendant" }) => `[img]https://i.imgur.com/LdlyeRK.png[/img][divbox=antiquewhite]
+[fimg=180,180]https://i.imgur.com/t3lfFCp.png[/fimg]
+[float=right][right][font=Arial][b]
+
+[size=150][font=Arial]San Andreas Judicial Branch[/font][/size]
+[size=120][font=Arial]Superior Court of San Andreas[/font][/size]
+[size=95][font=Cambria][i]"EQUAL JUSTICE UNDER LAW"[/i][/font][/size][/font][/right][/float]
+
+[hr][/hr]
+[center][b][size=125]COURT DECISION[/size][/b][/center]
+[hr][/hr]
+
+
+[center][font=Arial]IN THE SUPERIOR COURT OF SAN ANDREAS
+
+The State of San Andreas v. ${Defendant}
+#25-${CaseType}-${CaseNumber}
+
+[b]A decision was reached in the above case on the ${getFormalDate()}.[/b][/center]
+
+Due to a ${Reason}, the case will now be accepting the plea of guilty from the defendant. The defendant was given ample time to interact with the courts and file availability. If any of the dates and times did not align with the schedule of the defendant, they were able to contact the courts stating the like. As little to no contact has been made with the courts in the past 3-4 weeks, this case will now be archived and the charges will remain on the record of the defendant.
+
+[b]Respectfully,[/b]
+
+[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — hope.kant@sajb.sagov
+[/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
+    },
+
+    {
+      id: "search_warrant",
+      label: "Search Warrant",
+      fields: ["requesting_dept", "Location", "Items", "Items", "Crimes", "CopyTo"],
+      template: ({
+        requesting_dept = "Los Santos Police Department",
+        Location = "HERE",
+        Items = "[*] SPECIFY ITEM OR RECORD",
+        Crimes = "[*] SPECIFY CRIME",
+        CopyTo = "HERE"
+      }) => `[img]https://i.imgur.com/LdlyeRK.png[/img]
+[divbox=antiquewhite]
+
+[fimg=150,150]https://i.imgur.com/P8yMubU.png[/fimg]
+
+[aligntable=right,0,0,0,0,0,0]
+[right][font=Arial][b][size=150]San Andreas Judicial Branch[/size][/b]
+[size=115]SEARCH WARRANT[/size]
+[size=95][i]"HERE FOR YOU | SAFE FOR YOU"[/i][/size][/font][/right]
+[/aligntable]
+
+[hr]
+
+[list=none]
+To:  
+The [b]${requesting_dept}[/b] operating within the State of San Andreas and their respective investigative and tactical divisions:
+
+You are hereby directed to conduct a search of [b]${Location}[/b] for the following designated records:
+
+[list]
+${boldBulletLines(Items)}
+[/list]
+
+Any evidence of crimes in violation of the San Andreas Penal Law Article GM to SF, included but not limited to:
+
+[list]
+${boldBulletLines(Crimes)}
+[/list]
+
+You are directed to execute this warrant between the hours of:
+
+[list]
+[*][ ] 06:00 - 21:00
+[*][ ] 08:00 - 22:00 (Hours of Operation for the Bank of San Andreas)
+[*][ ] Any time day or night.
+[/list]
+
+A copy of this warrant must be sent to [b]${CopyTo}[/b] once executed. The court requires a copy of all evidence seized to be submitted to the warrant application for internal archive.
+
+[hr]
+
+This warrant is issued on [b]${getShortDate()}[/b] and is effective for 7 days. Should an extension be required, please submit a notice no less than 12 hours prior to this warrant's expiration.
+
+[img]https://i.imgur.com/MIAlzRQ.jpg[/img]  
+[i]Branch Administrator[/i]  
+San Andreas Judicial Branch  
+505-9925 — hope.kant@sajb.sagov
+[/list]
+
+[/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
+    },
+
+    /* --- (existing appeal / notice / order templates unchanged) --- */
+
+    {
+      id: "appeal_activation_notice",
+      label: "Appeal - Activation Notice",
+      fields: ["Appellant", "OpposingParty", "CaseNumber"],
+      template: ({
+        Appellant = "Appellant",
+        OpposingParty = "Opposing Party",
+        CaseNumber = "0000"
+      }) => `[img]https://i.imgur.com/LdlyeRK.png[/img][divbox=antiquewhite]
+
+[fimg=180,180]https://i.imgur.com/B4pHsgG.png[/fimg]
+[float=right][right][font=Arial][b]
+
+[size=150][font=Arial]San Andreas Judicial Branch[/font][/size][/b]
+[size=120][font=Arial]San Andreas Court of Appeals[/font][/size]
+[size=95][font=Cambria][i]"EQUAL JUSTICE UNDER LAW"[/i][/font][/size][/font][/right][/float]
+
+
+[hr][/hr]
+[center][b][size=125]NOTICE OF ACTIVATION[/size][/b][/center]
+[hr][/hr]
+
+
+
+[center][font=Arial]IN THE SAN ANDREAS COURT OF APPEALS
+
+${Appellant} v. ${OpposingParty}
+#25-AP-${CaseNumber}
+
+A Notice of Activation was entered in the above appeal on the ${getFormalDate()}.
+[/center]
+
+The case of ${Appellant} v. ${OpposingParty} is hereby activated by this Court under [b]#25-AP-${CaseNumber}[/b].
+
+The appealing party is hereby ordered to submit an initial written brief within the next seven (7) days outlining their position of this appeal and giving any legal arguments as to why the court should rule to overturn a previous verdict. Once the initial brief has been recorded by the courts, the opposing counsel will be given an additional seven (7) days to respond. The initiating party will be given one final response, which the courts will allow seven (7) days to produce. The court may allow either party an additional response at the justices discretion. Once the briefs have been submitted the court will determine a verdict.
+
+So ordered,
+[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url][/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
+    },
+
+    {
+      id: "appeal_docket_notice",
+      label: "Appeal - Docket Notice",
+      fields: ["Message"],
+      template: ({ Message = "" }) => `[img]https://imgur.com/T0UjUjH.png[/img]
+[divbox=antiquewhite][fimg=180,180]https://i.imgur.com/B4pHsgG.png[/fimg][aligntable=right,0,0,0,0,0,0][right][font=Arial][b]
+[size=150]San Andreas Judicial Branch[/size][/b]
+[size=115]Docket Notice[/size]
+[size=95][i]"HERE FOR YOU | SAFE FOR YOU"[/i][/size][/font][/right][/aligntable]
+[hr][/hr]
+[list=none]
+[b]Prosecution and defense counsel,[/b]
+
+${Message}
+
+[b]Respectfully,[/b]
+
+[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url][/list][/divbox]
+[img]https://imgur.com/T0UjUjH.png[/img]`
+    },
+
+    {
+      id: "appeal_summary_dismissal",
+      label: "Appeal - Summary Dismissal",
+      fields: ["Appellant", "OpposingParty", "Reason"],
+      template: ({
+        Appellant = "Appellant",
+        OpposingParty = "Opposing Party",
+        Reason = ""
+      }) => `[img]https://i.imgur.com/LdlyeRK.png[/img][divbox=antiquewhite]
+
+[fimg=180,180]https://i.imgur.com/B4pHsgG.png[/fimg]
+[float=right][right][font=Arial][b]
+
+[size=150][font=Arial]San Andreas Judicial Branch[/font][/size][/b]
+[size=120][font=Arial]San Andreas Court of Appeals[/font][/size]
+[size=95][font=Cambria][i]"EQUAL JUSTICE UNDER LAW"[/i][/font][/size][/font][/right][/float]
+
+
+[hr][/hr]
+[center][b][size=125]SUMMARY DISMISSAL[/size][/b][/center]
+[hr][/hr]
+
+
+
+[center][font=Arial]IN THE SAN ANDREAS COURT OF APPEALS
+
+${Appellant} v. ${OpposingParty}
+
+A Summary Dismissal was entered in the above appeal on the ${getFormalDate()}.
+[/center]
+
+${Reason}
+
+So ordered,
+[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url][/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
+    },
+
+    {
+      id: "appeal_issuance_of_verdict",
+      label: "Appeal - Issuance of Verdict",
+      fields: ["Appellant", "Defendant", "CaseNumber", "Decision"],
+      template: ({
+        Appellant = "Appellant",
+        Defendant = "Defendant",
+        CaseNumber = "00XX",
+        Decision = ""
+      }) => `[img]https://i.imgur.com/LdlyeRK.png[/img][divbox=antiquewhite]
+[fimg=180,180]https://i.imgur.com/B4pHsgG.png[/fimg]
+[float=right][right][font=Arial][b]
+
+[size=150][font=Arial]San Andreas Judicial Branch[/font][/size][/b]
+[size=120][font=Arial]Court of Appeals[/font][/size]
+[size=95][font=Cambria][i]"EQUAL JUSTICE UNDER LAW"[/i][/font][/size][/font][/right][/float]
+
+[hr][/hr]
+[center][b][size=125]ISSUANCE OF VERDICT[/size][/b][/center]
+[hr][/hr]
+
+
+
+[center][font=Arial]IN THE COURT OF APPEALS OF SAN ANDREAS
+
+${Appellant} v. ${Defendant}
+#25-AP-${CaseNumber}
+
+[b]A decision was reached in the above case on the ${getFormalDate()}.[/b][/center]
+
+${Decision}
+
+So ordered,
+[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url][/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
+    },
+
+    {
+      id: "notice_of_trial_in_person",
+      label: "Notice of Trial (In-Person)",
+      fields: ["Defendant", "CaseType", "CaseNumber", "TrialTime", "TrialDate", "LocationType", "LocationOther"],
+      template: ({
+        Defendant = "Defendant",
+        CaseType = "CM",
+        CaseNumber = "0000",
+        TrialTime = "00:00 AM/PM",
+        TrialDate = "Day of Month",
+        LocationType = "City Hall",
+        LocationOther = ""
+      }) => {
+        const currentYear = new Date().getFullYear();
+        const baseLocation = "Rockford Hills City Hall, Carcer Way, Metro Los Santos, SA";
+        const location = LocationType === "Other" && LocationOther
+          ? LocationOther
+          : baseLocation;
+
+        return `[img]https://i.imgur.com/LdlyeRK.png[/img][divbox=antiquewhite]
+
+[fimg=180,180]https://i.imgur.com/t3lfFCp.png[/fimg]
+[float=right][right][font=Arial][b]
+
+[size=150][font=Arial]San Andreas Judicial Branch[/font][/size][/b]
+[size=120][font=Arial]Superior Court of San Andreas[/font][/size]
+[size=95][font=Cambria][i]"EQUAL JUSTICE UNDER LAW"[/i][/font][/size][/font][/right][/float]
+
+
+[hr][/hr]
+[center][b][size=125]NOTICE OF TRIAL[/size][/b][/center]
+[hr][/hr]
+
+
+
+[center][font=Arial]IN THE SUPERIOR COURT OF SAN ANDREAS
+
+State of San Andreas v. ${Defendant}
+#25-${CaseType}-${CaseNumber}
+
+A trial date was set on the above case on the ${getFormalDate()}.
+[/center]
+
+In accordance with the availability reported by parties in response to the Notice of Scheduling/time-slot application, this trial shall take place at ${TrialTime} on ${TrialDate}, ${currentYear} at ${location}.
+
+Both parties are ordered to be present in the Judges Chambers no later than 15 minutes prior to the above listed date for pretrial arrangements. If complications occur that must result in a delay or cancellation of the trial, you are ordered to inform the court no later than 12 hours prior to the above listed date.
+
+
+[b]So ordered,[/b]
+
+[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url]
+[/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`;
+      }
+    },
+
+    {
+      id: "notice_of_rejection",
+      label: "Notice of Rejection",
+      fields: ["Defendant", "CaseNumber", "Reason"],
+      template: ({
+        Defendant = "DEFENDANT",
+        CaseNumber = "",
+        Reason = "REASON"
+      }) => `[img]https://i.imgur.com/LdlyeRK.png[/img][divbox=antiquewhite][fimg=180,180]https://i.imgur.com/t3lfFCp.png[/fimg]
+[float=right][right]
+
+
+[font=Arial][size=150][b]San Andreas Judicial Branch[/b][/size]
+[size=120]Superior Court of San Andreas[/size][/font]
+[font=Cambria][size=95][i]"EQUAL JUSTICE UNDER LAW"[/i][/size][/font][/right][/float]
+
+[hr][/hr]
+[center][b][size=125]NOTICE OF REJECTION[/size][/b][/center]
+[hr][/hr]
+
+
+
+[center][font=Arial]IN THE SUPERIOR COURT OF SAN ANDREAS
+
+State of San Andreas v. ${Defendant}${CaseNumber ? `
+#25-CM-${CaseNumber}` : ""}
+
+The court has hereby rejected the above case on the ${getFormalDate()}.[/center]
+
+The Superior Court of San Andreas has reviewed your filing and the case has been rejected by the court for the reason specified below.
+
+${Reason}
+
+The court thanks you for the time spent on this filing, however, this situation will not be reviewed as it does not adhere to the guidelines set forth by the San Andreas Judicial Branch.
+
+[b]Respectfully,[/b]
+
+[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url]
+[/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
+    },
+
+    {
+      id: "protective_order",
+      label: "Protective Order",
+      fields: ["PartyA", "PartyB", "Organization", "include_org_clause"],
+      template: ({
+        PartyA = "Party A",
+        PartyB = "Party B",
+        Organization = "ORGANIZATION",
+        include_org_clause = "NO"
+      }) => {
+        const orgClause = include_org_clause === "YES" && Organization
+          ? `
+
+Due to the nature of the protectee's career in the ${Organization}, if at any time the protectee needs to make contact with the restrained party while on duty and in a formal capacity, neither party will be in violation of the order.`
+          : "";
+
+        return `[img]https://i.imgur.com/LdlyeRK.png[/img][divbox=antiquewhite][fimg=180,180]https://i.imgur.com/t3lfFCp.png[/fimg]
+[float=right][right]
+
+
+[font=Arial][size=150][b]San Andreas Judicial Branch[/b][/size]
+[size=120]Superior Court of San Andreas[/size][/font]
+[font=Cambria][size=95][i]"EQUAL JUSTICE UNDER LAW"[/i][/size][/font][/right][/float]
+
+[hr][/hr]
+[center][b][size=125]COURT ORDER[/size][/b][/center]
+[hr][/hr]
+
+
+
+[center][font=Arial]IN THE SUPERIOR COURT OF SAN ANDREAS
+
+${PartyA} v. ${PartyB}
+
+[b]A court order was issued in the above case on the ${getFormalDate()}.[/b][/center]
+
+It is hereby ordered that ${PartyB} has been formally restrained from ${PartyA} and cannot come within a 250 foot radius, follow, or make contact through phone, email, radio, or any other form of communication with the protectee. Furthermore, the restrained party cannot come within 250 feet of a home or property owned by the protectee or their place of employment unless for an emergency reason. If at any point prior to this order's expiration in 30 days, the restrained party violates any order within this form they are to be arrested and charged with;
+[list]
+[*]NM08 - Stalking
+[*]GM22 - Contempt of Court
+[/list]${orgClause}
+
+Should the restrained party to a court order wish to dispute either the basis or the terms of the court order, they have the right to request a hearing so that a judge may review the order to determine if it should either remain in effect, be extended, or become expired.
+
+[b]So ordered,[/b]
+
+[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url]
+[/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`;
+      }
+    },
+
+    {
+      id: "decree_of_annulment",
+      label: "Decree of Annulment",
+      fields: ["Petitioner", "Respondent"],
+      template: ({
+        Petitioner = "Petitioner",
+        Respondent = "Respondent"
+      }) => `[img]https://i.imgur.com/BkOsk1q.png[/img]
+[divbox=antiquewhite][fimg=180,180]https://i.imgur.com/t3lfFCp.png[/fimg]
+[float=right][right]
+
+[font=Arial][size=150][b]San Andreas Judicial Branch[/b][/size] 
+[size=120]Superior Court of San Andreas[/size][/font] 
+[font=Cambria][size=95][i]"EQUAL JUSTICE UNDER LAW"[/i][/size][/font][/right][/float]
+
+[hr][/hr] 
+[center][b][size=125]DECREE OF ANNULMENT[/size][/b][/center] 
+[hr][/hr]
+[center][font=Arial]
+IN THE SUPERIOR COURT OF SAN ANDREAS
+
+${Petitioner} v. ${Respondent}
+
+[b]A court order was issued in the above case on the ${getFormalDate()}.[/b][/center]
+
+The Court finds the ceremony having been entered into by the parties under circumstances which are recognized to be the valid basis for an annulment.
+
+The Court finds there to be no community assets or debts to be adjudicated by this Court nor was any child born to or adopted by Petitioner and Respondent, and no child is expected.
+
+Petitioners are hereby granted a Decree of Annulment, dissolving and declaring null and void the marriage that took place, and each is returned to the status of an unmarried person. Each party shall have set aside to them, as individuals, the debts they incurred and shall hold the other party harmless therefrom. Each party shall have affirmed to them as their sole and separate property, the property they brought to the union as individuals.
+
+[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url]
+[/font][/divbox]
+[img]https://i.imgur.com/LdlyeRK.png[/img]`
+    },
+
+    {
+      id: "standard_divorce_decree",
+      label: "Standard Divorce Decree",
+      fields: ["Petitioner", "Respondent", "DateOfMarriage", "MarriageLocation"],
+      template: ({
+        Petitioner = "Petitioner",
+        Respondent = "Respondent",
+        DateOfMarriage = "DATE OF MARRIAGE",
+        MarriageLocation = "LOCATION"
+      }) => `[img]https://i.imgur.com/LdlyeRK.png[/img]
+[divbox=antiquewhite][fimg=180,180]https://i.imgur.com/t3lfFCp.png[/fimg]
+[float=right][right]
+
+[font=Arial][size=150][b]San Andreas Judicial Branch[/b][/size] 
+[size=120]Superior Court of San Andreas[/size][/font] 
+[font=Cambria][size=95][i]"EQUAL JUSTICE UNDER LAW"[/i][/size][/font][/right][/float]
+
+[hr][/hr] 
+[center][b][size=125]DIVORCE DECREE[/size][/b][/center] 
+[hr][/hr]
+
+[center][font=Arial]
+IN THE SUPERIOR COURT OF SAN ANDREAS
+
+${Petitioner} v. ${Respondent}
+
+[b]A court order was issued in the above case on the ${getFormalDate()}.[/b][/center]
+
+The court, on the above date, has hereby decreed that the marriage solemnized on the [i]${DateOfMarriage}[/i] at [i]${MarriageLocation}[/i] between [i]${Petitioner}[/i], hereon referred to as Petitioner, and [i]${Respondent}[/i], hereon referred to as Respondent, be dissolved.
+
+The Court finds there to be no community assets or debts able to be adjudicated by this Court nor was any child born to or adopted by Petitioner and Respondent, and no child is expected.
+
+Petitioners are hereby granted a Divorce Decree, dissolving the marriage that took place and each is returned to the status of an unmarried person. Each party shall have set aside to them, as individuals, the debts they incurred and shall hold the other party harmless therefrom. Each party shall have affirmed to them as their sole and separate property, the property they brought to the union as individuals.
+
+It is hereby certified that the decree of divorce is made final and absolute.
+
+[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url]
+[/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
+    },
+
+    {
+      id: "transition_to_formal_criminal_trial",
+      label: "Transition to Formal Criminal Trial",
+      fields: ["Defendant"],
+      template: ({
+        Defendant = "DEFENDANT"
+      }) => `[img]https://i.imgur.com/LdlyeRK.png[/img][divbox=antiquewhite]
+[fimg=180,180]https://i.imgur.com/t3lfFCp.png[/fimg]
+[float=right][right][font=Arial][b]
+
+[size=150][font=Arial]San Andreas Judicial Branch[/font][/size][/b]
+[size=120][font=Arial]Superior Court of San Andreas[/font][/size]
+[size=95][font=Cambria][i]"EQUAL JUSTICE UNDER LAW"[/i][/font][/size][/font][/right][/float]
+
+[hr][/hr]
+[center][b][size=125]COURT DECISION[/size][/b][/center]
+[hr][/hr]
+
+
+
+[center][font=Arial]IN THE SUPERIOR COURT OF SAN ANDREAS
+
+State of San Andreas v. ${Defendant}
+
+[b]A decision was reached in the above case on the ${getFormalDate()}.[/b][/center]
+
+The court will be granting the prosecutions/defenses request to hear this as a [i]Formal Criminal Trial[/i].  We are rescinding the order for discovery due to the transition of this case from bench trial to formal criminal trial. As such both parties will be notified when they are ordered to provide any evidence to the court via a new [i]Order for Discovery[/i] and set timeline for progress. The court thanks all parties for their patience in this matter.
+
+At this time the court feels it imperative to give notice to the defendant on this case. As there is a limited availability and number of public defenders, we encourage those who can afford it to reach out to any private attorney for representation. It will be the responsibility of the defendant to retain representation privately or remain patient until a public defender becomes available.  
+
+[b]Respectfully,[/b]
+
+[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
+[i]Branch Administrator[/i]
+San Andreas Judicial Branch
+505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url]
+[/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`
+    }
+  ]
+};
+
+/* ---------- RENDERING / UI ---------- */
+
+function renderTemplateList() {
+  templateList.innerHTML = "";
+  const list = templatesByCategory[selectedCategory] || [];
+  if (!selectedTemplateId && list.length) selectedTemplateId = list[0].id;
+
+  list.forEach(t => {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.textContent = t.label;
+    btn.className = "template-btn" + (t.id === selectedTemplateId ? " active" : "");
+    btn.addEventListener("click", () => {
+      selectedTemplateId = t.id;
+      renderTemplateList();
+      updateFields();
+    });
+    templateList.appendChild(btn);
+  });
+}
+
+/* Show/hide helpers for special fields */
+function toggleCustomLocationVisibility() {
+  const hidden = document.getElementById("field_LocationType");
+  const wrapper = document.getElementById("locationOtherWrapper");
+  if (!hidden || !wrapper) return;
+  wrapper.style.display = hidden.value === "Other" ? "block" : "none";
+}
+
+function toggleOrganizationVisibility() {
+  const hidden = document.getElementById("field_include_org_clause");
+  const wrapper = document.getElementById("organizationWrapper");
+  if (!hidden || !wrapper) return;
+  wrapper.style.display = hidden.value === "YES" ? "block" : "none";
+}
+
+function updateFields() {
+  fieldsDiv.innerHTML = "";
+  const tmpl = (templatesByCategory[selectedCategory] || []).find(t => t.id === selectedTemplateId);
+  if (!tmpl) {
+    outputArea.value = "";
+    return;
+  }
+
+  tmpl.fields.forEach(field => {
+    const label = document.createElement("label");
+    const span = document.createElement("span");
+    span.textContent =
+      field === "CaseType" ? "Case Type" :
+      field === "CaseNumber" ? "Case Number" :
+      field === "notice_level" ? "Notice Level" :
+      field === "ChargeList" ? "Charge List" :
+      field === "PaymentReturnedToDefendant" ? "Payment Returned to Defendant" :
+      field === "CourtFees" ? "Court Fees" :
+      field === "requesting_dept" ? "Requesting Department" :
+      field === "Items" ? "Items or Records" :
+      field === "CopyTo" ? "Where to Send/Leave a Copy" :
+      field === "TrialTime" ? "Trial Time" :
+      field === "TrialDate" ? "Trial Date" :
+      field === "LocationType" ? "Location (City Hall or Other)" :
+      field === "LocationOther" ? "Custom Location" :
+      field === "Organization" ? "Organization" :
+      field === "Petitioner" ? "Petitioner" :
+      field === "Respondent" ? "Respondent" :
+      field === "DateOfMarriage" ? "Date of Marriage" :
+      field === "MarriageLocation" ? "Marriage Location" :
+      field === "PartyA" ? "Party A" :
+      field === "PartyB" ? "Party B" :
+      field === "include_org_clause" ? "Include Organization Clause" :
+      field === "CaseNumberTitle" ? "Case Number and Title" :
+      field === "IncidentDate" ? "Date of Incident" :
+      field === "EvidenceLinks" ? "Evidence Links (optional)" :
+      field === "Witnesses" ? "Key Witnesses (optional)" :
+      field;
+    label.appendChild(span);
+
+    /* Special: additional note for Appeal verdict decision */
+    if (field === "Decision" && selectedTemplateId === "appeal_issuance_of_verdict") {
+      const note = document.createElement("div");
+      note.style.fontSize = "11px";
+      note.style.marginTop = "2px";
+      note.style.marginBottom = "4px";
+      note.innerHTML =
+        'Verdict must include "It is with the above considerations that I move to [overturn, affirm, reverse, modify] the original ruling by the judge."<br><br>' +
+        "If reversing the original verdict, the judge must decide whether they are remanding the case back to the superior court or whether they are making the final ruling on the case within the court of appeals.";
+      label.appendChild(note);
+    }
+
+    /* CaseType toggle (BT/CM) */
+    if (field === "CaseType") {
+      const group = document.createElement("div");
+      group.className = "btcm-group";
+
+      const hidden = document.createElement("input");
+      hidden.type = "hidden";
+      hidden.id = "field_CaseType";
+      hidden.value = "BT";
+      label.appendChild(hidden);
+
+      const mkBtn = (text) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.textContent = text;
+        b.className = "btcm-btn" + (text === "BT" ? " active" : "");
+        b.addEventListener("click", () => {
+          hidden.value = text;
+          Array.from(group.children).forEach(ch => ch.classList.remove("active"));
+          b.classList.add("active");
+          generateOutput();
+        });
+        return b;
+      };
+
+      group.appendChild(mkBtn("BT"));
+      group.appendChild(mkBtn("CM"));
+
+      label.appendChild(group);
+      fieldsDiv.appendChild(label);
+      return;
+    }
+
+    /* Notice level toggle */
+    if (field === "notice_level") {
+      const group = document.createElement("div");
+      group.className = "btcm-group";
+
+      const hidden = document.createElement("input");
+      hidden.type = "hidden";
+      hidden.id = "field_notice_level";
+      hidden.value = "FIRST";
+      label.appendChild(hidden);
+
+      const options = ["FIRST", "SECOND", "THIRD AND FINAL"];
+
+      options.forEach((text, idx) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.textContent = text;
+        b.className = "btcm-btn" + (idx === 0 ? " active" : "");
+        b.addEventListener("click", () => {
+          hidden.value = text;
+          Array.from(group.children).forEach(ch => ch.classList.remove("active"));
+          b.classList.add("active");
+          generateOutput();
+        });
+        group.appendChild(b);
+      });
+
+      label.appendChild(group);
+      fieldsDiv.appendChild(label);
+      return;
+    }
+
+    /* Location type toggle (City Hall / Other) */
+    if (field === "LocationType") {
+      const group = document.createElement("div");
+      group.className = "btcm-group";
+
+      const hidden = document.createElement("input");
+      hidden.type = "hidden";
+      hidden.id = "field_LocationType";
+      hidden.value = "City Hall";
+      label.appendChild(hidden);
+
+      const options = ["City Hall", "Other"];
+
+      options.forEach((text, idx) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.textContent = text;
+        b.className = "btcm-btn" + (idx === 0 ? " active" : "");
+        b.addEventListener("click", () => {
+          hidden.value = text;
+          Array.from(group.children).forEach(ch => ch.classList.remove("active"));
+          b.classList.add("active");
+          toggleCustomLocationVisibility();
+          generateOutput();
+        });
+        group.appendChild(b);
+      });
+
+      label.appendChild(group);
+      fieldsDiv.appendChild(label);
+      return;
+    }
+
+    /* Include organization clause toggle */
+    if (field === "include_org_clause") {
+      const group = document.createElement("div");
+      group.className = "btcm-group";
+
+      const hidden = document.createElement("input");
+      hidden.type = "hidden";
+      hidden.id = "field_include_org_clause";
+      hidden.value = "NO";
+      label.appendChild(hidden);
+
+      const options = ["NO", "YES"];
+
+      options.forEach((text, idx) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.textContent = text;
+        b.className = "btcm-btn" + (idx === 0 ? " active" : "");
+        b.addEventListener("click", () => {
+          hidden.value = text;
+          Array.from(group.children).forEach(ch => ch.classList.remove("active"));
+          b.classList.add("active");
+          toggleOrganizationVisibility();
+          generateOutput();
+        });
+        group.appendChild(b);
+      });
+
+      label.appendChild(group);
+      fieldsDiv.appendChild(label);
+      return;
+    }
+
+    /* Requesting department toggle (LSPD / LSSD) */
+    if (field === "requesting_dept") {
+      const group = document.createElement("div");
+      group.className = "btcm-group";
+
+      const hidden = document.createElement("input");
+      hidden.type = "hidden";
+      hidden.id = "field_requesting_dept";
+      hidden.value = "Los Santos Police Department";
+      label.appendChild(hidden);
+
+      const options = [
+        "Los Santos Police Department",
+        "Los Santos Sheriffs Department"
+      ];
+
+      options.forEach((text, idx) => {
+        const b = document.createElement("button");
+        b.type = "button";
+        b.textContent = text;
+        b.className = "btcm-btn" + (idx === 0 ? " active" : "");
+        b.addEventListener("click", () => {
+          hidden.value = text;
+          Array.from(group.children).forEach(ch => ch.classList.remove("active"));
+          b.classList.add("active");
+          generateOutput();
+        });
+        group.appendChild(b);
+      });
+
+      label.appendChild(group);
+      fieldsDiv.appendChild(label);
+      return;
+    }
+
+    /* Special dynamic area: Case Log charges */
+    if (field === "ChargesBBCode" && selectedTemplateId === "case_log_criminal") {
+      const hidden = document.createElement("input");
+      hidden.type = "hidden";
+      hidden.id = "field_ChargesBBCode";
+      label.appendChild(hidden);
+
+      const container = document.createElement("div");
+      container.id = "caseLogChargesContainer";
+      label.appendChild(container);
+
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.textContent = "Add charge";
+      btn.style.marginTop = "6px";
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        addCaseLogChargeRow();
+      });
+      label.appendChild(btn);
+
+      fieldsDiv.appendChild(label);
+      // start with one empty row
+      addCaseLogChargeRow();
+      return;
+    }
+
+    /* Special dynamic area: Verdict charges */
+    if (field === "VerdictChargesBBCode" && selectedTemplateId === "issuance_of_verdict") {
+      const hidden = document.createElement("input");
+      hidden.type = "hidden";
+      hidden.id = "field_VerdictChargesBBCode";
+      label.appendChild(hidden);
+
+      const hiddenMode = document.createElement("input");
+      hiddenMode.type = "hidden";
+      hiddenMode.id = "field_VerdictMode";
+      label.appendChild(hiddenMode);
+
+      const container = document.createElement("div");
+      container.id = "verdictChargesContainer";
+      label.appendChild(container);
+
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.textContent = "Add charge to verdict";
+      btn.style.marginTop = "6px";
+      btn.addEventListener("click", (e) => {
+        e.preventDefault();
+        addVerdictChargeRow();
+      });
+      label.appendChild(btn);
+
+      fieldsDiv.appendChild(label);
+      addVerdictChargeRow();
+      return;
+    }
+
+    // Hidden VerdictMode label should not render anything extra
+    if (field === "VerdictMode") {
+      const hidden = document.createElement("input");
+      hidden.type = "hidden";
+      hidden.id = "field_VerdictMode";
+      label.appendChild(hidden);
+      fieldsDiv.appendChild(label);
+      return;
+    }
+
+    /* Normal input / textarea fields */
+
+    const isMulti =
+      field === "message" ||
+      field === "Message" ||
+      field === "decision" ||
+      field === "Decision" ||
+      field === "body" ||
+      field === "charge_list" ||
+      field === "ChargeList" ||
+      field === "Items" ||
+      field === "Crimes" ||
+      field === "Reason" ||
+      field === "EvidenceLinks" ||
+      field === "Witnesses";
+
+    const input = isMulti ? document.createElement("textarea") : document.createElement("input");
+    input.id = "field_" + field;
+
+    if (!isMulti && (field === "StartDate" || field === "EndDate")) {
+      input.type = "date";
+    }
+
+    /* BBCode toolbar for textareas where it makes sense */
+    if (
+      field === "message" ||
+      field === "Message" ||
+      field === "decision" ||
+      field === "Decision" ||
+      field === "Reason"
+    ) {
+      const toolbar = makeBBToolbar(input);
+      label.appendChild(toolbar);
+    }
+
+    label.appendChild(input);
+
+    /* Additional bullet helper buttons for Items and Crimes */
+    if (field === "Items" || field === "Crimes") {
+      const bulletBtn = document.createElement("button");
+      bulletBtn.type = "button";
+      bulletBtn.textContent = "[*] Add Bullet";
+      bulletBtn.className = "btcm-btn";
+      bulletBtn.style.marginTop = "4px";
+      bulletBtn.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (input.value && !input.value.endsWith("\n")) {
+          input.value += "\n";
+        }
+        input.value += "[*] ";
+        generateOutput();
+      });
+      label.appendChild(bulletBtn);
+    }
+
+    /* Hide Custom Location wrapper by default */
+    if (field === "LocationOther") {
+      label.id = "locationOtherWrapper";
+      label.style.display = "none";
+    }
+
+    /* Hide Organization wrapper by default */
+    if (field === "Organization") {
+      label.id = "organizationWrapper";
+      label.style.display = "none";
+    }
+
+    input.addEventListener("input", () => {
+      // If defendant changes, update verdict charge lines so name is updated
+      if (field === "Defendant" && selectedTemplateId === "issuance_of_verdict") {
+        updateVerdictChargesHidden();
+      }
+      generateOutput();
+    });
+    fieldsDiv.appendChild(label);
+  });
+
+  toggleCustomLocationVisibility();
+  toggleOrganizationVisibility();
+  generateOutput();
+}
+
+function generateOutput() {
+  const tmpl = (templatesByCategory[selectedCategory] || []).find(t => t.id === selectedTemplateId);
+  if (!tmpl) return;
+  const values = {};
+  tmpl.fields.forEach(f => {
+    const el = document.getElementById("field_" + f);
+    values[f] = el ? el.value : "";
+  });
+  try {
+    outputArea.value = tmpl.template(values);
+  } catch (e) {
+    outputArea.value = "Error generating template.";
+    console.error(e);
+  }
+}
+
+/* ---------- CASE LOG EVIDENCE & WITNESS HELPER PATCH ---------- */
+
+(function () {
+  if (!fieldsDiv) return;
+
+  function findEvidenceTextarea() {
+    return (
+      document.getElementById("field_EvidenceLinks") ||
+      document.getElementById("field_EvidenceSubmitted") ||
+      document.getElementById("field_Evidence")
+    );
+  }
+
+  function findWitnessTextarea() {
+    return (
+      document.getElementById("field_Witnesses") ||
+      document.getElementById("field_KeyWitnesses") ||
+      document.getElementById("field_WitnessesLinks")
+    );
+  }
+
+  function buildEvidenceHelper(evidenceTextarea) {
+    if (!evidenceTextarea) return;
+    if (document.getElementById("evidenceHelper")) return;
+
+    evidenceTextarea.style.display = "none";
+
+    const wrapper = document.createElement("div");
+    wrapper.id = "evidenceHelper";
+    wrapper.style.marginTop = "6px";
+    wrapper.style.padding = "6px";
+    wrapper.style.border = "1px dashed #ccc";
+    wrapper.style.borderRadius = "4px";
+
+    const title = document.createElement("div");
+    title.textContent = "Evidence Submitted (links and exhibit ranges)";
+    title.style.fontWeight = "bold";
+    title.style.marginBottom = "4px";
+    wrapper.appendChild(title);
+
+    const hint = document.createElement("div");
+    hint.style.fontSize = "11px";
+    hint.style.marginBottom = "6px";
+    hint.textContent =
+      "Enter the topic link and how many exhibits are in that post. The text will auto-generate as Prosecution/Defense/Under Seal #1-N.";
+    wrapper.appendChild(hint);
+
+    const types = [
+      "Prosecution Exhibits",
+      "Defense Exhibits",
+      "Exhibits Under Seal"
+    ];
+
+    const allRows = [];
+
+    function recomputeEvidenceBBCode() {
+      const lines = [];
+      allRows.forEach(rowInfo => {
+        const { type, urlInput, countInput } = rowInfo;
+        const url = urlInput.value.trim();
+        const countVal = countInput.value.trim();
+        const count = parseInt(countVal, 10);
+        if (!url || !count || count <= 0) return;
+
+        const label = `${type} #1-${count}`;
+        lines.push(`[*][url=${url}]${label}[/url]`);
+      });
+      evidenceTextarea.value = lines.join("\n");
+      generateOutput();
+    }
+
+    function makeTypeSection(type) {
+      const section = document.createElement("div");
+      section.style.marginBottom = "8px";
+
+      const heading = document.createElement("div");
+      heading.textContent = type;
+      heading.style.fontWeight = "bold";
+      heading.style.fontSize = "12px";
+      heading.style.marginBottom = "2px";
+      section.appendChild(heading);
+
+      const rowsContainer = document.createElement("div");
+      rowsContainer.className = "evidence-rows";
+      rowsContainer.style.display = "flex";
+      rowsContainer.style.flexDirection = "column";
+      rowsContainer.style.gap = "4px";
+      section.appendChild(rowsContainer);
+
+      function addRow() {
+        const row = document.createElement("div");
+        row.style.display = "grid";
+        row.style.gridTemplateColumns = "2fr 1fr auto";
+        row.style.columnGap = "4px";
+        row.style.alignItems = "center";
+
+        const urlInput = document.createElement("input");
+        urlInput.type = "text";
+        urlInput.placeholder = "Topic URL";
+        urlInput.className = "ev-url";
+
+        const countInput = document.createElement("input");
+        countInput.type = "number";
+        countInput.min = "1";
+        countInput.value = "1";
+        countInput.className = "ev-count";
+
+        const removeBtn = document.createElement("button");
+        removeBtn.type = "button";
+        removeBtn.textContent = "✕";
+        removeBtn.style.fontSize = "11px";
+        removeBtn.style.padding = "2px 6px";
+
+        row.appendChild(urlInput);
+        row.appendChild(countInput);
+        row.appendChild(removeBtn);
+        rowsContainer.appendChild(row);
+
+        const rowInfo = { type, urlInput, countInput, row };
+        allRows.push(rowInfo);
+
+        urlInput.addEventListener("input", recomputeEvidenceBBCode);
+        countInput.addEventListener("input", recomputeEvidenceBBCode);
+        removeBtn.addEventListener("click", function () {
+          rowsContainer.removeChild(row);
+          const idx = allRows.indexOf(rowInfo);
+          if (idx >= 0) allRows.splice(idx, 1);
+          recomputeEvidenceBBCode();
+        });
+
+        recomputeEvidenceBBCode();
+      }
+
+      const addBtn = document.createElement("button");
+      addBtn.type = "button";
+      addBtn.textContent = "Add " + type + " link";
+      addBtn.className = "btcm-btn";
+      addBtn.style.marginTop = "2px";
+
+      addBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        addRow();
+      });
+
+      section.appendChild(addBtn);
+      addRow();
+      return section;
+    }
+
+    types.forEach(t => wrapper.appendChild(makeTypeSection(t)));
+
+    evidenceTextarea.parentNode.insertBefore(wrapper, evidenceTextarea.nextSibling);
+  }
+
+  function buildWitnessHelper(witnessTextarea) {
+    if (!witnessTextarea) return;
+    if (document.getElementById("witnessHelper")) return;
+
+    witnessTextarea.style.display = "none";
+
+    const wrapper = document.createElement("div");
+    wrapper.id = "witnessHelper";
+    wrapper.style.marginTop = "6px";
+    wrapper.style.padding = "6px";
+    wrapper.style.border = "1px dashed " +
+      "#ccc";
+    wrapper.style.borderRadius = "4px";
+
+    const title = document.createElement("div");
+    title.textContent = "Key Witnesses (links to witness request posts)";
+    title.style.fontWeight = "bold";
+    title.style.marginBottom = "4px";
+    wrapper.appendChild(title);
+
+    const hint = document.createElement("div");
+    hint.style.fontSize = "11px";
+    hint.style.marginBottom = "6px";
+    hint.textContent =
+      "Each link will appear as Prosecution/Defense Key Witnesses in a bullet list.";
+    wrapper.appendChild(hint);
+
+    const types = ["Prosecution Key Witnesses", "Defense Key Witnesses"];
+    const allRows = [];
+
+    function recomputeWitnessBBCode() {
+      const lines = [];
+      allRows.forEach(rowInfo => {
+        const { type, urlInput } = rowInfo;
+        const url = urlInput.value.trim();
+        if (!url) return;
+        lines.push(`[*][url=${url}]${type}[/url]`);
+      });
+      witnessTextarea.value = lines.join("\n");
+      generateOutput();
+    }
+
+    function makeTypeSection(type) {
+      const section = document.createElement("div");
+      section.style.marginBottom = "8px";
+
+      const heading = document.createElement("div");
+      heading.textContent = type;
+      heading.style.fontWeight = "bold";
+      heading.style.fontSize = "12px";
+      heading.style.marginBottom = "2px";
+      section.appendChild(heading);
+
+      const rowsContainer = document.createElement("div");
+      rowsContainer.className = "witness-rows";
+      rowsContainer.style.display = "flex";
+      rowsContainer.style.flexDirection = "column";
+      rowsContainer.style.gap = "4px";
+      section.appendChild(rowsContainer);
+
+      function addRow() {
+        const row = document.createElement("div");
+        row.style.display = "grid";
+        row.style.gridTemplateColumns = "1fr auto";
+        row.style.columnGap = "4px";
+        row.style.alignItems = "center";
+
+        const urlInput = document.createElement("input");
+        urlInput.type = "text";
+        urlInput.placeholder = "Topic URL";
+        urlInput.className = "wit-url";
+
+        const removeBtn = document.createElement("button");
+        removeBtn.type = "button";
+        removeBtn.textContent = "✕";
+        removeBtn.style.fontSize = "11px";
+        removeBtn.style.padding = "2px 6px";
+
+        row.appendChild(urlInput);
+        row.appendChild(removeBtn);
+        rowsContainer.appendChild(row);
+
+        const rowInfo = { type, urlInput, row };
+        allRows.push(rowInfo);
+
+        urlInput.addEventListener("input", recomputeWitnessBBCode);
+        removeBtn.addEventListener("click", function () {
+          rowsContainer.removeChild(row);
+          const idx = allRows.indexOf(rowInfo);
+          if (idx >= 0) allRows.splice(idx, 1);
+          recomputeWitnessBBCode();
+        });
+
+        recomputeWitnessBBCode();
+      }
+
+      const addBtn = document.createElement("button");
+      addBtn.type = "button";
+      addBtn.textContent = "Add " + type + " link";
+      addBtn.className = "btcm-btn";
+      addBtn.style.marginTop = "2px";
+
+      addBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        addRow();
+      });
+
+      section.appendChild(addBtn);
+      addRow();
+      return section;
+    }
+
+    types.forEach(t => wrapper.appendChild(makeTypeSection(t)));
+
+    witnessTextarea.parentNode.insertBefore(wrapper, witnessTextarea.nextSibling);
+  }
+
+  function maybeEnhanceCaseLog() {
+    if (typeof selectedTemplateId === "undefined") return;
+    if (selectedTemplateId !== "case_log_criminal") return;
+
+    const ev = findEvidenceTextarea();
+    const wit = findWitnessTextarea();
+    buildEvidenceHelper(ev);
+    buildWitnessHelper(wit);
+  }
+
+  const observer = new MutationObserver(() => {
+    maybeEnhanceCaseLog();
+  });
+  observer.observe(fieldsDiv, { childList: true, subtree: true });
+
+  document.addEventListener("DOMContentLoaded", maybeEnhanceCaseLog);
+})();
+
+/* ---------- INITIALIZATION ---------- */
+
+for (let cat in templatesByCategory) {
+  const opt = document.createElement("option");
+  opt.value = cat;
+  opt.textContent = cat;
+  categorySelect.appendChild(opt);
+}
+categorySelect.value = selectedCategory;
+
+categorySelect.addEventListener("change", () => {
+  selectedCategory = categorySelect.value;
+  const list = templatesByCategory[selectedCategory] || [];
+  selectedTemplateId = list.length ? list[0].id : "";
+  renderTemplateList();
+  updateFields();
+});
+
+document.getElementById("copyBtn").addEventListener("click", () => {
+  outputArea.select();
+  document.execCommand("copy");
+  alert("Copied to clipboard!");
+});
+
+document.getElementById("clearBtn").addEventListener("click", () => {
+  const tmpl = (templatesByCategory[selectedCategory] || []).find(t => t.id === selectedTemplateId);
+  if (!tmpl) return;
+  tmpl.fields.forEach(f => {
+    const el = document.getElementById("field_" + f);
+    if (el && el.type !== "hidden") el.value = "";
+  });
+  // clear dynamic containers
+  const caseContainer = document.getElementById("caseLogChargesContainer");
+  if (caseContainer) caseContainer.innerHTML = "";
+  const verdictContainer = document.getElementById("verdictChargesContainer");
+  if (verdictContainer) verdictContainer.innerHTML = "";
+  if (caseContainer && selectedTemplateId === "case_log_criminal") addCaseLogChargeRow();
+  if (verdictContainer && selectedTemplateId === "issuance_of_verdict") addVerdictChargeRow();
+  generateOutput();
+});
+
+/* First render */
+renderTemplateList();
+updateFields();
+</script>
+
+</body>
+</html>
