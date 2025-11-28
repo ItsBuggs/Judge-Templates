@@ -151,6 +151,8 @@
   <textarea id="signatureBlock" rows="4" placeholder="[img]...your signature here...[/img]"></textarea>
 </label>
 
+<datalist id="chargeCodesList"></datalist>
+
 <div class="layout">
   <div class="sidebar">
     <label>
@@ -275,8 +277,8 @@ const charges = {
     description: "Operating a vehicle at speeds exceeding speed limits by 21 - 40 km/h on public roads.",
     jailMonths: 0,
     fine: 2000,
-    driver: "3rd Demerit6 Hours",
-    trucker: "3rd Demerit6 Hours",
+    driver: "3rd Demerit, 6 Hours",
+    trucker: "3rd Demerit, 6 Hours",
     weapon: "Intact",
     pilot: "Intact"
   },
@@ -286,8 +288,8 @@ const charges = {
     description: "Operating a vehicle at speeds exceeding speed limits by 41 - 80 km/h on public roads.",
     jailMonths: 0,
     fine: 3500,
-    driver: "3rd Demerit6 Hours",
-    trucker: "3rd Demerit6 Hours",
+    driver: "3rd Demerit, 6 Hours",
+    trucker: "3rd Demerit, 6 Hours",
     weapon: "Intact",
     pilot: "Intact"
   },
@@ -313,8 +315,8 @@ const charges = {
 San Andreas defines yielding as slowing down before a traffic control device and making sure that the intersection is clear. The first vehicle at an intersection has right of way.`,
     jailMonths: 0,
     fine: 500,
-    driver: "3rd Demerit6 Hours",
-    trucker: "3rd Demerit6 Hours",
+    driver: "3rd Demerit, 6 Hours",
+    trucker: "3rd Demerit, 6 Hours",
     weapon: "Intact",
     pilot: "Intact"
   },
@@ -324,8 +326,8 @@ San Andreas defines yielding as slowing down before a traffic control device and
     description: `Failure to yield and pull off to the side in order to make way for emergency vehicles with flashing lights and or sirens, following or impeding them without valid and legal justification.`,
     jailMonths: 0,
     fine: 1000,
-    driver: "3rd Demerit6 Hours",
-    trucker: "3rd Demerit6 Hours",
+    driver: "3rd Demerit, 6 Hours",
+    trucker: "3rd Demerit, 6 Hours",
     weapon: "Intact",
     pilot: "Intact"
   },
@@ -335,8 +337,8 @@ San Andreas defines yielding as slowing down before a traffic control device and
     description: "Driving a motor vehicle without the proper licensing physically on your person.",
     jailMonths: 0,
     fine: 500,
-    driver: "3rd Demerit6 Hours",
-    trucker: "3rd Demerit6 Hours",
+    driver: "3rd Demerit, 6 Hours",
+    trucker: "3rd Demerit, 6 Hours",
     weapon: "Intact",
     pilot: "Intact"
   },
@@ -346,8 +348,8 @@ San Andreas defines yielding as slowing down before a traffic control device and
     description: " Failing to use reasonable care while operating a vehicle, which could lead to personal injuries and damages to one or more vehicles.",
     jailMonths: 0,
     fine: 1500,
-    driver: "3rd Demerit6 Hours",
-    trucker: "3rd Demerit6 Hours",
+    driver: "3rd Demerit, 6 Hours",
+    trucker: "3rd Demerit, 6 Hours",
     weapon: "Intact",
     pilot: "Intact"
   },
@@ -357,8 +359,8 @@ San Andreas defines yielding as slowing down before a traffic control device and
     description: "Blocking an intersection by stopping, parking, or otherwise obstructing the area.",
     jailMonths: 0,
     fine: 500,
-    driver: "3rd Demerit6 Hours",
-    trucker: "3rd Demerit6 Hours",
+    driver: "3rd Demerit, 6 Hours",
+    trucker: "3rd Demerit, 6 Hours",
     weapon: "Intact",
     pilot: "Intact"
   },
@@ -372,8 +374,8 @@ A vehicle operating on public roads must meet following criteria:[list]Must have
 Utility vehicle operators are expected to be conscious about road accessibility and to operate with as little harm to traffic flow by keeping to the right most lane possible, driving within safe speeds, and waving traffic around them in the event they are causing a disturbance. Utility vehicles causing traffic issues may face fines for misuse. Utility Vehicles are defined as Money Transporters, Delivery Services, Waste Transports, Tractors, etc.`,
     jailMonths: 0,
     fine: 500,
-    driver: "3rd Demerit6 Hours",
-    trucker: "3rd Demerit6 Hours",
+    driver: "3rd Demerit, 6 Hours",
+    trucker: "3rd Demerit, 6 Hours",
     weapon: "Intact",
     pilot: "Intact"
   },
@@ -383,8 +385,8 @@ Utility vehicle operators are expected to be conscious about road accessibility 
     description: `It is unlawful for a vehicle to go through a toll without paying the toll or other charges on any vehicular crossing or toll highway. Drivers may not drive through a toll on another driver's cost. Its is the responsibility of the occupants of the vehicle (I.E. the driver or passengers) to pay the toll on each crossing. Vehicles with a special permit from the San Andreas State Government may cross a toll without paying, but must present the permit to the toll booth operator.`,
     jailMonths: 0,
     fine: 3000,
-    driver: "3rd Demerit6 Hours",
-    trucker: "3rd Demerit6 Hours",
+    driver: "3rd Demerit, 6 Hours",
+    trucker: "3rd Demerit, 6 Hours",
     weapon: "Intact",
     pilot: "Intact"
   },
@@ -394,8 +396,8 @@ Utility vehicle operators are expected to be conscious about road accessibility 
     description: ` No person shall drive, move, or leave standing upon a city road, county road, highway, or in an off-street publicly or privately owned parking facility unless the vehicle is registered. An unregistered vehicle is defined as a vehicle that has not been legally purchased from a dealership vendor or third person party, and which is not registered with the State of San Andreas.`,
     jailMonths: 0,
     fine: 1000,
-    driver: "3rd Demerit6 Hours",
-    trucker: "3rd Demerit6 Hours",
+    driver: "3rd Demerit, 6 Hours",
+    trucker: "3rd Demerit, 6 Hours",
     weapon: "Intact",
     pilot: "Intact"
   },
@@ -405,8 +407,8 @@ Utility vehicle operators are expected to be conscious about road accessibility 
     description: `No person shall drive a motor vehicle at such a slow speed as to impede or block the normal and reasonable movement of traffic except when reduced speed is necessary for safe operation or in compliance with law or except when the vehicle is temporarily unable to maintain a greater speed due to a combination of the weight of the vehicle and the grade of the highway.`,
     jailMonths: 0,
     fine: 2000,
-    driver: "If Used6 Hours",
-    trucker: "If Used6 Hours",
+    driver: "If Used, 6 Hours",
+    trucker: "If Used, 6 Hours",
     weapon: "Intact",
     pilot: "Intact"
   },
@@ -573,8 +575,8 @@ Individuals who exceed any of the limits listed above are liable for prosecution
     description: `The intentional deception of a victim by means including but not limited to a false display of information, identity, or documents with the intent of personal or financial gain causing greater than or equal to $5,000 in damages.`,
     jailMonths: 20,
     fine: 1500,
-    driver: "If Used6 Hours",
-    trucker: "If Used6 Hours",
+    driver: "If Used, 6 Hours",
+    trucker: "If Used, 6 Hours",
     weapon: "Revoked",
     pilot: "Intact"
   },
@@ -585,8 +587,8 @@ Individuals who exceed any of the limits listed above are liable for prosecution
 [list]Defaces with graffiti or other inscribed material.[*]Damages.[*]Destroys.[*]Damages/Destroys with intent to commit further crime.[/list]`,
     jailMonths: 15,
     fine: 1000,
-    driver: "If Used6 Hours",
-    trucker: "If Used6 Hours",
+    driver: "If Used, 6 Hours",
+    trucker: "If Used, 6 Hours",
     weapon: "Intact",
     pilot: "Intact"
   },
@@ -596,8 +598,8 @@ Individuals who exceed any of the limits listed above are liable for prosecution
     description: "A non law enforcement official attempting of fulfilling the enforcement of laws.",
     jailMonths: 15,
     fine: 1000,
-    driver: "If Used6 Hours",
-    trucker: "If Used6 Hours",
+    driver: "If Used, 6 Hours",
+    trucker: "If Used, 6 Hours",
     weapon: "Revoked",
     pilot: "Intact"
   },
@@ -607,8 +609,8 @@ Individuals who exceed any of the limits listed above are liable for prosecution
     description: "Failure to comply with a lawful command by a law enforcement officer, including when he requests you to identify who you are during the course of an investigation.",
     jailMonths: 20,
     fine: 1000,
-    driver: "If Used6 Hours",
-    trucker: "If Used6 Hours",
+    driver: "If Used, 6 Hours",
+    trucker: "If Used, 6 Hours",
     weapon: "Intact",
     pilot: "Intact"
   },
@@ -629,10 +631,10 @@ Individuals who exceed any of the limits listed above are liable for prosecution
     description: "Giving fake information, answers, driver's licenses, car registration or other documents to a police officer.",
     jailMonths: 20,
     fine: 1000,
-    driver: "If Used6 Hours",
-    trucker: "If Used6 Hours",
+    driver: "If Used, 6 Hours",
+    trucker: "If Used, 6 Hours",
     weapon: "Revoked",
-    pilot: "If UsedRevoked"
+    pilot: "If Used, Revoked"
   },
   "GM13": {
     code: "GM13",
@@ -640,8 +642,8 @@ Individuals who exceed any of the limits listed above are liable for prosecution
     description: "Knowingly and willingly threatening the life of or bodily harm onto another person, their family, relatives or loved ones.",
     jailMonths: 20,
     fine: 1000,
-    driver: "If Used6 Hours",
-    trucker: "If Used6 Hours",
+    driver: "If Used, 6 Hours",
+    trucker: "If Used, 6 Hours",
     weapon: "Revoked",
     pilot: "Intact"
   },
@@ -651,10 +653,10 @@ Individuals who exceed any of the limits listed above are liable for prosecution
     description: `If any person interferes, delays, obstructs, lies or deliberately conceals information from law enforcement officers or any other government official that is conducting a lawful investigation and/or questioning then they are to be regarded as obstructing justice.`,
     jailMonths: 25,
     fine: 1000,
-    driver: "If Used6 Hours",
-    trucker: "If Used6 Hours",
+    driver: "If Used, 6 Hours",
+    trucker: "If Used, 6 Hours",
     weapon: "Intact",
-    pilot: "If UsedRevoked"
+    pilot: "If Used, Revoked"
   },
   "GM15": {
     code: "GM15",
@@ -662,8 +664,8 @@ Individuals who exceed any of the limits listed above are liable for prosecution
     description: "Causing severe harm or neglect of any animal. It does not include the legal hunting of wild game animals.",
     jailMonths: 25,
     fine: 1000,
-    driver: "If Used6 Hours",
-    trucker: "If Used6 Hours",
+    driver: "If Used, 6 Hours",
+    trucker: "If Used, 6 Hours",
     weapon: "Revoked",
     pilot: "Intact"
   },
@@ -760,8 +762,8 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
     description: `Any violation of parole conditions agreed upon prior to release which includes, but are not limited to, committing of misdemeanors, felonies, failure to adhere to parole protocols, damage or removal of tracking equipment, failure to attend meetings, giving false information.`,
     jailMonths: 30,
     fine: 10000,
-    driver: "If Used6 Hours",
-    trucker: "If Used6 Hours",
+    driver: "If Used, 6 Hours",
+    trucker: "If Used, 6 Hours",
     weapon: "Revoked",
     pilot: "Intact"
   },
@@ -816,7 +818,7 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
     fine: 2000,
     driver: "Intact",
     trucker: "Intact",
-    weapon: "If Used Revoked",
+    weapon: "If Used, Revoked",
     pilot: "Intact"
   },
 
@@ -827,8 +829,8 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
     description: "The attempt or fulfillment of causing a riot.",
     jailMonths: 45,
     fine: 2500,
-    driver: "If Used6 Hours",
-    trucker: "If Used6 Hours",
+    driver: "If Used, 6 Hours",
+    trucker: "If Used, 6 Hours",
     weapon: "Intact",
     pilot: "Intact"
   },
@@ -838,8 +840,8 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
     description: `The crime of “rioting” or “participating in a riot” occurs when two (2) or more people acting together do any of the following without authority of law: use force of violence, disturb the public peace, and threaten to use force or violence with immediate power to execute such actions.`,
     jailMonths: 30,
     fine: 2000,
-    driver: "If Used6 Hours",
-    trucker: "If Used6 Hours",
+    driver: "If Used, 6 Hours",
+    trucker: "If Used, 6 Hours",
     weapon: "Intact",
     pilot: "Intact"
   },
@@ -857,18 +859,23 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "NM04": {
     code: "NM04",
     title: "Stalking",
-    description: "Repeated unwanted contact or communications causing a person to fear for their safety, except for lawful investigations.",
+    description: `[list=A]Knowingly making someone else feel unsafe through repeated and unwanted contact or communications such to a degree as to make oneself fear for the safety of their persons.
+[list=1]“contact or communications” for the purposes of section A shall be defined as:
+[list]Following an individual through use of automobiles, aircraft, boats, on foot, or other such similar methods.
+[*]Using Email, Telephone, SMS, Mail, Notes, or in person communication.
+[*]Watching one's home, workplace, or any location where the individual being followed may be.[/list][/list]
+[*]Notwithstanding the provisions of section A of the charge, the charge shall not be misconstrued as to prevent the legitimate and lawful following of persons for the purposes of reporting a crime, private detective work by a licensed body, legitimate law enforcement activities, or other such activities a reasonable person would not otherwise consider to be a violation of section A[/list]`,
     jailMonths: 30,
     fine: 2500,
-    driver: "If Used6 Hours",
-    trucker: "If Used6 Hours",
+    driver: "If Used, 6 Hours",
+    trucker: "If Used, 6 Hours",
     weapon: "Revoked",
     pilot: "Revoked"
   },
   "NM05": {
     code: "NM05",
     title: "Public Intoxication",
-    description: "Being intoxicated in public to the point of being unable to care for one’s own safety or being a nuisance.",
+    description: "Being intoxicated in public where you are unable to care for your own safety and or are a nuisance.",
     jailMonths: 15,
     fine: 0,
     driver: "Intact",
@@ -879,7 +886,20 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "NM06": {
     code: "NM06",
     title: "Trespassing",
-    description: "Entering or remaining on private property or designated government public service property without permission, after notice of trespass, or without lawful purpose.",
+    description: `Every person who commits any of the following acts is guilty of Trespassing:
+[list=1]Entering and/or remaining on private property without permission from the property owner or a licensed manager.
+[*]Entering and/or remaining on government property designed for public services* after receiving a verbal or written notice of trespass**.
+[*]Entering and/or remaining on government property without lawful permission.[/list]
+[spoiler=Definition: "Government property designed for public services"]
+[list=A]Mechanic shops (bays and waiting areas)
+[*]Hospital lobbies
+[*]City hall front desks
+[*]Police station front lobbies
+[*]Prison Facilities
+[*]Public markets[/list][/spoiler]
+[i]*The public services area is defined as the space where the public is required to be present to receive services. If management, high command, or law enforcement officers (LEOs) reasonably request an individual to leave due to threatening behavior, causing a nuisance, or disrupting services, and the individual refuses to leave or returns to the area, they are guilty of trespassing.
+- - - -
+**Verbal/Written Notice of Trespass:** LEOs may issue a trespassing notice if deemed necessary. If this notice is disregarded (by remaining on or returning to the property), the individual is guilty of trespassing.[/i]`,
     jailMonths: 15,
     fine: 1500,
     driver: "Intact",
@@ -890,7 +910,7 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "NM07": {
     code: "NM07",
     title: "Prostitution, Pimping or Pandering",
-    description: "Engaging in sex for payment or associated pimping/pandering conduct.",
+    description: "The practice or occupation of engaging in sex with someone for payment.",
     jailMonths: 25,
     fine: 1000,
     driver: "Intact",
@@ -901,29 +921,36 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "NM08": {
     code: "NM08",
     title: "Abuse of Government Public Safety Radio Frequencies or Hotlines",
-    description: "Knowingly misusing public safety radio or emergency hotlines for non-legitimate purposes.",
+    description: `Any person who knowingly misuses, abuses, disrupts, impedes, or otherwise interferes with and obstructs a transmission over a public safety radio frequency, or uses a government hotline that is intended for emergency assistance with a purpose or intention that is not contacting the government with a legitimate concern or ushering for immediate assistance.`,
     jailMonths: 10,
     fine: 1500,
     driver: "Intact",
     trucker: "Intact",
     weapon: "Intact",
-    pilot: "If Used3 Days"
+    pilot: "If Used, 3 Days"
   },
   "NM09": {
     code: "NM09",
     title: "Harassment",
-    description: "Repeated unwelcome actions intended to scare, annoy, or cause substantial emotional distress, including through SMS or social media.",
+    description: `[list=A]Willfully and knowingly performing repeat unwelcome actions against a single individual or group that are intended or designed to scare, annoy, seriously alarm, cause substantial emotional distress to, or create a generally unpleasant situation, without any legitimate or lawful purpose.
+[list=1]For the purposes of Section A, “emotional distress” shall be defined as to cause Anxiety, Sorrow, or Emotional Pain[/list]
+[*]Harassment, as defined in section A of this charge, shall also be unlawful when done through the use of SMS messaging or social media, such as LifeInvader.[/list]`,
     jailMonths: 20,
     fine: 2000,
-    driver: "If Used6 Hours",
-    trucker: "If Used6 Hours",
-    weapon: "If UsedRevoked",
-    pilot: "If UsedRevoked"
+    driver: "If Used, 6 Hours",
+    trucker: "If Used, 6 Hours",
+    weapon: "If Used, Revoked",
+    pilot: "If Used, Revoked"
   },
   "NM10": {
     code: "NM10",
     title: "Disturbing the Peace",
-    description: "Engaging in disruptive public behavior such as loud noise, climbing on vehicles, tackling, horn misuse, or crowding, meeting at least two listed criteria.",
+    description: `A person is disturbing the peace if within public property, they are found to have performed at least two of the following:
+[list=a]shouted, screeched or otherwise made noise beyond normal conversation;
+[*]ran, jumped, climbed or otherwise sat on top of motor vehicles, stationary or otherwise;
+[*]while running around or near other individuals tripped, or intentionally tackled another person;
+[*]without a clear danger of traffic collision, or while stationary make use of the horn of their motor vehicle;
+[*]together with other individuals placed themselves in close proximity around a single individual so as to restrict their movement.[/list]`,
     jailMonths: 10,
     fine: 1000,
     driver: "Intact",
@@ -936,185 +963,204 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "VM01": {
     code: "VM01",
     title: "Operating a Vehicle without a Valid License",
-    description: "Operating a vehicle without the appropriate driver’s or trucker’s license; CityBee rentals are exempt from license requirement.",
+    description: `Operating a vehicle without possessing the proper driver's license; or trucker's license for vehicles 5,000 kg and over. Anyone operating a rental CityBee shall be exempt from requiring a drivers license while traveling on public roadways.`,
     jailMonths: 10,
     fine: 2000,
-    driver: "Suspend6 Hours",
-    trucker: "Suspend6 Hours",
+    driver: "Suspend, 6 Hours",
+    trucker: "Suspend, 6 Hours",
     weapon: "Intact",
     pilot: "Intact"
   },
   "VM02": {
     code: "VM02",
     title: "Operating a Vehicle with a Suspended License",
-    description: "Operating a vehicle while driving privileges are revoked or suspended.",
+    description: "Operating a vehicle when driving privileges have been revoked/suspended.",
     jailMonths: 25,
     fine: 1500,
-    driver: "Suspend6 Hours",
-    trucker: "If Used6 Hours",
+    driver: "Suspend, 6 Hours",
+    trucker: "If Used, 6 Hours",
     weapon: "Intact",
     pilot: "Intact"
   },
   "VM03": {
     code: "VM03",
     title: "Reckless Operation of a Road or Marine Vehicle",
-    description: "Intentional disregard for life or property through operation of a road or marine vehicle.",
+    description: "Intentional disregard for life and/or property through the operation of a road or marine vehicle.",
     jailMonths: 20,
     fine: 3000,
-    driver: "Suspend6 Hours",
-    trucker: "Suspend6 Hours",
+    driver: "Suspend, 6 Hours",
+    trucker: "Suspend, 6 Hours",
     weapon: "Intact",
     pilot: "Intact"
   },
   "VM05": {
     code: "VM05",
     title: "Drunk, Impaired, or Distracted Driving",
-    description: "Operating a vehicle while intoxicated over 0.08 BAC, under impairing substances, or distracted so as to be unsafe.",
+    description: `Operating any type of vehicle when intoxicated with a blood alcohol percentage above 0.08%, under the influence any substance that impairs judgement and/or reaction time, or engaging in an activity which distracts the driver from driving safely.`,
     jailMonths: 30,
     fine: 2000,
-    driver: "Suspend6 Hours",
-    trucker: "Suspend6 Hours",
+    driver: "Suspend, 6 Hours",
+    trucker: "Suspend, 6 Hours",
     weapon: "Intact",
     pilot: "Intact"
   },
   "VM06": {
     code: "VM06",
     title: "Street Competition",
-    description: "Planned or organized illegal street contests such as races or drift contests.",
+    description: "Planned, organized and otherwise premeditated illegal street contests. These include races, drift contests, etc.",
     jailMonths: 30,
     fine: 2000,
-    driver: "Suspend6 Hours",
-    trucker: "Suspend6 Hours",
+    driver: "Suspend, 6 Hours",
+    trucker: "Suspend, 6 Hours",
     weapon: "Intact",
     pilot: "Intact"
   },
   "VM07": {
     code: "VM07",
     title: "Hit and Run",
-    description: "Causing an accident with property damage and fleeing without attempting to exchange details.",
+    description: "Causing an accident that resulted in property damage, then failing to attempt exchanging identifying details with the involved parties by fleeing from it.",
     jailMonths: 15,
     fine: 2500,
-    driver: "Suspend6 Hours",
-    trucker: "Suspend6 Hours",
+    driver: "Suspend, 6 Hours",
+    trucker: "Suspend, 6 Hours",
     weapon: "Intact",
     pilot: "Suspended Pending Investigation"
   },
   "VM08": {
     code: "VM08",
     title: "Vehicle Registration Fraud",
-    description: "Operating, possessing, or selling a vehicle with counterfeit or wrong license plates.",
+    description: "Operating, possessing, or selling a vehicle with counterfeit license plates, or license plates belonging to another vehicle.",
     jailMonths: 15,
     fine: 2000,
-    driver: "Suspend6 Hours",
-    trucker: "Suspend6 Hours",
+    driver: "Suspend, 6 Hours",
+    trucker: "Suspend, 6 Hours",
     weapon: "Intact",
     pilot: "Intact"
   },
   "VM09": {
     code: "VM09",
     title: "Operation of a Vehicle without a License Plate",
-    description: "Operating a vehicle without a valid license plate while committing another criminal act.",
+    description: "Operating a vehicle without a valid state-issued license plate during the commission of another criminal act.",
     jailMonths: 10,
     fine: 1750,
-    driver: "Suspend 6 Hours",
-    trucker: "Suspend 6 Hours",
+    driver: "Suspend, 6 Hours",
+    trucker: "Suspend, 6 Hours",
     weapon: "Intact",
     pilot: "Intact"
   },
   "VF01": {
     code: "VF01",
     title: "Evading an Officer",
-    description: "Willfully fleeing or attempting to elude a pursuing law enforcement officer while operating a vehicle or bicycle; all willful occupants may be liable.",
+    description: `Any person who, while operating a standard road vehicle, off-road vehicle, or bicycle, willfully flees or otherwise attempts to elude a pursuing law enforcement officer, is guilty of Evading an Officer.
+
+All occupants of a vehicle are liable to be charged with VF01 if they willfully partake in the act.`,
     jailMonths: 60,
     fine: 3000,
-    driver: "Suspend12 Hours",
-    trucker: "Suspend12 Hours",
+    driver: "Suspend, 12 Hours",
+    trucker: "Suspend, 12 Hours",
     weapon: "Revoked",
-    pilot: "If UsedRevoked"
+    pilot: "If Used, Revoked"
   },
   "VF02": {
     code: "VF02",
     title: "Felony Hit and Run",
-    description: "Causing an accident with bodily injury or death and failing to stay, render aid, notify services, or remain for questioning as required.",
+    description: `Causing an accident that resulted in bodily injury or death, then any of:
+[list=a]Failing to remain on-scene with the victim and rendering aid where possible.
+[*]Failing to notify both law enforcement and medical emergency services
+[*]Failing to remain for questioning by a law enforcement officer unless one fails to respond within 20 minutes[/list]`,
     jailMonths: 75,
     fine: 3000,
-    driver: "Suspend12 Hours",
-    trucker: "Suspend12 Hours",
+    driver: "Suspend, 12 Hours",
+    trucker: "Suspend, 12 Hours",
     weapon: "Revoked",
-    pilot: "If UsedRevoked"
+    pilot: "If Used, Revoked"
   },
   "VF03": {
     code: "VF03",
     title: "Operating a Chop Shop",
-    description: "Owning or operating a chop shop that profits from illegal modification sales.",
+    description: "Owning or operating a 'Chop Shop' which profits off of illegal modification sales.",
     jailMonths: 60,
     fine: 4000,
-    driver: "If Used12 Hours",
-    trucker: "If Used12 Hours",
+    driver: "If Used, 12 Hours",
+    trucker: "If Used, 12 Hours",
     weapon: "Revoked",
     pilot: "Intact"
   },
   "VF04": {
     code: "VF04",
     title: "Felony Public Endangerment",
-    description: "Placing the public in acute danger or major risk to public safety with a motor vehicle, firearm, or similar.",
+    description: "Placing the public in acute danger and or putting a major risk to public safety through unsafe operation of a motor vehicle, firearm, etc.",
     jailMonths: 60,
     fine: 3000,
-    driver: "Suspend12 Hours",
-    trucker: "Suspend12 Hours",
+    driver: "Suspend, 12 Hours",
+    trucker: "Suspend, 12 Hours",
     weapon: "Revoked",
-    pilot: "If Used14 Days"
+    pilot: "If Used, 14 Days"
   },
 
-  // DRUG CHARGES
+  // DRUG CHARGES //
+
   "DM01": {
     code: "DM01",
     title: "Possession of a Schedule I Controlled Substance",
-    description: "Possessing any Schedule I controlled substance with a high potential for abuse and no accepted medical use, including heroin, methamphetamine, cocaine, or crack-cocaine.",
+    description: `Possessing any Schedule I controlled substance, which is a drug or other substance that has a high potential for abuse and no currently accepted medical use, including and limited to:
+[list]Heroin
+[*]Methamphetamine (Meth)
+[*]Cocaine
+[*]Crack-Cocaine
+[/list]`,
     jailMonths: 20,
     fine: 2500,
     driver: "Intact",
     trucker: "Intact",
     weapon: "Intact",
-    pilot: "If UsedRevoked"
+    pilot: "If Used, Revoked"
   },
   "DM02": {
-    code: "DM02",
-    title: "Possession of a Schedule II Controlled Substance",
-    description: "Possessing any Schedule II controlled substance with a moderate potential for abuse and no accepted medical use, including LSD or MDMA.",
-    jailMonths: 15,
-    fine: 2000,
-    driver: "Intact",
-    trucker: "Intact",
-    weapon: "Intact",
-    pilot: "If UsedRevoked"
+  code: "DM02",
+  title: "Possession of a Schedule II Controlled Substance",
+  description: `Possessing any Schedule II controlled substance, which is a drug or other substance that has a moderate potential for abuse and no currently accepted medical use, including and limited to:[list]Lysergic Acid Diethylamide (LSD)[*]MDMA (Ecstasy)[/list]`,
+  jailMonths: 15,
+  fine: 2000,
+  driver: "Intact",
+  trucker: "Intact",
+  weapon: "Intact",
+  pilot: "If Used, Revoked"
   },
   "DM03": {
     code: "DM03",
     title: "Possession of a Schedule III Controlled Substance",
-    description: "Possessing, without prescription or license, any Schedule III controlled substance such as cannabis, anabolic steroids, psilocybin, or methadone.",
+    description: `Possessing, without a valid medical prescription or medical license, any Schedule III controlled substance, which is a drug or other substance that has a low potential for abuse and some currently accepted medical use, including and limited to:
+[list]Cannabis (Marijuana)
+[*]Anabolic Steroids
+[*]Psilocybin
+[*]Methadone[/list]
+Possession of Cannabis in small amounts is applicable to GC06 - Possession of Cannabis.`,
     jailMonths: 10,
     fine: 1500,
     driver: "Intact",
     trucker: "Intact",
     weapon: "Intact",
-    pilot: "If UsedRevoked"
+    pilot: "If Used, Revoked"
   },
   "DM04": {
     code: "DM04",
     title: "Possession of a Controlled Substance while Armed",
-    description: "Possessing any controlled substance without prescription or license while armed with any firearm.",
+    description: "Possessing any controlled substance, without a valid medical prescription or medical license, whilst armed with any type of firearm.",
     jailMonths: 25,
     fine: 3000,
-    driver: "If Used6 Hours",
-    trucker: "If Used6 Hours",
+    driver: "If Used, 6 Hours",
+    trucker: "If Used, 6 Hours",
     weapon: "Revoked",
-    pilot: "If UsedRevoked"
+    pilot: "If Used, Revoked"
   },
   "DM05": {
     code: "DM05",
     title: "Possession of Drug Paraphernalia",
-    description: "Possessing equipment or material primarily intended for use with controlled substances, including certain chemical precursors.",
+    description: `Possessing any equipment, product, or material of any kind which is primarily intended or designed for use in manufacturing, compounding, converting, concealing, producing, processing, preparing, injecting, ingesting, inhaling, or otherwise introducing into the human body a controlled substance without the appropriate licensing. This includes, but is not limited to, controlled drug precursors, such as:
+[list]Lysergic Acid
+[*]Hydrochloric Acid (Muriatic Acid)
+[*]Toluene[/list]`,
     jailMonths: 15,
     fine: 1500,
     driver: "Intact",
@@ -1125,73 +1171,78 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "DM06": {
     code: "DM06",
     title: "Cultivation of a Controlled Substance",
-    description: "Gathering, growing, producing, or possessing plants or elements intended for creation of controlled substances without licensing.",
+    description: `Cultivating a controlled substance is defined as the gathering, growing, production, or possession of plants and/or other naturally occurring elements with the purpose of being used in the creation of controlled substances without the appropriate licensing.`,
     jailMonths: 30,
     fine: 3000,
-    driver: "If Used6 Hours",
-    trucker: "If Used6 Hours",
+    driver: "If Used, 6 Hours",
+    trucker: "If Used, 6 Hours",
     weapon: "Intact",
     pilot: "Suspended Pending Investigation"
   },
   "DF01": {
     code: "DF01",
     title: "Possession of a Controlled Substance with Intent of Sales",
-    description: "Possessing a controlled substance over 1 oz, or in an amount/packaging indicating intent to sell or deliver without licensing.",
+    description: `Possessing any controlled substance with an amount greater than 1 oz (28 g), or equal to 1 oz (28 g) or less in a way that would indicate use for sale and delivery, without the appropriate licensing.`,
     jailMonths: 45,
     fine: 3000,
-    driver: "If Used12 Hours",
-    trucker: "If Used12 Hours",
+    driver: "If Used, 12 Hours",
+    trucker: "If Used, 12 Hours",
     weapon: "Revoked",
     pilot: "Suspended Pending Investigation"
   },
   "DF02": {
     code: "DF02",
     title: "Sale of a Controlled Substance",
-    description: "Selling, exchanging, distributing, delivering, or giving away any controlled substance without licensing.",
+    description: "Selling, exchanging, bartering, giving away, distributing, or delivering a controlled substance to another person without the appropriate licensing.",
     jailMonths: 60,
     fine: 3000,
-    driver: "If Used12 Hours",
-    trucker: "If Used12 Hours",
+    driver: "If Used, 12 Hours",
+    trucker: "If Used, 12 Hours",
     weapon: "Revoked",
     pilot: "Suspended Pending Investigation"
   },
   "DF03": {
     code: "DF03",
     title: "Sale of Drug Paraphernalia",
-    description: "Selling, exchanging, or distributing drug paraphernalia or chemical precursors intended for controlled substances without licensing.",
+    description: `Selling, exchanging, bartering, giving away, distributing, or delivering any equipment, product, or material of any kind which is primarily intended or designed for use in manufacturing, compounding, converting, concealing, producing, processing, preparing, injecting, ingesting, inhaling, or otherwise introducing into the human body a controlled substance without the appropriate licensing. This includes, but is not limited to, controlled drug precursors, such as:
+[list]Lysergic Acid
+[*]Hydrochloric Acid (Muriatic Acid)
+[*]Toluene[/list]`,
     jailMonths: 45,
     fine: 2500,
-    driver: "If Used12 Hours",
-    trucker: "If Used12 Hours",
+    driver: "If Used, 12 Hours",
+    trucker: "If Used, 12 Hours",
     weapon: "Revoked",
     pilot: "Intact"
   },
   "DF04": {
     code: "DF04",
     title: "Trafficking a Controlled Substance",
-    description: "Possessing a controlled substance over 3 oz without licensing.",
+    description: "Possessing any controlled substance of an amount greater than 3 oz (84 g) without the appropriate licensing.",
     jailMonths: 60,
     fine: 3000,
-    driver: "If Used12 Hours",
-    trucker: "If Used12 Hours",
+    driver: "If Used, 12 Hours",
+    trucker: "If Used, 12 Hours",
     weapon: "Revoked",
     pilot: "Suspended Pending Investigation"
   },
   "DF05": {
     code: "DF05",
     title: "Manufacturing a Controlled Substance",
-    description: "Producing, preparing, converting, processing, or possessing chemicals for creating controlled substances without licensing.",
+    description: `Manufacturing a controlled substance is defined as the production, preparation, conversion, processing, or possession of chemicals with the purpose of being used in the creation of controlled substances without the appropriate licensing.`,
     jailMonths: 60,
     fine: 5000,
-    driver: "If Used12 Hours",
-    trucker: "If Used12 Hours",
+    driver: "If Used, 12 Hours",
+    trucker: "If Used, 12 Hours",
     weapon: "Revoked",
     pilot: "Suspended Pending Investigation"
   },
   "DF06": {
     code: "DF06",
     title: "Unlawful Administering of Drugs",
-    description: "Willfully poisoning food, drink, medicine, or water, or administering controlled substances or intoxicants against another’s wishes.",
+    description: `Every person who:
+[list=a]Willfully mingles any poison or harmful substance with any food, drink, medicine, or pharmaceutical product or who willfully places any poison or harmful substance in any spring, well, reservoir, or public water supply, where the person knows or should have known that the same would be taken by any human being to their injury.
+[*]Administers any controlled substance, anesthetic, or intoxicating agent, against the wishes of the receiving party.[/list]`,
     jailMonths: 45,
     fine: 3000,
     driver: "Intact",
@@ -1204,7 +1255,7 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "WM01": {
     code: "WM01",
     title: "Unlawful Brandishing of a Firearm or Weapon",
-    description: "Drawing, exhibiting, brandishing, or using a firearm or weapon without lawful reason.",
+    description: "Drawing, exhibiting, brandishing or using a firearm or weapon without a lawful reason.",
     jailMonths: 15,
     fine: 2000,
     driver: "Intact",
@@ -1215,7 +1266,8 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "WM02": {
     code: "WM02",
     title: "Possession of a Class 1 Firearm",
-    description: "Unlicensed or illegal possession of a Class 1 firearm, its parts, or ammunition (semi-automatic handgun).",
+    description: `Unlicensed or illegally possessing any type of CLASS 1 firearm, its parts, or its ammunition as defined by the State of Los Santos.
+[list]A Class 1 firearm is any type of semi-automatic handgun[/list]`,
     jailMonths: 30,
     fine: 2000,
     driver: "Intact",
@@ -1226,7 +1278,12 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "WM03": {
     code: "WM03",
     title: "Criminal Use of Weapon Modifications",
-    description: "Possessing or using illegal or crime-related weapon modifications such as extended magazines, scopes, or suppressors.",
+    description:`This charge shall apply to all weapon modifications including but not limited to: Extended Magazines, Modified Magazines, Modified Barrels, Gun-Mounted Flashlights, Compensators, Weapon-Mounted Sights, Weapon-Mounted Scopes, and Suppressors.
+
+When such modifications are either:
+[list=1]Used in the commission of a crime
+[*]Not eligible to be purchased through legal retailers in the State
+[*]If modifications are in their possession at the time one receives "WM02 - Possession of a Class 1 Firearm" or any Weapons Felony as defined by the penal code as "WFXX"[/list]`,
     jailMonths: 25,
     fine: 1500,
     driver: "Intact",
@@ -1237,51 +1294,66 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "WM04": {
     code: "WM04",
     title: "Possession of Illegal Body Armor",
-    description: "Possessing body armor not obtained from legal traders, except for listed employment or authorized exemptions.",
+    description: `Possessing illegal body armor not purchased or obtained through legal traders. Armor being kevlar, plates, steel, or even make-shift items intended to slow down or stop knives or bullets.
+[spoiler=Additional Exemptions]
+Exemptions to this are made for anybody who is employed and on duty with a government-funded agency when the use of the armor is legitimate and not being used in a crime or to aid the commission of a crime.
+
+Exemptions are also to be made if someone has received written authorization to carry body armor off duty for the reason of personal protection, and the body armor is not being used in the commission of a crime or to aid the commission of the crime.
+
+The San Andreas State Government shall reserve the right to issue said authorization, or to delegate authorization as required.
+[/spoiler]`,
     jailMonths: 20,
     fine: 2000,
-    driver: "If Used6 Hours",
-    trucker: "If Used6 Hours",
+    driver: "If Used, 6 Hours",
+    trucker: "If Used, 6 Hours",
     weapon: "Intact",
     pilot: "Intact"
   },
   "WM05": {
     code: "WM05",
     title: "Possession of Body Armor as a Felon",
-    description: "Possessing body armor while being a convicted felon or while committing a felony, with exemptions for authorized on-duty use.",
+    description: `Possessing any authentic worn item which has the primary intended purpose of providing bodily protection from any form of weaponry whilst either being a convicted felon or committing any felony.
+[spoiler=Additional Exemptions]
+Exemptions to this are made for anybody who is employed and on duty with a government-funded agency when the use of the armor is legitimate and not being used in a crime or to aid the commission of a crime.
+
+Exemptions are also to be made if someone has received written authorization to carry body armor off duty for the reason of personal protection, and the body armor is not being used in the commission of a crime or to aid the commission of the crime.
+
+The San Andreas State Government shall reserve the right to issue said authorization, or to delegate authorization as required. 
+[/spoiler]`,
     jailMonths: 25,
     fine: 2000,
-    driver: "If Used6 Hours",
-    trucker: "If Used6 Hours",
+    driver: "If Used, 6 Hours",
+    trucker: "If Used, 6 Hours",
     weapon: "Intact",
     pilot: "Intact"
   },
   "WF01": {
     code: "WF01",
     title: "Assault with a Deadly Weapon",
-    description: "Assaulting another person with a deadly weapon including firearms, melee weapons, or vehicles.",
+    description: "Assaulting another person with a so-called 'deadly weapon' which could include a gun, melee weapon, or a vehicle.",
     jailMonths: 45,
     fine: 3000,
-    driver: "If Used12 Hours",
-    trucker: "If Used12 Hours",
+    driver: "If Used, 12 Hours",
+    trucker: "If Used, 12 Hours",
     weapon: "Revoked",
     pilot: "Suspended Pending Investigation"
   },
   "WF02": {
     code: "WF02",
     title: "Shooting from a Vehicle (Drive-By)",
-    description: "Discharging a firearm or weapon from any vehicle or aircraft.",
+    description: "Discharging any type of firearm or weapon from a motorized or nonmotorized vehicle or aircraft.",
     jailMonths: 80,
     fine: 3000,
-    driver: "Suspend12 Hours",
-    trucker: "Suspend12 Hours",
+    driver: "Suspend, 12 Hours",
+    trucker: "Suspend, 12 Hours",
     weapon: "Revoked",
     pilot: "Suspended Pending Investigation"
   },
   "WF03": {
     code: "WF03",
     title: "Possession of a Class 2 Firearm",
-    description: "Unlicensed or illegal possession of a Class 2 firearm, its parts, or ammunition (automatic, lever action, or pump action).",
+    description: `Unlicensed or illegally possessing any type of CLASS 2 firearm, its parts, or its ammunition as defined by the State of Los Santos.
+[list]A Class 2 firearm is defined as any type of automatic, lever action, or pump action firearm.[/list]`,
     jailMonths: 60,
     fine: 3000,
     driver: "Intact",
@@ -1292,7 +1364,8 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "WF04": {
     code: "WF04",
     title: "Possession of a Class 3 Firearm",
-    description: "Unlicensed or illegal possession of a Class 3 firearm, its parts, or ammunition (sniper rifle, DMR, LMG, or handheld rocket/grenade launcher).",
+    description: `Unlicensed or illegally possessing any type of CLASS 3 firearm, its parts, or its ammunition as defined by the State of Los Santos.
+[list]A Class 3 firearm is defined as any type of sniper rifle, designated marksman rifle, light machine gun, or handheld rocket/grenade propelled launcher.[/list]`,
     jailMonths: 90,
     fine: 10000,
     driver: "Intact",
@@ -1303,7 +1376,8 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "WF05": {
     code: "WF05",
     title: "Possession of a Class 4 Firearm",
-    description: "Unlicensed or illegal possession of a Class 4 firearm, its parts, or ammunition (vehicle-mounted weapons, miniguns, rockets, etc.).",
+    description: `Unlicensed or illegally possessing any type of CLASS 4 firearm, its parts, or its ammunition as defined by the State of Los Santos.
+[list]A Class 4 firearm is defined as any vehicle-mounted weapon, whether automatic or semi-automatic in nature. Including but not limited to; vehicle-mounted weapons, miniguns, rockets.[/list]`,
     jailMonths: 120,
     fine: 20000,
     driver: "Intact",
@@ -1314,7 +1388,7 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "WF06": {
     code: "WF06",
     title: "Unlicensed transfer of firearms, ammunition and body armor",
-    description: "Sale, transfer, lending, giving, or buying of firearms, ammunition, or body armor without authorization from the FLD.",
+    description: `The sale, transfer, lending, giving or buying of registered and unregistered firearms, ammunition or body armor without authorization from the Firearms and Licensing Division of the Los Santos Police Department.`,
     jailMonths: 60,
     fine: 5000,
     driver: "Intact",
@@ -1325,11 +1399,11 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "WF07": {
     code: "WF07",
     title: "Firearms Trafficking",
-    description: "Possessing 5 or more illegal or unlicensed firearms at once, exceeding personal use.",
+    description: "A single individual in possession of 5 or more illegal or unlicensed firearms at one time exceeding personal use.",
     jailMonths: 60,
     fine: 4500,
-    driver: "If Used12 Hours",
-    trucker: "If Used12 Hours",
+    driver: "If Used, 12 Hours",
+    trucker: "If Used, 12 Hours",
     weapon: "Revoked",
     pilot: "Revoked"
   },
@@ -1338,33 +1412,33 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "GF01": {
     code: "GF01",
     title: "Child Endangerment",
-    description: "An act or omission that renders a child subject to psychological, emotional, or physical abuse.",
+    description: "An act or omission that renders a child to psychological, emotional or physical abuse.",
     jailMonths: 60,
     fine: 4000,
-    driver: "If Used12 Hours",
-    trucker: "If Used12 Hours",
+    driver: "If Used, 12 Hours",
+    trucker: "If Used, 12 Hours",
     weapon: "Revoked",
     pilot: "Intact"
   },
   "GF02": {
     code: "GF02",
     title: "Robbery",
-    description: "Taking property from another person without uncoerced consent.",
+    description: "Taking the property of another person off of them without uncoerced consent.",
     jailMonths: 50,
     fine: 2000,
-    driver: "If Used12 Hours",
-    trucker: "If Used12 Hours",
+    driver: "If Used, 12 Hours",
+    trucker: "If Used, 12 Hours",
     weapon: "Revoked",
     pilot: "Revoked"
   },
   "GF03": {
     code: "GF03",
     title: "Armed Robbery",
-    description: "Taking property from another person without uncoerced consent through use of a firearm or deadly weapon.",
+    description: "Taking the property of another person off of them without uncoerced consent through use of a firearm or deadly weapon.",
     jailMonths: 60,
     fine: 4000,
-    driver: "If Used12 Hours",
-    trucker: "If Used12 Hours",
+    driver: "If Used, 12 Hours",
+    trucker: "If Used, 12 Hours",
     weapon: "Revoked",
     pilot: "Revoked"
   },
@@ -1404,18 +1478,18 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "GF07": {
     code: "GF07",
     title: "Felony Fraud",
-    description: "Intentional deception causing more than $5,000 in damages for personal or financial gain.",
+    description: `The intentional deception of a victim by means including but not limited to a false display of information, identity, or documents with the intent of personal or financial gain causing greater than $5,000 in damages.`,
     jailMonths: 60,
     fine: 1000,
     driver: "Intact",
     trucker: "Intact",
     weapon: "Revoked",
-    pilot: "If UsedRevoked"
+    pilot: "If Used, Revoked"
   },
   "GF08": {
     code: "GF08",
     title: "Illegal Gambling",
-    description: "Running or participating in prohibited gambling games for value without a legal gambling license.",
+    description: `Dealing, playing, or conducting, games of faro, monte, roulette, lansquenet, rouge et noir, rondo, tan, fantan, seven-and-a-half, twenty-one, hokey pokey, or any banking or percentage game played with cards or dice," Razzle dazzle," card, dice games prohibited if played for money, credit, check, or anything of value. Establishments and their dealers/game hosts must possess a legal gambling license.`,
     jailMonths: 45,
     fine: 3000,
     driver: "Intact",
@@ -1426,7 +1500,7 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "GF09": {
     code: "GF09",
     title: "Embezzlement",
-    description: "Fraudulent appropriation of funds or property by a person to whom it was entrusted.",
+    description: "The fraudulent appropriation of funds or property owned by someone else.",
     jailMonths: 45,
     fine: 3000,
     driver: "Intact",
@@ -1437,40 +1511,40 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "GF10": {
     code: "GF10",
     title: "Grand Theft",
-    description: "Taking property without consent where value exceeds $5,000.",
+    description: "Taking the property of another person without consent of a value over $5,000.",
     jailMonths: 45,
     fine: 4000,
-    driver: "If Used12 Hours",
-    trucker: "If Used12 Hours",
+    driver: "If Used, 12 Hours",
+    trucker: "If Used, 12 Hours",
     weapon: "Revoked",
     pilot: "Revoked"
   },
   "GF11": {
     code: "GF11",
     title: "Grand Theft Auto",
-    description: "Taking another person’s vehicle without consent.",
+    description: "Taking someone else's vehicle without consent.",
     jailMonths: 60,
     fine: 7500,
-    driver: "Suspend12 Hours",
-    trucker: "Suspend12 Hours",
+    driver: "Suspend, 12 Hours",
+    trucker: "Suspend, 12 Hours",
     weapon: "Revoked",
     pilot: "Revoked"
   },
   "GF12": {
     code: "GF12",
     title: "Forgery or Counterfeiting",
-    description: "Making, altering, or copying seals, documents, or currency with intent to deceive or for personal gain.",
+    description: "Making, altering or copying seals, documents, currency with the intent to deceive or for personal gain.",
     jailMonths: 45,
     fine: 3000,
     driver: "Intact",
     trucker: "Intact",
     weapon: "Revoked",
-    pilot: "If UsedRevoked"
+    pilot: "If Used, Revoked"
   },
   "GF13": {
     code: "GF13",
     title: "Arson",
-    description: "Deliberately setting fire to property.",
+    description: "The criminal act of deliberately setting fire to property.",
     jailMonths: 45,
     fine: 1500,
     driver: "Intact",
@@ -1481,40 +1555,40 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "GF14": {
     code: "GF14",
     title: "False Impersonation",
-    description: "Impersonating another person to harm them or gain a benefit.",
+    description: "Impersonating another person in order to harm that person or gain a benefit.",
     jailMonths: 45,
     fine: 2000,
     driver: "Intact",
     trucker: "Intact",
     weapon: "Revoked",
-    pilot: "If UsedRevoked"
+    pilot: "If Used, Revoked"
   },
   "GF15": {
     code: "GF15",
     title: "Burglary",
-    description: "Illegally entering a building, vehicle, or other area with intent to commit a crime.",
+    description: "Illegally entering a building, vehicle, or other areas with the intent to commit a crime.",
     jailMonths: 60,
     fine: 1000,
-    driver: "If Used12 Hours",
-    trucker: "If Used12 Hours",
+    driver: "If Used, 12 Hours",
+    trucker: "If Used, 12 Hours",
     weapon: "Revoked",
     pilot: "Revoked"
   },
   "GF16": {
     code: "GF16",
     title: "Tampering with Evidence",
-    description: "Altering, concealing, falsifying, or destroying evidence with intent to interfere with an investigation.",
+    description: `An act in which a person alters, conceals, falsifies, or destroys evidence with the intent to interfere with an investigation (usually) by a law-enforcement, governmental, or regulatory authority.`,
     jailMonths: 45,
     fine: 3000,
-    driver: "If Used12 Hours",
-    trucker: "If Used12 Hours",
+    driver: "If Used, 12 Hours",
+    trucker: "If Used, 12 Hours",
     weapon: "Revoked",
     pilot: "Intact"
   },
   "GF17": {
     code: "GF17",
     title: "Rape",
-    description: "Intercourse by violence, force, fear, threat, or with a person incapable of consent.",
+    description: "Intercourse by violence, force, fear, threat and those who are incapable of giving consent.",
     jailMonths: 75,
     fine: 6000,
     driver: "Intact",
@@ -1525,7 +1599,11 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "GF18": {
     code: "GF18",
     title: "Racketeering",
-    description: "Engaging in a pattern of racketeering activity related to an enterprise within a one-year period.",
+    description: `A person who has committed ""at least two acts of racketeering activity"" drawn from any felony charge of the State of San Andreas —within a 1-year period can be charged with racketeering if such acts are related in one of four specified ways to an ""enterprise"".
+[list]”Enterprise” refers to any coordinated, cooperative or collaborative activity undertaken by two or more persons associated by fact, but not necessarily through a legal entity, with the intention of achieving financial or other material gain for the affiliated persons.
+[*]“Racketeering” refers to acquiring, establishing, operating an enterprise through illegal acts or with illegally derived income.
+[*]“Racketeering Activity” refers to the commitment or attempted commitment, a conspiracy to commit, or to intentionally aid, solicit, order, coerce or intimidate another person to commit any unlawful activities defined within the San Andreas Penal Code.
+[*]”Conspiracy” refers to an agreement between two or more persons to engage in an unlawful or criminal act, or an act that is innocent in itself but becomes unlawful when done by the combination of actors, at some point in the future.[/list]`,
     jailMonths: 60,
     fine: 3000,
     driver: "Intact",
@@ -1536,18 +1614,26 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "GF19": {
     code: "GF19",
     title: "Abuse or Desecration of Dead Human Body",
-    description: "Removing, concealing, disinterring, dismembering, or performing unauthorized practices with a dead human body.",
+    description: "A person is guilty of abuse or desecration of a dead human body if the person intentionally and unlawfully:\
+[list=a]removes, conceals, or destroys a dead human body or any part of it or Moves it from one location to another\
+[*]disinters a buried or otherwise interred dead human body, without authority of a government order.\
+[*]Interring a dead human body without the qualification of gravedigging and a death certificate copy.\
+dismembers a dead human body to any extent, or damages or detaches any part or portion of a dead human body.\
+[*]perform any form of practice with a dead human body without being a licensed medical practitioner.[/list]\
+[b]'Dead human body'[/b] includes any part of a human body in any stage of decomposition.",
     jailMonths: 70,
     fine: 3500,
-    driver: "Suspended12 Hours",
-    trucker: "Suspended12 Hours",
+    driver: "Suspended, 12 Hours",
+    trucker: "Suspended, 12 Hours",
     weapon: "Revoked",
-    pilot: "If UsedRevoked"
+    pilot: "If Used, Revoked"
   },
   "GF20": {
     code: "GF20",
     title: "Possession of Human Body Tissue",
-    description: "Possessing human body tissue without authorization from a licensed government institution.",
+    description: "'Human body tissue' makes up organs and other body parts.\
+\
+It is illegal to be in possession of any human tissue unless authorized by a government institution licensed to manage, storing and/or using human tissue.",
     jailMonths: 60,
     fine: 2000,
     driver: "Intact",
@@ -1558,7 +1644,9 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "GF21": {
     code: "GF21",
     title: "Prison Break",
-    description: "Attempting or succeeding in breaking in or out of jails or prisons, or aiding such attempts.",
+    description: `[list=a]Every individual arrested and booked for, charged with, or convicted of a misdemeanor or felony criminal charge who is confined in any county or city jail, prison, who attempts to break in or out, is guilty of GF-21 Prison Break.
+[*]Every person or persons who attempt to or successfully breaks into any form of containment facilities, such as county jail, city jail or prison, is guilty of GF-21 Prison Break.
+[*]If subsection (a)-(b) is committed with any type of force, the person or persons will be guilty of aggravated Prison Break, and any subsequent criminal charges.[/list]`,
     jailMonths: 60,
     fine: 5000,
     driver: "Intact",
@@ -1569,7 +1657,45 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "GF22": {
     code: "GF22",
     title: "Breach of Trust",
-    description: "Misusing confidential information gained through government employment beyond authorized role, outside protected whistleblowing.",
+    description: `[list=a]The offense of Breach of Trust occurs when a trustee exercises control over information gained during employment with a government agency in a manner that exceeds their authorized role.
+[*]It shall be unlawful for any trustee to disclose, transfer, or utilize entrusted information for personal gain or any purpose other than that for which it was entrusted.
+[*]Trustees shall not convert their limited control over entrusted information into full ownership while the information remains under their stewardship.[/list]
+[spoiler=Definitions]
+[list=a]Trustee: Any individual or entity entrusted with confidential information.
+[*]Trustor: The entity or person conferring confidential information to a trustee.
+[*]Government Agency: Shall be defined by the executive branch, with a changing list of organizations that evolves with time.
+[*]Exercising Control Over Information: Actions by a trustee that involve making decisions about the use, distribution, or modification of the confidential information that go beyond the scope of their authorized role. This includes, but is not limited to, unauthorized copying, altering, or retaining the information for purposes not sanctioned by the trustor.
+[*]Utilize Entrusted Information: The act of using confidential information for any purpose other than that for which it was entrusted. This includes, but is not limited to, using the information for personal gain, sharing it with unauthorized parties, or leveraging it for competitive advantage.[/list]
+[spoiler=Government Agency List]
+[list]San Andreas State Government
+[*]San Andreas Judicial Branch
+[*]Los Santos Police Department
+[*]Los Santos Sheriff Department
+[*]San Andreas Department of Correction
+[*]Los Santos Emergency Medical Service[/list]
+[/spoiler]
+[/spoiler]
+[spoiler=Whistleblower Protections]
+[list=a]Individuals who disclose sensitive information in good faith with the intent to uncover corruption or malfeasance by public officials shall not be immediately prosecuted or imprisoned.
+[*]Such individuals shall be subject to an on-the-record charge and trial to determine whether the disclosure was made in good faith and aligned with the intent to expose wrongdoing.
+[*]On-the-Record Charge: A formal accusation documented in public records, specifying the nature of the alleged offense and the circumstances of the disclosure.
+[*]Trial Process:
+[list=i]The accused whistleblower shall have the right to a fair and public hearing by an impartial tribunal.
+[*]Evidence shall be presented by both the prosecution and defense, with the opportunity for cross-examination.
+[*]The court shall consider the intent behind the disclosure, the relevance to uncovering corruption or malfeasance, and whether the disclosure was made in good faith.
+[*]The burden of proof lies with the prosecution to establish that the disclosure was not made in good faith and was not intended to expose wrongdoing.
+[*]If the court finds the disclosure was made in good faith and intended to uncover corruption or malfeasance, the individual shall not be convicted of breach of trust.[/list]
+[*]If the court determines that the individual was not trying to expose wrongdoing, they may be prosecuted for breach of trust.
+[*]Examples of disclosures that would not be considered exposing wrongdoing include, but are not limited to:
+[list=i]Disclosing confidential information for personal gain, such as selling information to a third party.
+[*]Sharing information with competitors or other unauthorized parties to gain a competitive advantage.
+[*]Leaking information out of spite or revenge against the trustor or another individual.
+[*]Disclosing information that is irrelevant to public interest or does not reveal any corruption or malfeasance.[/list][/list]
+[/spoiler]
+[spoiler=Enforcement]
+[list=a]Law enforcement agencies shall be empowered to investigate allegations of breach of trust. However they will not be empowered to apply this charge to individuals.
+[*]The burden of proof shall lie with the prosecution to establish the guilt of the accused beyond a reasonable doubt.[/list]
+[/spoiler]`,
     jailMonths: 60,
     fine: 10000,
     driver: "Intact",
@@ -1580,7 +1706,7 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "GF23": {
     code: "GF23",
     title: "Grand Sales Tax Evasion",
-    description: "Failing to remit sales tax where unpaid tax value is $50,000 or more.",
+    description: `Any person who, with or without intent to evade taxes, fails to report and pay sales tax at the time of sale, and instead of remitting it to the government, pockets it. The current sales tax in San Andreas is 5%. The total value of the tax has to be $50,000 or more for this charge to apply. (( Selling a car at one of the car markets or house by the script will automatically deduct 5% of the sale. ))`,
     jailMonths: 40,
     fine: 10000, // plus unpaid tax + 10%
     driver: "Intact",
@@ -1591,18 +1717,29 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "GF24": {
     code: "GF24",
     title: "Perjury",
-    description: "Knowingly providing false statements under oath in court or Congress with intent to mislead, as defined by statute.",
+    description: `[list=1]Saying or writing something that is not true with intent to mislead during an official proceeding, trial, sitting of a Congressional Committee, or while the House is in order and participating in a Congressional sitting, while under oath.
+[list=a]A person can only be guilty of perjury if they do any of the following while under oath.
+[*]Knowingly and willfully provides false statements or information to mislead a judge and/or jury in official proceedings for or during a trial.
+[*]Knowingly and willfully provides several inconsistent statements to mislead a judge and/or jury in official proceedings for or during a trial.
+[*]Knowingly and willfully signs an affidavit under oath with statements that meet the criteria for (a) or (b).
+[*]Knowingly and willfully provides a false statement or information to mislead Congress or a congressional committee.
+[*]Knowingly and willfully signs an affidavit under oath with statements that meet the criteria for all of the above.[/list]
+[*]For Section A, B, and C, a person can only be charged for perjury if the false statement provided is in direct relation to the trial and has the potential of affecting the outcome of the trial.
+[*]For Section D and E, a person can only be charged at the order of the Speaker of the House, the Chairperson of Congress, or the Prosecutor's Office.
+[/list]`,
     jailMonths: 60,
     fine: 3000,
     driver: "Intact",
     trucker: "Intact",
     weapon: "Revoked",
-    pilot: "If UsedRevoked"
+    pilot: "If Used, Revoked"
   },
   "GF25": {
     code: "GF25",
     title: "Felony Contempt of Court",
-    description: "Egregious or repeated willful disobedience of a court order or serious misconduct in the presence of a court.",
+    description: `Egregious or repeated willful disobedience to, or disregard of, a court order or any misconduct in the presence of a court, including but not limited to:
+[list=a]Any act of disrespect, disobedience, defiance, or interference by any person during a legal proceeding.
+[*]Willfully failing to preform a specific act in accordance with a valid court order.[/list]`,
     jailMonths: 60,
     fine: 5000,
     driver: "Intact",
@@ -1613,23 +1750,34 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "GF26": {
     code: "GF26",
     title: "Organized Assault on Government or Law Enforcement Operations",
-    description: "Willfully gathering in a group to carry out an armed assault targeting government or law enforcement operations, or acting as an accessory or conspirator.",
+    description: "Every person who, in a group of two or more, willfully gathers with the goal of carrying out an armed assault intended to intercept police, medical, or government work and resist, delay, obstruct, injure, or carry out the killing of any public officer, peace officer, or emergency medical technician in the discharge or attempt to discharge any duty of his or her office or employment.\
+[list=1]The statute may stand if the goal of carrying out an armed assault was successfully orchestrated or not. An attempt to carry out an assault would constitute willfully gathering with the goal of carrying out the assault, meaning there can be no 'attempted' modifier on this crime.\
+[*]Every person who operates as an accessory to the assault or attempted assault as outlined in the statute would be considered to be willfully gathering with co-conspirators, meaning there can be no 'accessory' modifier on this crime.\
+[*]As the charge is already considered to be targeting government officials, there can be no 'of a Government Employee' modifier on this crime.\
+[*]As this charge is defined as a group congregating to commit a subsequent crime, there can be no 'Aggravated' modifier on this crime.\
+[*]A person must not be in physical proximity to co-conspirators to be considered willfully gathering with them, they merely need to be coordinating to carry out the same assault.\
+[*]A person may be considered a participant if they have taken part in or been audience to written, verbal, visual, or electronic communication used to organize the assault.\
+[*]A person may be considered a willful participant if they have not faced any undue impediment to remove themselves from the situation and contact law enforcement.[/list]\
+[b]'peace officer'[/b] means any government employee tasked by their employer with the duty of carrying out law enforcement, correctional, or government-sanctioned security duties in the state.",
     jailMonths: 45,
     fine: 4000,
-    driver: "If Used12 Hours",
-    trucker: "If Used12 Hours",
-    weapon: "If Used Revoked",
+    driver: "If Used, 12 Hours",
+    trucker: "If Used, 12 Hours",
+    weapon: "If Used, Revoked",
     pilot: "Suspended Pending Investigation"
   },
   "GF27": {
     code: "GF27",
     title: "Incitement of Violence against a Peace Officer",
-    description: "Advocating the unlawful killing or injuring of a peace officer under circumstances likely to cause imminent harm.",
+    description: `Any person who advocates the willful and unlawful killing or injuring of a peace officer, with the specific intent to cause the willful and unlawful killing or injuring of a peace officer, and such advocacy is done at a time, place, and under circumstances in which the advocacy is likely to cause the imminent willful and unlawful killing or injuring of a peace officer.
+[list]If such advocacy does not cause the unlawful and willful killing or injuring of a peace officer then the crime is downgraded to "GM27 - Incitement of Violence against a Peace Officer"[/list]
+[b]"advocacy"[/b] means the direct incitement of others to cause the imminent willful and unlawful killing or injuring of a peace officer, and not the mere abstract teaching of a doctrine.
+[b]"peace officer"[/b] means any government employee tasked by their employer with the duty of carrying out law enforcement, correctional, or government-sanctioned security duties in the state.`,
     jailMonths: 45,
     fine: 4000,
     driver: "Intact",
     trucker: "Intact",
-    weapon: "If Used Revoked",
+    weapon: "If Used, Revoked",
     pilot: "Intact"
   },
 
@@ -1637,44 +1785,47 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "SF01": {
     code: "SF01",
     title: "Domestic Terrorism",
-    description: "Extreme violent activities intended to intimidate civilians or influence government policy or conduct by mass destruction, assassination, or kidnapping.",
+    description: `Extreme violent activities that appear to be intended 
+[list=i]to intimidate or coerce a civilian population; 
+[*]to influence the policy of a government by intimidation or coercion; or 
+[*]to affect the conduct of a government by mass destruction, assassination, or kidnapping.[/list]`,
     jailMonths: 120,
     fine: 15000,
-    driver: "If Used12 Hours",
-    trucker: "If Used12 Hours",
+    driver: "If Used, 12 Hours",
+    trucker: "If Used, 12 Hours",
     weapon: "Revoked",
     pilot: "Revoked"
   },
   "SF02": {
     code: "SF02",
     title: "Murder",
-    description: "Premeditated or non-premeditated killing of another person.",
+    description: "The premeditated or non-premeditated killing of another person.",
     jailMonths: 90,
     fine: 9000,
-    driver: "If Used12 Hours",
-    trucker: "If Used12 Hours",
+    driver: "If Used, 12 Hours",
+    trucker: "If Used, 12 Hours",
     weapon: "Revoked",
     pilot: "Revoked"
   },
   "SF03": {
     code: "SF03",
     title: "Involuntary or Vehicular Manslaughter",
-    description: "Killing another person without intent but in a negligent manner while violating law or safety legislation.",
+    description: `The killing of another person without intent but in a negligent manner using any type of techniques, objects, weapons, instrument, or by a vehicle or aircraft while contravening any other law or road/air safety legislation.`,
     jailMonths: 80,
     fine: 5500,
-    driver: "If Used12 Hours",
-    trucker: "If Used12 Hours",
+    driver: "If Used, 12 Hours",
+    trucker: "If Used, 12 Hours",
     weapon: "Revoked",
     pilot: "Revoked"
   },
   "SF04": {
     code: "SF04",
     title: "Kidnapping",
-    description: "Imprisoning or forcibly moving another person against their will within the county, state, or country.",
+    description: "The imprisonment or forcible acquisition of another person against their will and moving them within the county, state, or country.",
     jailMonths: 70,
     fine: 10000,
-    driver: "If Used12 Hours",
-    trucker: "If Used12 Hours",
+    driver: "If Used, 12 Hours",
+    trucker: "If Used, 12 Hours",
     weapon: "Revoked",
     pilot: "Revoked"
   },
@@ -1684,52 +1835,52 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
     description: "Inflicting cruel and unusual bodily harm upon another person.",
     jailMonths: 90,
     fine: 12000,
-    driver: "If Used12 Hours",
-    trucker: "If Used12 Hours",
+    driver: "If Used, 12 Hours",
+    trucker: "If Used, 12 Hours",
     weapon: "Revoked",
     pilot: "Revoked"
   },
   "SF06": {
     code: "SF06",
     title: "Possessing Destructive Devices or Explosives",
-    description: "Possessing bombs, incendiary devices, or other explosive devices intended for mass killing within an area.",
+    description: "Destructive devices and explosives are bombs, incendiary devices or any other home-made explosive or device intended for mass killing within an area.",
     jailMonths: 75,
     fine: 7000,
-    driver: "If Used12 Hours",
-    trucker: "If Used12 Hours",
+    driver: "If Used, 12 Hours",
+    trucker: "If Used, 12 Hours",
     weapon: "Revoked",
     pilot: "Revoked"
   },
   "SF07": {
     code: "SF07",
     title: "Bank Robbery",
-    description: "Entering or attempting to enter a bank with intent to deprive it of property of value, with or without force.",
+    description: `Entering or attempting to enter a bank with the intent to deprive it of any item with monetary value, with or without force. Attempted modifier does not apply to this charge.`,
     jailMonths: 70,
     fine: 10000,
-    driver: "If Used12 Hours",
-    trucker: "If Used12 Hours",
+    driver: "If Used, 12 Hours",
+    trucker: "If Used, 12 Hours",
     weapon: "Revoked",
     pilot: "Revoked"
   },
   "SF08": {
     code: "SF08",
     title: "Human Trafficking",
-    description: "Depriving or violating the personal liberty of another to obtain forced labor or services.",
+    description: "Deprivation or violation of the personal liberty of another with the intent to obtain forced labor or services.",
     jailMonths: 75,
     fine: 7000,
-    driver: "If Used12 Hours",
-    trucker: "If Used12 Hours",
+    driver: "If Used, 12 Hours",
+    trucker: "If Used, 12 Hours",
     weapon: "Revoked",
     pilot: "Revoked"
   },
   "SF09": {
     code: "SF09",
     title: "False Imprisonment of a Hostage",
-    description: "False imprisonment as in GM20 committed to protect from arrest, increase risk of harm, or use as a shield.",
+    description: `Every person who commits the offense of false imprisonment, as defined in GM-20, against a person for purposes of protection from arrest, which substantially increases the risk of harm to the victim, or for purposes of using the person as a shield.`,
     jailMonths: 70,
     fine: 10000,
-    driver: "If Used12 Hours",
-    trucker: "If Used12 Hours",
+    driver: "If Used, 12 Hours",
+    trucker: "If Used, 12 Hours",
     weapon: "Revoked",
     pilot: "Revoked"
   },
@@ -1738,95 +1889,110 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "AM01": {
     code: "AM01",
     title: "Negligent Operation of an Aircraft",
-    description: "Failing to use reasonable care while operating an aircraft, risking injury or property damage.",
+    description: "Failing to use reasonable care while operating an aircraft, which could lead to personal injuries and damages to property.",
     jailMonths: 35,
     fine: 4000,
     driver: "Intact",
     trucker: "Intact",
     weapon: "Intact",
-    pilot: "Suspended7 Days"
+    pilot: "Suspended, 7 Days"
   },
   "AM02": {
     code: "AM02",
     title: "Operating an Unregistered Aircraft",
-    description: "Operating an aircraft not registered with the San Andreas Aviation Administration.",
+    description: `No person shall operate an aircraft on a property under the authority of the San Andreas Aviation Administration unless the aircraft is registered. An unregistered aircraft is defined as a vehicle that has not been legally purchased from a dealership vendor or third person party, and which is not registered with the San Andreas Aviation Administration.`,
     jailMonths: 20,
     fine: 2000,
     driver: "Intact",
     trucker: "Intact",
     weapon: "Intact",
-    pilot: "Suspended3 Days"
+    pilot: "Suspended, 3 Days"
   },
   "AM03": {
     code: "AM03",
     title: "Operating an Aircraft without a License on your Person",
-    description: "Operating an aircraft without proper licensing on your person.",
+    description: "Operating an aircraft without the proper licensing on your person.",
     jailMonths: 10,
     fine: 1000,
     driver: "Intact",
     trucker: "Intact",
     weapon: "Intact",
-    pilot: "Suspended7 Days"
+    pilot: "Suspended, 7 Days"
   },
   "AM04": {
     code: "AM04",
     title: "Disrupting Airport/Aircraft Operations",
-    description: "Disrupting functional operations of airports or registered aircraft facilities, except for emergency aircraft.",
+    description: `Any person(s), with the exception of emergency response personnel or aircraft calling an emergency, disrupting the functional operations of an airport or air facilities, including access or operation of:
+[list]San Andreas Aviation Administration registered aircraft, mechanics, or pilots.
+[*]San Andreas Aviation Administration air traffic controllers, personnel, or registered vehicles.
+[*]Airport facilities, including but not limited to: parking, terminals, fueling, and mechanical areas, as well as taxiways, helipads, runways, or towers.
+[*]Other registered facilities for aircraft operation, such as helipads, designated by the San Andreas Aviation Administration.
+[*]Emergency, San Andreas State Government, or Military facilities.[/list]`,
     jailMonths: 45,
     fine: 5000,
-    driver: "If Used6 Hours",
-    trucker: "If Used6 Hours",
+    driver: "If Used, 6 Hours",
+    trucker: "If Used, 6 Hours",
     weapon: "Intact",
-    pilot: "If Used7 Days"
+    pilot: "If Used, 7 Days"
   },
   "AM05": {
     code: "AM05",
     title: "Operating an Aircraft without Proper Equipment",
-    description: "Operating an unflightworthy aircraft that fails minimum safety requirements or lacks required equipment and inspection.",
+    description: `Aircraft are operating without proper equipment and thus defined as unflightworthy when they fail to meet Minimum Safety Requirements. At the discretion of the handling officer, if your aircraft is deemed unsafe, it's registration may be suspended pending inspection by a certified official authorized by the San Andreas Aviation Administration.
+[list]An aircraft operating in San Andreas airspace must meet following criteria:
+[*]Aircraft must be equipped with front and rear white colored lights
+[*]Aircraft must be equipped with red port-side lights
+[*]Aircraft must be equipped with green starboard-side lights
+[*]Aircraft must be equipped with emergency equipment including flares and parachutes
+[*]Aircraft must have properly functioning instrumentation for fuel levels, altimeter, and air speed
+[*]Aircraft must not cause damage to the tarmac
+[*]Aircraft must have up-to-date inspection and mechanic logs as outlined by the San Andreas Aviation Administration.[/list]`,
     jailMonths: 10,
     fine: 1000,
     driver: "Intact",
     trucker: "Intact",
     weapon: "Intact",
-    pilot: "Suspended3 Days"
+    pilot: "Suspended, 3 Days"
   },
   "AM06": {
     code: "AM06",
     title: "Failure to Make Way for Emergency, State Government, or Military Aircraft",
-    description: "Failing to yield and give proper distance to emergency or government aircraft, or following/impeding them without justification.",
+    description: `Failure to yield and give proper distance in order to make way for Emergency or San Andreas State Governmental aircraft that has alerted you to their presence, or following and/or impeding them without valid and legal justification.`,
     jailMonths: 25,
     fine: 2500,
     driver: "Intact",
     trucker: "Intact",
     weapon: "Intact",
-    pilot: "Suspended3 Days"
+    pilot: "Suspended, 3 Days"
   },
   "AM07": {
     code: "AM07",
     title: "Operating an Aircraft in Controlled Airspace without Clearance",
-    description: "Operating an aircraft in controlled airspace without clearance from the relevant air traffic controller.",
+    description: "Operating an aircraft in any class of controlled airspace without clearance from the relevant Air Traffic Controller, including for takeoff, landing, and flying through.",
     jailMonths: 20,
     fine: 2500,
     driver: "Intact",
     trucker: "Intact",
     weapon: "Intact",
-    pilot: "Suspended7 Days"
+    pilot: "Suspended, 7 Days"
   },
   "AM08": {
     code: "AM08",
     title: "Violating a Restricted Airspace Order or Temporary Flight Restriction",
-    description: "Intentionally entering or remaining in restricted or temporarily restricted airspace without authorization.",
+    description: "Intentionally entering or remaining in restricted airspace or within the area of a temporary flight restriction, as designated by the San Andreas Aviation Administration, without authorization.\
+\
+Emergency, San Andreas State Government, and Military aircraft are exempt from Restricted Airspace Orders and Temporary Flight Restrictions.",
     jailMonths: 35,
     fine: 4000,
     driver: "Intact",
     trucker: "Intact",
     weapon: "Intact",
-    pilot: "Suspended7 Days"
+    pilot: "Suspended, 7 Days"
   },
   "AF01": {
     code: "AF01",
     title: "Reckless Operation of an Aircraft",
-    description: "Intentional disregard for life or property through the operation of an aircraft.",
+    description: "Intentional disregard for life and/or property through the operation of an aircraft.",
     jailMonths: 90,
     fine: 10000,
     driver: "Intact",
@@ -1837,7 +2003,7 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "AF02": {
     code: "AF02",
     title: "Committing a Crime Aboard an Aircraft in Flight",
-    description: "Committing any crime enumerated in the Penal Code while aboard an aircraft in flight.",
+    description: "Committing any crime, with the exception of the AM/AF designation, enumerated in the Penal Code while aboard any type of aircraft in flight.",
     jailMonths: 45,
     fine: 2500,
     driver: "Intact",
@@ -1848,7 +2014,7 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "AF03": {
     code: "AF03",
     title: "Operating an Aircraft without an Active License",
-    description: "Operating an aircraft without an active pilot’s license.",
+    description: "Operating an aircraft without possessing an active pilot's license.",
     jailMonths: 60,
     fine: 7000,
     driver: "Intact",
@@ -1859,7 +2025,10 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "AF04": {
     code: "AF04",
     title: "Failure to Obey Intercepting Military or Law Enforcement Aircraft/ATC Orders",
-    description: "Failing to obey instructions or maintain communication when intercepted by military or law enforcement aircraft or ATC.",
+    description: `Failure to do any of the following while being intercepted by a military or law enforcement aircraft or within the communication radius of an air traffic controller:
+[list]Adhering to all instructions relayed through the use of visual devices, visual signals, and radio communications from the intercepting aircraft or air traffic controller.
+[*]Attempting to establish radio communications with the intercepting aircraft or with the appropriate air traffic controller.
+[*]Continuing to comply and maintaining communication with intercepting aircraft or air traffic controller signals and instructions until positively released.[/list]`,
     jailMonths: 70,
     fine: 4000,
     driver: "Intact",
@@ -1870,7 +2039,11 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "AF05": {
     code: "AF05",
     title: "Violating a Prohibited Airspace Order",
-    description: "Intentionally entering or remaining in prohibited airspace without authorization.",
+    description: `Intentionally entering or remaining in Prohibited Airspace as designated by the San Andreas Aviation Administration.
+
+Emergency or San Andreas State Government aircraft are exempt from Prohibited Airspace Orders unless specified otherwise by the San Andreas Aviation Administration. Military aircraft do not require any clearance to enter Prohibited Airspace.
+
+Aircraft responding to emergency situations may violate Prohibited Airspace Orders, but must make every effort to inform the relevant Air Traffic Controller.`,
     jailMonths: 60,
     fine: 3500,
     driver: "Intact",
@@ -1881,7 +2054,7 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "AF06": {
     code: "AF06",
     title: "Transporting Dangerous Cargo",
-    description: "Carrying dangerous cargo on an aircraft without authorization by the SAAA.",
+    description: `No person may carry dangerous cargo on an aircraft without written authorization by the San Andreas Aviation Administration. Dangerous cargo is defined as any cargo that can combust, explode, implode, is regarded as a bio hazard risk, is radioactive, or cargo that could otherwise put the public at greater risk of serious injury or death if improperly handled.`,
     jailMonths: 45,
     fine: 2000,
     driver: "Intact",
@@ -1892,7 +2065,7 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "AF07": {
     code: "AF07",
     title: "Drunk, Impaired, or Distracted Flying",
-    description: "Operating an aircraft while intoxicated over 0.08 BAC, under impairing substances, or while dangerously distracted.",
+    description: `Operating any type of aircraft when intoxicated with a blood alcohol percentage above 0.08%, under the influence any substance that impairs judgement and/or reaction time, or engaging in an activity which distracts the captain from flying safely.`,
     jailMonths: 90,
     fine: 8000,
     driver: "Intact",
@@ -1903,7 +2076,7 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "AF08": {
     code: "AF08",
     title: "Aircraft Piracy",
-    description: "Seizing or exercising control of an aircraft by force, violence, threat, or intimidation with wrongful intent.",
+    description: "Seizing or exercising control of an aircraft by force, violence, threat of force or violence, or any form of intimidation, and with wrongful intent.",
     jailMonths: 120,
     fine: 15000,
     driver: "Intact",
@@ -1914,7 +2087,9 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "AF09": {
     code: "AF09",
     title: "Destruction of an Aircraft or Aircraft Facilities",
-    description: "Willfully damaging, destroying, or sabotaging aircraft or facilities, tampering with components, or placing destructive devices so as to endanger safety.",
+    description: `[list=a]Willfully damaging, destroying, disabling, wrecking, or setting fire to any type of aircraft or aircraft facilities.
+[*]Willfully tampering with, or removing aircraft components, when not in due course of maintenance by a mechanic or inspector certified by the San Andreas Aviation Administration.
+[*]Willfully placing destructive devices or substances in, upon, or in proximity of any type of aircraft or aircraft facilities, if such placing is likely to endanger the safety or any such aircraft or aircraft facilities.[/list]`,
     jailMonths: 90,
     fine: 10000, // plus cost of all damages sustained
     driver: "Intact",
@@ -1925,7 +2100,8 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   "AF10": {
     code: "AF10",
     title: "Disobeying a Grounding Order",
-    description: "Piloting any aircraft while under an active grounding order issued by the SAAA.",
+    description: `Piloting any aircraft while an individual is placed under an active grounding order.
+[list]A grounding order shall be defined as an order specifically given by the San Andreas Aviation Administration (SAAA) that prevents a pilot from operating specific or all aircraft. Grounding orders may either be permanent, or set to expire after a set date.[/list]`,
     jailMonths: 90,
     fine: 15000,
     driver: "Intact",
@@ -1935,6 +2111,27 @@ Cannot be charged alongside Kidnapping and vice verse in the same instance - Kid
   }
 
 };
+
+// Populating the datalist from above charges//
+
+function populateChargeAutocomplete() {
+  const dl = document.getElementById("chargeCodesList");
+  if (!dl) return;
+
+  dl.innerHTML = "";
+
+  Object.values(charges).forEach(ch => {
+    const opt = document.createElement("option");
+    // Show both code and title in the dropdown
+    opt.value = `${ch.code} - ${ch.title}`;
+    dl.appendChild(opt);
+  });
+}
+
+populateChargeAutocomplete();
+
+//Modifiers//
+
 const modifierDefinitions = {
   accessory: {
     key: "accessory",
@@ -2026,7 +2223,7 @@ const signatureInput = document.getElementById("signatureBlock");
 let signatureBlock = `[img]https://i.imgur.com/MIAlzRQ.jpg[/img]
 [i]Branch Administrator[/i]
 San Andreas Judicial Branch
-505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url][/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`;
+505-9925 — [url=https://gov.eclipse-rp.net/ucp.php?i=pm&mode=compose&u=17549]hope.kant@sajb.sagov[/url]`;
 
 if (signatureInput) {
   // Pre-fill the textarea so people see and can edit the default
@@ -2096,10 +2293,12 @@ function updateCaseLogChargesHidden() {
   const lines = [];
 
   rows.forEach(row => {
-    const code = row.querySelector(".cl-statute").value.trim().toUpperCase();
+    const raw = row.querySelector(".cl-statute").value.trim().toUpperCase();
+    const code = raw.split(" ")[0];  // "VF01 - EVADING..." -> "VF01"
+    if (!code) return;
+
     const desc = row.querySelector(".cl-desc").value.trim();
     const penalties = row.querySelector(".cl-penalties").value.trim();
-    if (!code) return;
 
     lines.push(
       `[*][b]Law/Statute Number:[/b] ${code}\n` +
@@ -2125,10 +2324,10 @@ function addCaseLogChargeRow() {
   row.className = "case-charge-row";
   row.dataset.rowId = rowId;
 
-  row.innerHTML = `
-    <label>Statute code (e.g. VC01, VM01, GF10)
-      <input type="text" class="cl-statute" placeholder="VC01" />
-    </label>
+row.innerHTML = `
+  <label>Statute code (e.g. VC01, VM01, GF10)
+        <input type="text" class="cl-statute" placeholder="VC01" list="chargeCodesList" />
+  </label>
     <label>Statute title / description (auto if code is known)
       <textarea class="cl-desc" rows="2"></textarea>
     </label>
@@ -2154,7 +2353,8 @@ function addCaseLogChargeRow() {
   const modifierBoxes = row.querySelectorAll(".cl-mod");
 
   function recalc() {
-    const code = (codeInput.value || "").trim().toUpperCase();
+    const raw = (codeInput.value || "").trim().toUpperCase();
+    const code = raw.split(" ")[0];  // "VF01 - EVADING..." -> "VF01"
     const base = charges[code];
     const active = [];
     modifierBoxes.forEach(cb => { if (cb.checked) active.push(cb.value); });
@@ -2205,7 +2405,8 @@ function updateVerdictChargesHidden() {
   let anyGuilty = false;
 
   rows.forEach(row => {
-    const code = row.querySelector(".vc-statute").value.trim().toUpperCase();
+    const raw = row.querySelector(".vc-statute").value.trim().toUpperCase();
+    const code = raw.split(" ")[0];  // again, "VF01 - ..." -> "VF01"
     if (!code) return;
 
     const base = charges[code];
@@ -2253,7 +2454,7 @@ function addVerdictChargeRow() {
 
   row.innerHTML = `
     <label>Statute code (e.g. VC01, VM01, GF10)
-      <input type="text" class="vc-statute" placeholder="VC01" />
+      <input type="text" class="vc-statute" placeholder="VC01" list="chargeCodesList" />
     </label>
     <label>Verdict
       <select class="vc-verdict inline-select">
@@ -2261,15 +2462,15 @@ function addVerdictChargeRow() {
         <option value="Guilty">Guilty</option>
       </select>
     </label>
-<div class="vc-modifiers">
-  <span style="font-size:12px;">Modifiers:</span><br/>
-  ${Object.values(modifierDefinitions).map(m => `
-    <label class="modifier-btn">
-      <input type="checkbox" class="vc-mod" value="${m.key}" />
-      <span>${m.shortLabel}</span>
-    </label>
-  `).join("")}
-</div>
+    <div class="vc-modifiers">
+      <span style="font-size:12px;">Modifiers:</span><br/>
+      ${Object.values(modifierDefinitions).map(m => `
+        <label class="modifier-btn">
+          <input type="checkbox" class="vc-mod" value="${m.key}" />
+          <span>${m.shortLabel}</span>
+        </label>
+      `).join("")}
+    </div>
   `;
 
   container.appendChild(row);
@@ -2288,6 +2489,7 @@ function addVerdictChargeRow() {
 
   recalcVerdict();
 }
+
 
 /* ---------- TEMPLATES ---------- */
 
@@ -2721,8 +2923,8 @@ ${SignatureBlock}
     {
       id: "dismissing_bt",
       label: "Dismissing BT",
-      fields: ["Defendant", "CaseType", "CaseNumber", "Reason"],
-      template: ({ Defendant = "", CaseType = "BT", CaseNumber = "0000", Reason = "lack of response from the defendant" }) => `[img]https://i.imgur.com/LdlyeRK.png[/img][divbox=antiquewhite]
+      fields: ["Defendant", "CaseType", "CaseNumber"],
+      template: ({ Defendant = "", CaseType = "BT", CaseNumber = "0000" }) => `[img]https://i.imgur.com/LdlyeRK.png[/img][divbox=antiquewhite]
 [fimg=180,180]https://i.imgur.com/t3lfFCp.png[/fimg]
 [float=right][right][font=Arial][b]
 
@@ -2742,7 +2944,7 @@ The State of San Andreas v. ${Defendant}
 
 [b]A decision was reached in the above case on the ${getFormalDate()}.[/b][/center]
 
-Due to a ${Reason}, the case will now be accepting the plea of guilty from the defendant. The defendant was given ample time to interact with the courts and file availability. If any of the dates and times did not align with the schedule of the defendant, they were able to contact the courts stating the like. As little to no contact has been made with the courts in the past 3-4 weeks, this case will now be archived and the charges will remain on the record of the defendant.
+Due to a lack of response from the defendant, the case will now be accepting the plea of guilty from the defendant. The defendant was given ample time to interact with the courts and file availability. If any of the dates and times did not align with the schedule of the defendant, they were able to contact the courts stating the l=ike. As little to no contact has been made with the courts in the past 3-4 weeks, this case will now be archived and the charges will remain on the record of the defendant.
 
 [b]Respectfully,[/b]
 
@@ -2804,6 +3006,63 @@ ${SignatureBlock}
 [/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`;
       }
     },
+
+{
+  id: "GSB_Notice_of_Trial",
+  label: "GSB - Notice of Trial",
+  fields: ["CaseLink","CaseTitle", "TrialDate"],
+  template: ({
+    CaseLink = "",
+    CaseTitle = "#25-CM-0000, State of San Andreas v. DEFENDANT",
+    TrialDate = "XXth of MONTH"
+  }) => {
+    const currentYear = new Date().getFullYear();
+    return `[img]https://i.imgur.com/T0UjUjH.png[/img][divbox=antiquewhite][fimg=150,150]https://i.imgur.com/P8yMubU.png[/fimg]
+[float=right][right]
+
+[font=Arial][size=150][b]San Andreas Judicial Branch[/b][/size]
+[size=120]Personal Email[/size][/font]
+[font=Cambria][size=95][i]"EQUAL JUSTICE UNDER LAW"[/i][/size][/font][/right][/float]
+[hr][/hr]
+[list=none]
+Dear GSB Command,
+
+I hope this email finds you well. Please consider this a notice of trial. [url=${CaseLink}]${CaseTitle}[/url] will occur on the ${TrialDate}, ${currentYear} at Rockford Hills City Hall. DOC has been notified. If you have any questions, please don't hesitate to reach out. 
+
+Respectfully, 
+
+Respectfully,
+
+${SignatureBlock}[/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`;
+  }
+},
+{
+  id: "GSB_Notice_of_Motions_Hearing",
+  label: "GSB - Notice of Motions Hearing",
+  fields: ["CaseLink","CaseTitle", "TrialDate"],
+  template: ({
+    CaseLink = "",
+    CaseTitle = "#25-CM-0000, State of San Andreas v. DEFENDANT",
+    TrialDate = "XXth of MONTH"
+  }) => {
+    const currentYear = new Date().getFullYear();
+    return `[img]https://i.imgur.com/T0UjUjH.png[/img][divbox=antiquewhite][fimg=150,150]https://i.imgur.com/P8yMubU.png[/fimg]
+[float=right][right]
+
+[font=Arial][size=150][b]San Andreas Judicial Branch[/b][/size]
+[size=120]Personal Email[/size][/font]
+[font=Cambria][size=95][i]"EQUAL JUSTICE UNDER LAW"[/i][/size][/font][/right][/float]
+[hr][/hr]
+[list=none]
+Dear GSB Command,
+
+I hope this email finds you well. Please consider this a notice of motions hearing. This is different than a trial as it will not be public. You all are welcome to attend, but additional security is not entirely necessary. [url=${CaseLink}]${CaseTitle}[/url] will occur on the ${TrialDate}, ${currentYear} at Rockford Hills City Hall. DOC has been notified. If you have any questions, please don't hesitate to reach out. 
+
+Respectfully,
+
+${SignatureBlock}[/divbox][img]https://i.imgur.com/LdlyeRK.png[/img]`;
+  }
+},
 
     {
       id: "notice_of_rejection",
@@ -3353,6 +3612,7 @@ function updateFields() {
 
     /* Additional bullet helper buttons for Items and Crimes */
     if (field === "Items" || field === "Crimes") {
+      // Simple bullet helper (same behavior as before)
       const bulletBtn = document.createElement("button");
       bulletBtn.type = "button";
       bulletBtn.textContent = "[*] Add Bullet";
@@ -3367,6 +3627,58 @@ function updateFields() {
         generateOutput();
       });
       label.appendChild(bulletBtn);
+
+      // Extra: for Crimes in the Search Warrant template, add charge lookup
+      if (field === "Crimes" && selectedTemplateId === "search_warrant") {
+        const chargeWrapper = document.createElement("div");
+        chargeWrapper.style.marginTop = "6px";
+
+        const info = document.createElement("div");
+        info.textContent = "Quick add crime from charge list:";
+        info.style.fontSize = "11px";
+        info.style.marginBottom = "2px";
+        chargeWrapper.appendChild(info);
+
+        const chargeInput = document.createElement("input");
+        chargeInput.type = "text";
+        chargeInput.placeholder = "VF01 - Evading an Officer";
+        chargeInput.setAttribute("list", "chargeCodesList");
+        chargeInput.style.width = "100%";
+        chargeInput.className = "sw-charge-lookup";
+        chargeWrapper.appendChild(chargeInput);
+
+        const addBtn = document.createElement("button");
+        addBtn.type = "button";
+        addBtn.textContent = "Add charge to Crimes";
+        addBtn.className = "btcm-btn";
+        addBtn.style.marginTop = "4px";
+
+        addBtn.addEventListener("click", (e) => {
+          e.preventDefault();
+          const raw = (chargeInput.value || "").trim();
+          if (!raw) return;
+
+          const code = raw.split(" ")[0].toUpperCase(); // "VF01 - ..." -> "VF01"
+          const base = window.charges ? window.charges[code] : charges[code];
+
+          // Build the line we’ll append
+          const lineText = base
+            ? `${code} - ${base.title}`
+            : raw; // fallback if no match
+
+          if (input.value && !input.value.endsWith("\n")) {
+            input.value += "\n";
+          }
+          input.value += `[*] ${lineText}`;
+
+          // Clear the lookup field and regenerate output
+          chargeInput.value = "";
+          generateOutput();
+        });
+
+        chargeWrapper.appendChild(addBtn);
+        label.appendChild(chargeWrapper);
+      }
     }
 
     /* Hide Custom Location wrapper by default */
